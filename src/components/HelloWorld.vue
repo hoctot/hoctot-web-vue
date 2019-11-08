@@ -2,7 +2,7 @@
   <div class="hello">
     <h1 class="title">{{ msg }}</h1>
     <p>
-      Hoc Tot Online
+      WOW
     </p>
   </div>
 </template>

@@ -1,12 +1,5 @@
 <template>
-  <div class="home">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container">
+    <ContentHome></ContentHome>
   </div>
 </template>
-
-<script>
-
-export default {
-  name: 'home'
-}
-</script>
