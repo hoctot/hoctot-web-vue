@@ -11,7 +11,7 @@
       </div>
 
       <div>
-        <router-link to="play">
+        <router-link to="editor">
           <button class="button is-success">Bắt đầu ngay</button>
         </router-link>
 
@@ -28,9 +28,9 @@
   position: relative;
   .img-bg {
     width: 100%;
-    height: 20rem;
+    height: 25rem;
     object-fit: cover;
-    border-radius: 4rem;
+    // border-radius: 4rem;
     padding: 0 1rem;
   }
   .desc-text {

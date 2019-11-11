@@ -26,6 +26,7 @@
     position: absolute;
     padding: 1rem 2rem;
     text-align: justify;
+    font-size: 1.25rem;
   }
   .big-text {
     font-size: 2rem;

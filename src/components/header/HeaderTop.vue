@@ -16,7 +16,7 @@ export default {};
   text-align: center;
 
   .logo {
-    width: 5rem;
+    width: 4.75rem;
   }
 }
 </style>

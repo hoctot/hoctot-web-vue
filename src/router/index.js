@@ -28,6 +28,11 @@ const routes = [
     name: 'play',
     component: () => import('@/views/Play.vue')
   },
+  {
+    path: '/editor',
+    name: 'editor',
+    component: () => import('@/views/Editor.vue')
+  },
 
 ]
 
