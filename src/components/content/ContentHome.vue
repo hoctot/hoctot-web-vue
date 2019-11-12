@@ -1,23 +1,29 @@
 <template>
-  <div class="c-content">
-    <img src="/bg/1.jpg" class="img-bg" />
-    <div class="button-group">
-      <div class="desc-text">
-        <h1 class="title is-5">
-          <span style="font-size: 2rem">❝</span>
-          Nhà trường chỉ cho chúng ta chiếc chìa khóa tri thức, học trong cuộc sống là công việc cả đời.
-        </h1>
-        <p class="subtitle is-6">Bill Gates</p>
+  <div>
+    <div class="c-content">
+      <img src="/bg/1.jpg" class="img-bg" />
+      <div class="button-group">
+        <div class="desc-text">
+          <h3>
+            <span style="font-size: 2rem">❝</span>
+           Tiện ích học tập trực tuyến
+          </h3>
+        </div>
+
+        <div>
+          <router-link to="editor">
+            <button class="bg-green-500 text-white font-semibold px-4 py-2 rounded">Bắt đầu ngay</button>
+          </router-link>
+          <br />
+          <router-link to="about">
+            <button class="text-blue-500 mt-5 ">Giới thiệu</button>
+          </router-link>
+        </div>
       </div>
-
+    </div>
+    <div>
       <div>
-        <router-link to="editor">
-          <button class="button is-success">Bắt đầu ngay</button>
-        </router-link>
-
-        <router-link to="about">
-          <button class="button">Giới thiệu</button>
-        </router-link>
+        <img class="mx-auto" src="/img/undraw/learn.png" width="50%" />
       </div>
     </div>
   </div>
@@ -28,10 +34,10 @@
   position: relative;
   .img-bg {
     width: 100%;
-    height: 25rem;
+    height: 15rem;
     object-fit: cover;
     // border-radius: 4rem;
-    padding: 0 1rem;
+    // padding: 0 1rem;
   }
   .desc-text {
     padding: 0.5rem;

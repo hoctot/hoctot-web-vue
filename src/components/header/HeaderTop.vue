@@ -1,7 +1,7 @@
 <template>
-  <nav class="top-nav animated fadeInUp">
+  <nav class="top-nav animated fadeInDown">
     <router-link to="/">
-      <img onmousedown="return false" src="/img/logo.png" class="logo" alt="logo" />
+      <img onmousedown="return false" src="/img/logo.png" class="logo inline" alt="logo" />
     </router-link>
   </nav>
 </template>
