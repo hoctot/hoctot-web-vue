@@ -1,25 +1,44 @@
 <template>
-  <div class="container mx-auto">
-    <div>
-      <p>Câu hỏi</p>
-    </div>
-    <div class="editor-wrap">
-      <div id="editor-question" class="editor-input"></div>
-    </div>
+  <div class="px-8 mt-5 mx-auto">
+    <!-- Two columns -->
+    <div class="flex">
+      <div class="w-3/5 pl-1">
+        <div>
+          <p class="text-left">Câu hỏi</p>
+        </div>
+        <div class="editor-wrap">
+          <div id="editor-question" class="editor-input"></div>
+        </div>
 
-    <div>Đáp án</div>
-    <div class="editor-wrap">
-      <div id="editor-answer" class="editor-input"></div>
-    </div>
+        <div>
+          <p class="text-left">Đáp án</p>
+        </div>
+        <div class="editor-wrap">
+          <div id="editor-answer" class="editor-input"></div>
+        </div>
 
-    <div>Gợi ý</div>
-    <div class="editor-wrap">
-      <div id="editor-hint" class="editor-input"></div>
-    </div>
+        <div>
+          <p class="text-left">Gợi ý</p>
+        </div>
+        <div class="editor-wrap">
+          <div id="editor-hint" class="editor-input"></div>
+        </div>
+      </div>
 
-    <div class="mx-auto text-center">
-      <button class="bg-green-500 text-white font-semibold px-4 py-2 my-5 rounded">Tạo câu hỏi</button>
-      <img onmousedown="return false" class="mx-auto my-5" src="/img/undraw/transfer.png" width="30%" />
+      <div class="w-2/5">
+        <div class="mx-auto text-center">
+          <button
+            :class="[isEdit? 'bg-green-500 ' : 'bg-green-200 pointer-events-none']"
+            class="text-white font-semibold px-4 py-2 mb-5 rounded"
+          >Tạo câu hỏi</button>
+          <img
+            onmousedown="return false"
+            class="mx-auto my-10"
+            :src="isEdit ? '/img/undraw/done.png' : '/img/undraw/think.png'"
+            width="100%"
+          />
+        </div>
+      </div>
     </div>
 
     <div v-if="isPreview">
@@ -91,16 +110,32 @@ export default {
       isProfileSuccess: false,
     }
   },
+  computed: {
+    isEdit() {
+      const result = Boolean(
+        this.questionText && this.answerText && this.hintText,
+      )
+      return result
+    },
+  },
   mounted() {
     var toolbarOptions = [
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-      [{ font: [] }],
-      ['bold', 'italic', 'underline', 'strike', 'align', 'blockquote'],
-      ['image'],
-      [{ list: 'ordered' }, { list: 'bullet' }],
-      [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
-      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-      ['clean'], // remove formatting button
+      [
+        { header: [1, 2, 3, 4, 5, 6, false] },
+        'color',
+        'background',
+        'bold',
+        'italic',
+        'underline',
+        'strike',
+        'align',
+        'blockquote',
+        { list: 'ordered' },
+        { list: 'bullet' },
+        { script: 'sub' },
+        { script: 'super' },
+        'image',
+      ],
     ]
 
     const listEditor = ['questionEditor', 'answerEditor', 'hintEditor']
@@ -133,7 +168,8 @@ export default {
       try {
         const typeEditor = v.split('Editor')[0]
         this[v].on('text-change', (delta, oldDelta, source) => {
-          this[typeEditor + 'HTML'] = this[v].root.innerHTML
+          this[typeEditor + 'HTML'] = String(this[v].root.innerHTML).normalize()
+          this[typeEditor + 'Text'] = String(this[v].getText()).trim()
         })
       } catch (error) {
         console.error('List Editor error:', error)

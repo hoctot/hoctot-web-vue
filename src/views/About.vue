@@ -1,9 +1,12 @@
 <template>
   <div class="container mx-auto about">
     <div class="cover-img ">
-      <img class="animated fadeIn" src="/bg/2.jpg" />
+      <!-- <img class="animated fadeIn" src="/bg/2.jpg" /> -->
     </div>
     <div class="cover-desc ">
+      <div>
+        <img class="mx-auto" src="/img/undraw/tour.png" width="300">
+      </div>
       <p>
         <span class="big-text">Giáo dục</span> (tiếng Anh: education) theo nghĩa chung là hình thức học tập theo đó kiến thức, kỹ năng, và thói quen của một nhóm người được trao truyền từ thế hệ này sang thế hệ khác thông qua giảng dạy, đào tạo, hay nghiên cứu. Giáo dục thường diễn ra dưới sự hướng dẫn của người khác, nhưng cũng có thể thông qua tự học.[1] Bất cứ trải nghiệm nào có ảnh hưởng đáng kể lên cách mà người ta suy nghĩ, cảm nhận, hay hành động đều có thể được xem là có tính giáo dục. Giáo dục thường được chia thành các giai đoạn như giáo dục tuổi ấu thơ, giáo dục tiểu học, giáo dục trung học, và giáo dục đại học.
         Về mặt từ nguyên, "education" trong tiếng Anh có gốc La-tinh ēducātiō ("nuôi dưỡng, nuôi dạy") gồm ēdūcō ("tôi giáo dục, tôi đào tạo"), liên quan đến từ đồng âm ēdūcō ("tôi tiến tới, tôi lấy ra; tôi đứng dậy").[2] Trong tiếng Việt, "giáo" có nghĩa là dạy, "dục" có nghĩa là nuôi (không dùng một mình); "giáo dục" là "dạy dỗ gây nuôi đủ cả trí-dục, đức-dục, thể-dục."[3]
@@ -27,6 +30,7 @@
     padding: 1rem 2rem;
     text-align: justify;
     font-size: 1.25rem;
+    font-family: monospace;
   }
   .big-text {
     font-size: 2rem;
