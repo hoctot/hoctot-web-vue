@@ -182,8 +182,8 @@ export default {
           this[typeEditor + 'HTML'] = String(this[v].root.innerHTML).normalize()
           this[typeEditor + 'Text'] = String(this[v].getText()).trim()
         })
-      } catch (error) {
-        console.error('List Editor error:', error)
+      } catch (e) {
+        console.error('List Editor error:', e)
       }
     })
 
