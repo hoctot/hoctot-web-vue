@@ -33,6 +33,26 @@ const routes = [
     name: 'editor',
     component: () => import('@/views/Editor.vue')
   },
+  {
+    path: '/collections',
+    name: 'collections',
+    component: () => import('@/views/Collections.vue')
+  },
+  {
+    path: '/collection-data/:id',
+    name: 'collection-data',
+    component: () => import('@/views/CollectionData.vue')
+  },
+  {
+    path: '/collection-editor',
+    name: 'collection-editor',
+    component: () => import('@/views/CollectionEditor.vue')
+  },
+  {
+    path: '*',
+    name: 'notfound',
+    component: Home
+  },
 
 ]
 

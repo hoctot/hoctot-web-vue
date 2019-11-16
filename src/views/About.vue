@@ -1,11 +1,11 @@
 <template>
   <div class="container mx-auto about">
-    <div class="cover-img ">
+    <div class="cover-img">
       <!-- <img class="animated fadeIn" src="/bg/2.jpg" /> -->
     </div>
-    <div class="cover-desc ">
+    <div class="cover-desc">
       <div>
-        <img class="mx-auto" src="/img/undraw/tour.png" width="300">
+        <img onmousedown="return false" class="mx-auto" src="/img/undraw/tour.png" width="300" />
       </div>
       <p>
         <span class="big-text">Giáo dục</span> (tiếng Anh: education) theo nghĩa chung là hình thức học tập theo đó kiến thức, kỹ năng, và thói quen của một nhóm người được trao truyền từ thế hệ này sang thế hệ khác thông qua giảng dạy, đào tạo, hay nghiên cứu. Giáo dục thường diễn ra dưới sự hướng dẫn của người khác, nhưng cũng có thể thông qua tự học.[1] Bất cứ trải nghiệm nào có ảnh hưởng đáng kể lên cách mà người ta suy nghĩ, cảm nhận, hay hành động đều có thể được xem là có tính giáo dục. Giáo dục thường được chia thành các giai đoạn như giáo dục tuổi ấu thơ, giáo dục tiểu học, giáo dục trung học, và giáo dục đại học.
@@ -16,6 +16,14 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  mounted() {
+    window.scrollTo(0, 0)
+  },
+}
+</script>
 
 <style lang="scss">
 .about {

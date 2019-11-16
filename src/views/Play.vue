@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h1>Play</h1>
+  <div class="container mx-auto">
+    <h1>// TODO</h1>
   </div>
 </template>
 

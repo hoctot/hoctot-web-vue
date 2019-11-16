@@ -1,26 +1,22 @@
 <template>
   <div>
-    <div class="c-content">
-      <img src="/bg/1.jpg" class="img-bg" />
-      <div class="button-group">
-        <div class="desc-text">
-          <h3>
-            <span style="font-size: 2rem">❝</span>
-           Tiện ích học tập trực tuyến
-          </h3>
-        </div>
 
-        <div>
-          <router-link to="editor">
-            <button class="bg-green-500 text-white font-semibold px-4 py-2 rounded">Bắt đầu ngay</button>
-          </router-link>
-          <br />
-          <router-link to="about">
-            <button class="text-blue-500 mt-5 ">Giới thiệu</button>
-          </router-link>
-        </div>
+    <div>
+      <div id="firebaseui-auth-container"></div>
+    </div>
+
+    <div class="container mx-auto text-center mt-5">
+      <div>
+        <router-link to="collections">
+          <BaseButton>Bắt đầu ngay</BaseButton>
+        </router-link>
+        <br />
+        <router-link to="about">
+          <button class="text-blue-500 mt-5">Giới thiệu</button>
+        </router-link>
       </div>
     </div>
+
     <div>
       <div>
         <img class="mx-auto" src="/img/undraw/learn.png" width="50%" />
@@ -29,37 +25,35 @@
   </div>
 </template>
 
-<style lang="scss">
-.c-content {
-  position: relative;
-  .img-bg {
-    width: 100%;
-    height: 15rem;
-    object-fit: cover;
-    // border-radius: 4rem;
-    // padding: 0 1rem;
-  }
-  .desc-text {
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    .title {
-      text-align: justify;
-    }
-    .subtitle {
-      text-align: right;
-      font-style: italic;
-    }
-  }
-  .button-group {
-    text-align: center;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+<script>
+// Firebase App (the core Firebase SDK) is always required and must be listed first
+import * as firebase from 'firebase/app'
+import 'firebase/analytics'
+import 'firebase/auth'
+import 'firebase/firestore'
 
-    .button {
-      margin: 0.5rem;
-    }
-  }
+const firebaseConfig = {
+  apiKey: process.env.VUE_APP_FIREBASE_APIKEY,
+  authDomain: 'hoctot-app.firebaseapp.com',
+  databaseURL: 'https://hoctot-app.firebaseio.com',
+  projectId: 'hoctot-app',
+  storageBucket: 'hoctot-app.appspot.com',
+  messagingSenderId: '610004924961',
+  appId: '1:610004924961:web:07be83c2df6d3b4f97c160',
+  measurementId: 'G-DW5ZCZV362',
 }
+
+firebase.initializeApp(firebaseConfig)
+firebase.analytics()
+firebase.auth().languageCode = 'vi';
+
+export default {
+  beforeMount() {
+
+  },
+}
+</script>
+
+<style lang="scss">
+
 </style>

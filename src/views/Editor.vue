@@ -1,8 +1,8 @@
 <template>
-  <div class="px-8 mt-5 mx-auto">
+  <div class="container px-8 my-5 mx-auto">
     <!-- Two columns -->
-    <div class="flex">
-      <div class="w-3/5 pl-1">
+    <div class="flex flex-wrap">
+      <div class="w-full sm:w-3/5">
         <div>
           <p class="text-left">Câu hỏi</p>
         </div>
@@ -23,25 +23,34 @@
         <div class="editor-wrap">
           <div id="editor-hint" class="editor-input"></div>
         </div>
+
+        <div>
+          <div class="my-5 ">
+            <span
+              class="tag-title bg-gray-300 rounded-full px-3 py-2 text-sm font-semibold text-gray-700"
+            >#Lccnte temporecd!</span>
+          </div>
+        </div>
       </div>
 
-      <div class="w-2/5">
+      <div class="w-full sm:w-2/5">
         <div class="mx-auto text-center">
           <button
-            :class="[isEdit? 'bg-green-500 ' : 'bg-green-200 pointer-events-none']"
-            class="text-white font-semibold px-4 py-2 mb-5 rounded"
+            :class="[isEdit? ' ' : 'opacity-50 pointer-events-none shadow-none']"
+            class="bg-green-500 shadow appearance-none border font-bold rounded py-4 px-8 text-white leading-tight focus:outline-none focus:shadow-outline"
           >Tạo câu hỏi</button>
+
           <img
             onmousedown="return false"
-            class="mx-auto my-10"
-            :src="isEdit ? '/img/undraw/done.png' : '/img/undraw/think.png'"
-            width="100%"
+            class="mx-auto mt-5 p-5"
+            :src="isEdit ? '/img/undraw/add.png' : '/img/undraw/no_data.png'"
+            width="275"
           />
         </div>
       </div>
     </div>
 
-    <div v-if="isPreview">
+    <!-- <div v-if="!isPreview">
       <div class="text-center">
         <button class="bg-transparent hover:bg-blue-500 text-blue-700 hover:text-white">Tạo câu hỏi</button>
       </div>
@@ -77,7 +86,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -119,6 +128,8 @@ export default {
     },
   },
   mounted() {
+    window.scrollTo(0, 0)
+
     var toolbarOptions = [
       [
         { header: [1, 2, 3, 4, 5, 6, false] },
@@ -193,7 +204,7 @@ export default {
   .ql-toolbar.ql-snow + .ql-container.ql-snow {
     border: 0px solid white;
     border-bottom-width: 0.1rem;
-    border-bottom-color: #ddd;
+    border-bottom-color: #eee;
     // border-radius: 0.5rem;
   }
 
@@ -224,5 +235,11 @@ export default {
 
 .preview {
   font-size: initial !important;
+}
+
+.tag-title {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 </style>
