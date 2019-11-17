@@ -25,7 +25,7 @@
         </div>
 
         <div>
-          <div class="my-5 ">
+          <div class="my-5">
             <span
               class="tag-title bg-gray-300 rounded-full px-3 py-2 text-sm font-semibold text-gray-700"
             >#Lccnte temporecd!</span>
@@ -85,13 +85,13 @@ export default {
     var toolbarOptions = [
       [
         { header: [1, 2, 3, 4, 5, 6, false] },
+        { align: ['', 'center', 'right', 'justify'] },
         'color',
         'background',
         'bold',
         'italic',
         'underline',
         'strike',
-        'align',
         'blockquote',
         { list: 'ordered' },
         { list: 'bullet' },

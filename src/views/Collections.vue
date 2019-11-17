@@ -35,7 +35,7 @@
               :src="`https://picsum.photos/id/3${index}/600/600`"
             /> -->
             <img
-              class="w-full h-40 object-cover bg-gray-500"
+              class="w-full h-40 object-cover bg-gray-300"
               :src="`https://dummyimage.com/800x600/4CAF50/fff.jpg&text=${item.title}`"
             />
             <div class="px-6 py-4">
