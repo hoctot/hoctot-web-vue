@@ -1,5 +1,7 @@
 # cunghoctot
 
+[![Build Status](https://travis-ci.com/hoctot/hoctot-web.svg?branch=master)](https://travis-ci.com/hoctot/hoctot-web)
+
 ## Project setup
 ```
 npm install
