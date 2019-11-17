@@ -192,7 +192,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .editor-wrap {
   margin-bottom: 2rem;
   .ql-toolbar {

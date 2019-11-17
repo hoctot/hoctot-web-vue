@@ -73,7 +73,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .editor-wrap {
   margin-bottom: 2rem;
 }
