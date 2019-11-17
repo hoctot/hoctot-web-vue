@@ -7,7 +7,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "surge": "npm run build && cd ./dist && cp index.html 200.html && surge -p ./ -d https://hoctot.surge.sh && cd ..",
-    "prepush": "npm run surge"
+    "pre-commit": "npm run surge"
   },
   "dependencies": {
     "buefy": "^0.8.6",
