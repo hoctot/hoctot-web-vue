@@ -49,44 +49,6 @@
         </div>
       </div>
     </div>
-
-    <!-- <div v-if="!isPreview">
-      <div class="text-center">
-        <button class="bg-transparent hover:bg-blue-500 text-blue-700 hover:text-white">Tạo câu hỏi</button>
-      </div>
-
-      <div class="preview ql-snow">
-        <div class="my-5">
-          <h1 class="title text-center">Xem trước</h1>
-        </div>
-        <br />
-
-        <div v-if="questionHTML">
-          <div>
-            <h1 class="title is-5">Câu hỏi:</h1>
-            <div class="ql-editor" v-html="questionHTML"></div>
-          </div>
-          <br />
-          <hr />
-        </div>
-
-        <div v-if="answerHTML">
-          <div>
-            <h1 class="title is-5">Câu trả lời:</h1>
-            <div v-html="answerHTML"></div>
-          </div>
-          <br />
-          <hr />
-        </div>
-
-        <div v-if="hintHTML">
-          <div>
-            <h1 class="title is-5">Gợi ý:</h1>
-            <div v-html="hintHTML"></div>
-          </div>
-        </div>
-      </div>
-    </div>-->
   </div>
 </template>
 
@@ -107,16 +69,6 @@ export default {
       answerText: '',
       hintHTML: '',
       hintText: '',
-      // Other
-      isPreview: false,
-      activeStep: 0,
-      isAnimated: true,
-      hasNavigation: !true,
-      customNavigation: false,
-      prevIcon: 'chevron-left',
-      nextIcon: 'chevron-right',
-      isStepsClickable: true,
-      isProfileSuccess: false,
     }
   },
   computed: {
@@ -192,7 +144,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .editor-wrap {
   margin-bottom: 2rem;
   .ql-toolbar {
@@ -228,10 +180,6 @@ export default {
       left: 0px;
     }
   }
-}
-
-.preview {
-  font-size: initial !important;
 }
 
 .tag-title {
