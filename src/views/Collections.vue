@@ -3,7 +3,7 @@
     <SearchBarData/>
 
     <!-- List collections -->
-    <div class="container mx-auto flex flex-wrap collections-wrap mt-2 ">
+    <div class="container mx-auto flex flex-wrap mt-2">
       <div
         v-if="items.length"
         class="w-full sm:w-6/12 md:w-4/12 xl:w-3/12 p-3"
@@ -70,10 +70,6 @@ export default {
 </script>
 
 <style scoped>
-.search-collection {
-}
-.collections-wrap {
-}
 .collections-item {
   min-height: 17rem;
 }

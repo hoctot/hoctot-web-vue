@@ -228,9 +228,6 @@ export default {
       left: 0px;
     }
   }
-  .editor-input {
-    // min-height: 7rem;
-  }
 }
 
 .preview {
