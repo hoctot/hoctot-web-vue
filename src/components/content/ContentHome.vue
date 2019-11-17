@@ -5,7 +5,10 @@
       <div id="firebaseui-auth-container"></div>
     </div>
 
-    <div class="container mx-auto text-center mt-5">
+    <div class="container mx-auto text-center mt-2">
+      <div class="mb-8">
+        <vue-typer :shuffle='true' class="title-app" :text="['Ôn tập kiến thức','Thi đấu trực tuyến','Chia sẻ câu hỏi', 'Và nhiều tiện ích khác ...']" ></vue-typer>
+      </div>
       <div>
         <router-link to="collections">
           <BaseButton>Bắt đầu ngay</BaseButton>
@@ -54,6 +57,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
-
+<style scoped>
+  .title-app {
+    font-size: 2rem;
+  }
 </style>

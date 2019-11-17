@@ -6,11 +6,14 @@ import store from './store'
 import './baseComponent'
 import 'tailwindcss/dist/tailwind.min.css'
 import '@/style/index.scss'
+import VueTyperPlugin from 'vue-typer'
 
 // For test
 // window.firebase = firebase;
 
 Vue.config.productionTip = false
+
+Vue.use(VueTyperPlugin)
 
 new Vue({
   router,

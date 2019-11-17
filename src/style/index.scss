@@ -1,5 +1,9 @@
 @use 'custom-font';
 
+* {
+  font-family: 'IBM Plex Mono', monospace;
+}
+
 /* mixin for multiline */
 // http://hackingui.com/front-end/a-pure-css-solution-for-multiline-text-truncation/
 @mixin multiLineEllipsis($lineHeight: 1.2em, $lineCount: 1, $bgColor: white){
@@ -30,3 +34,4 @@
   .block-with-text {
     @include multiLineEllipsis($lineHeight: 1.2rem, $lineCount: 2, $bgColor: white);  
   }
+
