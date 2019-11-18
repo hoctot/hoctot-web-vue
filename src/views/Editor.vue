@@ -115,7 +115,7 @@ export default {
       placeholder: 'Nhập đáp án...',
       theme: 'snow',
       modules: {
-        toolbar: toolbarOptions,
+        toolbar: [],
       },
     })
 

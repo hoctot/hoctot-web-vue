@@ -1,7 +1,7 @@
 <template>
-  <nav class="top-nav animated fadeInDown">
+  <nav class="top-nav animated fadeInDown mb-2">
     <router-link to="/">
-      <img onmousedown="return false" src="/img/logo.png" class="logo inline" alt="logo" />
+      <img onmousedown="return false" src="/img/logo.png" class="logo inline-block" alt="logo" />
     </router-link>
   </nav>
 </template>
@@ -16,7 +16,7 @@ export default {};
   text-align: center;
 
   .logo {
-    width: 4.75rem;
+    width: 4rem;
   }
 }
 </style>

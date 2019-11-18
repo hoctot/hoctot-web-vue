@@ -7,7 +7,7 @@
 
     <div class="container mx-auto text-center mt-2">
       <div class="mb-8">
-        <vue-typer :shuffle='true' class="title-app" :text="['Ôn tập kiến thức','Thi đấu trực tuyến','Chia sẻ câu hỏi', 'Và nhiều tiện ích khác ...']" ></vue-typer>
+        <vue-typer :shuffle='true' class="title-app" :text="['Ôn tập kiến thức','Thi đấu trực tuyến','Chia sẻ câu hỏi', 'Nhiều tiện ích học tập ...']" ></vue-typer>
       </div>
       <div>
         <router-link to="collections">
