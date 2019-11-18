@@ -86,7 +86,8 @@ export default {
   methods: {
     sentAnswer() {
       this.answer = ''
-      this.$refs.answerInput.focus()
+      // this.$refs.answerInput.focus()
+      window.scrollTo(0, 0)
     },
     exit() {
       const isExit = confirm('Bạn có muốn thoát khỏi thi đấu?')
@@ -98,7 +99,7 @@ export default {
     },
   },
   mounted() {
-    this.$refs.answerInput.focus()
+    // this.$refs.answerInput.focus()
   },
 }
 </script>
