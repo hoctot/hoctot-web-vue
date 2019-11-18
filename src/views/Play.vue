@@ -86,6 +86,7 @@ export default {
   methods: {
     sentAnswer() {
       this.answer = ''
+      this.$refs.answerInput.focus()
     },
     exit() {
       const isExit = confirm('Bạn có muốn thoát khỏi thi đấu?')
