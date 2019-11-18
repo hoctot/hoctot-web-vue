@@ -19,23 +19,34 @@
     </div>
     <!-- List Account -->
 
-    <div class="mb-0">
+    <div class="mb-2">
       <div class="container mx-auto flex justify-center px-2">
         <div class="text-center">
-          <p>
+          <p class="text-sm">
             <img
               class="inline-block"
               width="22"
-              src="https://image.flaticon.com/icons/svg/149/149236.svg"
+              src="https://image.flaticon.com/icons/svg/148/148933.svg"
+              title="Thời gian"
             />
             <span>
-              60s :
+              610s
+
               <img
                 width="22"
                 class="inline-block"
                 src="https://image.flaticon.com/icons/svg/148/148767.svg"
-                alt
-              /> 1/10
+                title="Câu hỏi đúng"
+              />
+              Đúng 1/10
+
+              <img
+                width="22"
+                class="inline-block"
+                src="https://image.flaticon.com/icons/svg/1153/1153111.svg"
+                title="Thể loại"
+              />
+              Ôn tập
             </span>
           </p>
         </div>
@@ -45,7 +56,7 @@
     <!-- Game play -->
     <div>
       <div class="mb-5 p-2">
-        <h3>Câu hỏi:</h3>
+        <h4>Câu hỏi:</h4>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo voluptates commodi saepe non nihil neque perferendis error earum sunt facilis officiis praesentium nobis, delectus illum illo similique iure? Iure, sunt.</p>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem voluptatum, culpa veniam laboriosam temporibus a omnis illum, eum, illo sed doloremque aperiam. Laboriosam itaque hic aliquid modi? Quasi atque vero saepe dignissimos officiis, nihil quaerat a, accusamus, deserunt maiores fugiat. Impedit vitae velit et ducimus dicta, quia maxime illo cumque, id dolor qui itaque doloribus rerum odit laudantium laborum adipisci, accusantium</p>
       </div>
