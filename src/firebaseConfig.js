@@ -7,7 +7,7 @@ import 'firebase/storage'
 import 'firebase/functions'
 import 'firebase/performance'
 import 'firebase/remote-config'
-// import 'firebase/messaging' // bug on safari
+import 'firebase/messaging' // safari not support
 
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_FIREBASE_APIKEY,
@@ -28,9 +28,12 @@ const auth = firebase.auth()
 const db = firebase.firestore()
 const googleProvider = new firebase.auth.GoogleAuthProvider()
 const firebaseStorage = firebase.storage()
-// export const messaging = firebase.messaging() // Bug on safari
+let messaging
+if (firebase.messaging.isSupported()) {
+  messaging = firebase.messaging()
+}
 
-export { auth, db, googleProvider, firebaseStorage }
+export { auth, db, googleProvider, firebaseStorage, messaging }
 
 if (process.env.NODE_ENV !== 'production') {
   window.fb = firebase
