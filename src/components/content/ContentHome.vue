@@ -9,7 +9,7 @@
         <vue-typer
           :shuffle="true"
           class="title-app"
-          :text="['Ôn tập kiến thức','Thi đấu trực tuyến','Chia sẻ câu hỏi', 'Nhiều tiện ích học tập ...']"
+          :text="['Ôn tập kiến thức','Thi đấu trực tuyến','Chia sẻ câu hỏi', 'Tiện ích học tập']"
         ></vue-typer>
       </div>
       <div>
