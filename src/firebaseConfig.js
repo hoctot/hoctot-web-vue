@@ -5,9 +5,9 @@ import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/storage'
 import 'firebase/functions'
-import 'firebase/messaging'
 import 'firebase/performance'
 import 'firebase/remote-config'
+// import 'firebase/messaging' // bug on safari
 
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_FIREBASE_APIKEY,
@@ -28,19 +28,9 @@ const auth = firebase.auth()
 const db = firebase.firestore()
 const googleProvider = new firebase.auth.GoogleAuthProvider()
 const firebaseStorage = firebase.storage()
-const messaging = firebase.messaging()
+// export const messaging = firebase.messaging() // Bug on safari
 
-Notification.requestPermission().then(permission => {
-  if (permission === 'granted') {
-    console.log('Notification permission granted.')
-    // TODO(developer): Retrieve an Instance ID token for use with FCM.
-    // ...
-  } else {
-    console.log('Unable to get permission to notify.')
-  }
-})
-
-export { auth, db, googleProvider, firebaseStorage, messaging }
+export { auth, db, googleProvider, firebaseStorage }
 
 if (process.env.NODE_ENV !== 'production') {
   window.fb = firebase
