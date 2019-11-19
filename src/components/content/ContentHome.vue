@@ -1,22 +1,35 @@
 <template>
   <div>
-
     <div>
       <div id="firebaseui-auth-container"></div>
     </div>
 
     <div class="container mx-auto text-center mt-2">
       <div class="mb-8">
-        <vue-typer :shuffle='true' class="title-app" :text="['Ôn tập kiến thức','Thi đấu trực tuyến','Chia sẻ câu hỏi', 'Nhiều tiện ích học tập ...']" ></vue-typer>
+        <vue-typer
+          :shuffle="true"
+          class="title-app"
+          :text="['Ôn tập kiến thức','Thi đấu trực tuyến','Chia sẻ câu hỏi', 'Nhiều tiện ích học tập ...']"
+        ></vue-typer>
       </div>
       <div>
-        <router-link to="collections">
-          <BaseButton>Bắt đầu ngay</BaseButton>
-        </router-link>
-        <br />
-        <router-link to="about">
-          <button class="text-blue-500 mt-5">Giới thiệu</button>
-        </router-link>
+        <div v-if="isLogin === true">
+          <router-link to="collections">
+            <BaseButton>Bộ câu hỏi</BaseButton>
+          </router-link>
+        </div>
+
+        <div v-if="isLogin === false">
+          <BaseButton @click.native="login">Bắt đầu ngay</BaseButton>
+        </div>
+
+        <Loading v-if="isLogin === null"></Loading>
+
+        <div>
+          <router-link to="about">
+            <button class="text-blue-500 mt-5">Giới thiệu</button>
+          </router-link>
+        </div>
       </div>
     </div>
 
@@ -29,36 +42,22 @@
 </template>
 
 <script>
-// Firebase App (the core Firebase SDK) is always required and must be listed first
-import * as firebase from 'firebase/app'
-import 'firebase/analytics'
-import 'firebase/auth'
-import 'firebase/firestore'
-
-const firebaseConfig = {
-  apiKey: process.env.VUE_APP_FIREBASE_APIKEY,
-  authDomain: 'hoctot-app.firebaseapp.com',
-  databaseURL: 'https://hoctot-app.firebaseio.com',
-  projectId: 'hoctot-app',
-  storageBucket: 'hoctot-app.appspot.com',
-  messagingSenderId: '610004924961',
-  appId: '1:610004924961:web:07be83c2df6d3b4f97c160',
-  measurementId: 'G-DW5ZCZV362',
-}
-
-firebase.initializeApp(firebaseConfig)
-firebase.analytics()
-firebase.auth().languageCode = 'vi';
+import { mapActions, mapState } from 'vuex'
+import { storeActions, storeState } from '@/constant'
 
 export default {
-  beforeMount() {
-
+  beforeMount() {},
+  computed: {
+    ...mapState([storeState.isLogin]),
+  },
+  methods: {
+    ...mapActions([storeActions.login]),
   },
 }
 </script>
 
 <style scoped>
-  .title-app {
-    font-size: 2rem;
-  }
+.title-app {
+  font-size: 2rem;
+}
 </style>

@@ -4,18 +4,19 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 import './baseComponent'
+
 import 'tailwindcss/dist/tailwind.min.css'
 import '@/style/index.scss'
+
 import VueTyperPlugin from 'vue-typer'
 
-// For test
-// window.firebase = firebase;
+import '@/firebaseConfig'
 
 Vue.config.productionTip = false
 
 Vue.use(VueTyperPlugin)
 
-new Vue({
+export default new Vue({
   router,
   store,
   render: h => h(App),
