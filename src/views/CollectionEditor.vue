@@ -8,10 +8,19 @@
         </div>
         <div class="editor-wrap">
           <input
+            v-model="title"
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             type="text"
-            ref="editorTitle"
+            ref="titleEditor"
           />
+          <div
+            v-if="isSupportSpeech"
+            :class="{isSpeak: speakType === 'title'}"
+            @click="startRec('title')"
+            class="editor-mic"
+          >
+            <img width="24" src="https://image.flaticon.com/icons/svg/107/107737.svg" />
+          </div>
         </div>
 
         <div>
@@ -19,16 +28,27 @@
         </div>
         <div class="editor-wrap">
           <textarea
+            v-model="desc"
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             type="text"
+            ref="descEditor"
           />
+          <div
+            v-if="isSupportSpeech"
+            :class="{isSpeak: speakType === 'desc'}"
+            @click="startRec('desc')"
+            class="editor-mic"
+          >
+            <img width="24" src="https://image.flaticon.com/icons/svg/107/107737.svg" />
+          </div>
         </div>
 
         <div>
-          <p class="text-left mb-4">URL ảnh</p>
+          <p class="text-left mb-4">URL ảnh (Tuỳ chọn)</p>
         </div>
         <div class="editor-wrap">
           <input
+            v-model="imgUrl"
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             type="text"
           />
@@ -36,7 +56,9 @@
 
         <div class="text-center">
           <button
-            :class="[isEdit? ' ' : 'opacity-50 pointer-events-none shadow-none']"
+            :class="[
+              isEdit ? ' ' : 'opacity-50 pointer-events-none shadow-none',
+            ]"
             class="bg-green-500 shadow appearance-none border font-bold rounded py-4 px-8 text-white leading-tight focus:outline-none focus:shadow-outline"
           >Tạo bộ câu hỏi</button>
         </div>
@@ -59,16 +81,80 @@
 <script>
 export default {
   data() {
-    return {}
+    return {
+      title: '',
+      desc: '',
+      imgUrl: '',
+      // Other
+      recognitionInput: null,
+      isSpeak: false,
+      speakType: '',
+      isSupportSpeech: false,
+    }
+  },
+  methods: {
+    startRec(type) {
+      this.recognitionInput.stop()
+      this.isSpeak = false
+      this.speakType = ''
+      console.log('Stop')
+
+      setTimeout(() => {
+        console.log('Start')
+        this.isSpeak = true
+        this.speakType = type
+        this.recognitionInput.start()
+        const typeEditor = type + 'Editor'
+        this.$refs[typeEditor].focus()
+      }, 300)
+    },
   },
   computed: {
     isEdit() {
-      return false
+      return Boolean(this.title && this.desc)
     },
   },
   mounted() {
     window.scrollTo(0, 0)
-    this.$refs.editorTitle.focus()
+    this.$refs.titleEditor.focus()
+    /* eslint-disable */
+    const SpeechRecognition = SpeechRecognition || webkitSpeechRecognition
+    const SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList
+    const SpeechRecognitionEvent =
+      SpeechRecognitionEvent || webkitSpeechRecognitionEvent
+    const recognition = new SpeechRecognition()
+    const speechRecognitionList = new SpeechGrammarList()
+
+    this.isSupportSpeech = Boolean(recognition)
+
+    if (this.isSupportSpeech) {
+      recognition.lang = 'vi-VN'
+      // recognition.start()
+      recognition.onspeechend = () => {
+        this.isSpeak = false
+        this.speakType = ''
+
+        recognition.stop()
+      }
+
+      recognition.onresult = event => {
+        try {
+          const last = event.results.length - 1
+          const result = event.results[last][0].transcript
+          this[this.speakType] = result
+        } catch (error) {
+          console.error(error)
+        }
+      }
+
+      recognition.onerror = () => {
+        console.log('Loi me no roi')
+        this.isSpeak = false
+        recognition.stop()
+      }
+
+      this.recognitionInput = recognition
+    }
   },
 }
 </script>
@@ -76,5 +162,22 @@ export default {
 <style scoped>
 .editor-wrap {
   margin-bottom: 2rem;
+  position: relative;
+}
+.editor-mic {
+  position: absolute;
+  right: 0.5rem;
+  padding-bottom: 0.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+.editor-mic:active {
+  transform: translateY(-50%) scale(0.75);
+}
+
+.editor-mic.isSpeak {
+  /* pointer-events: none; */
+  border-bottom: 0.2rem dashed #38d39f;
 }
 </style>
