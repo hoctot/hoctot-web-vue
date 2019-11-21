@@ -1,7 +1,6 @@
 <template>
   <div class="mt-2 mb-20">
     <SearchBarData />
-
     <!-- List collections -->
     <div class="container mx-auto flex flex-wrap mt-2">
       <div
@@ -48,7 +47,7 @@
                       />
                     </a>
                   </li>
-                  <li>
+                  <!-- <li>
                     <a href="javascript:void(0)">
                       <img
                         title="Thêm câu hỏi"
@@ -58,9 +57,9 @@
                         src="https://image.flaticon.com/icons/svg/748/748113.svg"
                       />
                     </a>
-                  </li>
+                  </li> -->
                   <li>
-                    <a @click.stop="deleteCollection(item.id)" href="javascript:void(0)">
+                    <a @click.stop="editCollections(item.id)" href="javascript:void(0)">
                       <img
                         alt="edit"
                         title="Chỉnh sửa"
@@ -135,11 +134,10 @@ export default {
       }
     },
     openMenu(event) {},
-    editCollections() {},
+    editCollections(id) {
+      this.$router.push({ name: 'collection-editor-id', params: { id } })
+    },
   },
-  // firestore: {
-  //   items: db.collection('collections'),
-  // },
   mounted() {
     window.scrollTo(0, 0)
     this.itemsPromise = this.$bind('items', db.collection('collections'))

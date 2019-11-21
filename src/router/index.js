@@ -53,6 +53,11 @@ const routes = [
     component: () => import('@/views/CollectionEditor.vue'),
   },
   {
+    path: '/collection-editor/:id',
+    name: 'collection-editor-id',
+    component: () => import('@/views/CollectionEditor.vue'),
+  },
+  {
     path: '*',
     name: 'notfound',
     component: Home,
