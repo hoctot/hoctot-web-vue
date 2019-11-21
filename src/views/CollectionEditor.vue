@@ -147,6 +147,7 @@ export default {
           console.log("TCL: mounted -> event.results", event.results)
           const result = event.results[last][0].transcript
           this[this.speakType] = result
+          console.log("TCL: mounted -> result", result, this.speakType)
         } catch (error) {
           console.error(error)
         }
