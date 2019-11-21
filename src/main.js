@@ -24,5 +24,6 @@ const vm = new Vue({
   render: h => h(App),
 }).$mount('#app')
 
+// TODO: REMOVE
 window.vm = vm
 export default vm

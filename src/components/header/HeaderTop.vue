@@ -1,13 +1,28 @@
 <template>
   <nav class="top-nav animated fadeInDown mb-2">
-    <router-link to="/">
-      <img onmousedown="return false" src="/img/logo.png" class="logo inline-block" alt="logo" />
-    </router-link>
+    <img
+      @click="goToPage"
+      tabindex="0"
+      onmousedown="return false"
+      src="/img/logo.png"
+      class="logo inline-block cursor-pointer"
+      alt="logo"
+    />
   </nav>
 </template>
 
 <script>
-export default {};
+import { mapState } from 'vuex'
+import { storeState, routerName } from '@/constant'
+export default {
+  computed: mapState([storeState.isLogin]),
+  methods: {
+    goToPage() {
+      const name = this.isLogin ? routerName.collections : routerName.home
+      this.$router.push({ name }).catch(() => {})
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>
@@ -16,7 +31,7 @@ export default {};
   text-align: center;
 
   .logo {
-    width: 4rem;
+    width: 4.25rem;
   }
 }
 </style>

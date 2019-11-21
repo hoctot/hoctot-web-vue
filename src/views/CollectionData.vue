@@ -31,7 +31,7 @@
       </div>
 
       <div>
-        <NotFoundCollectios v-if="!items.length" />
+        <NotFoundCollections v-if="!items.length" />
       </div>
     </div>
   </div>

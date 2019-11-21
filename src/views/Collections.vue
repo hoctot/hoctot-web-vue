@@ -40,31 +40,16 @@
                   <li>
                     <a @click.stop="openMenu" href="javascript:void(0)">
                       <img
-                        alt="menu"
-                        width="30"
-                        class="bg-white hover:bg-gray-200 p-1"
+                        class="bg-white hover:bg-gray-200 p-1 w-8"
                         src="https://image.flaticon.com/icons/svg/61/61499.svg"
                       />
                     </a>
                   </li>
-                  <!-- <li>
-                    <a href="javascript:void(0)">
-                      <img
-                        title="Thêm câu hỏi"
-                        alt="add"
-                        width="30"
-                        class="bg-white hover:bg-green-200 p-1"
-                        src="https://image.flaticon.com/icons/svg/748/748113.svg"
-                      />
-                    </a>
-                  </li>-->
                   <li>
                     <a @click.stop="editCollections(item.id)" href="javascript:void(0)">
                       <img
-                        alt="edit"
                         title="Chỉnh sửa"
-                        width="30"
-                        class="bg-white hover:bg-blue-200 p-1 ml-auto"
+                        class="bg-white hover:bg-blue-200 p-1 ml-auto w-8"
                         src="https://image.flaticon.com/icons/svg/1159/1159633.svg"
                       />
                     </a>
@@ -75,10 +60,8 @@
                       href="javascript:void(0)"
                     >
                       <img
-                        alt="delete"
                         title="Xoá"
-                        width="30"
-                        class="bg-white hover:bg-red-200 p-1 ml-auto"
+                        class="bg-white hover:bg-red-200 p-1 ml-auto w-8"
                         src="https://image.flaticon.com/icons/svg/61/61848.svg"
                       />
                     </a>
@@ -88,11 +71,7 @@
             </div>
             <div class="px-6 py-4">
               <div class="font-bold text-lg mb-2 text-blue-500" v-text="item.title"></div>
-              <p
-                class="text-gray-700 text-xs block-with-text"
-                :title="item.desc"
-                v-text="item.desc"
-              ></p>
+              <p class="text-gray-700 text-xs block-with-text" v-text="item.desc"></p>
             </div>
           </router-link>
         </div>
@@ -103,7 +82,7 @@
     <div>
       <Promised :promise="itemsPromise" v-slot:combined="{ isPending }">
         <div>
-          <NotFoundCollectios v-if="!isPending && !items.length" />
+          <NotFoundCollections v-if="!isPending && !items.length" />
           <div v-if="isPending" class="text-center mt-5">Đang tải...</div>
         </div>
       </Promised>

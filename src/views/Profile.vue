@@ -3,11 +3,15 @@
     <div class="container mx-auto mt-5">
       <div class="text-center">
         <h2>Thông tin tài khoản</h2>
-        <br>
+        <br />
         <div>
-          <img class="mx-auto rounded-full rounded" width="150" :src="user.photoURL" />
+          <img
+            class="mx-auto rounded-full rounded"
+            width="150"
+            :src="user.photoURL?user.photoURL: '/public/img/undraw/avatar.png'"
+          />
         </div>
-        <br>
+        <br />
         <p>{{user.displayName}}</p>
         <p>{{user.email}}</p>
       </div>
