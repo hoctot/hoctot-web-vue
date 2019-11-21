@@ -229,7 +229,7 @@ export default {
             },
             { merge: true },
           )
-          .then(data => this.$router.push(routerName.collections))
+          .then(data => this.$router.push({ name: routerName.collections }))
           .finally(() => {
             this.$store.commit(storeMutations.SET_LOADING, false)
           })
@@ -245,7 +245,7 @@ export default {
             this.title
           }`,
         })
-        .then(data => this.$router.push(routerName.collections))
+        .then(data => this.$router.push({ name: routerName.collections }))
         .finally(() => {
           this.$store.commit(storeMutations.SET_LOADING, false)
         })

@@ -102,7 +102,7 @@ export default {
     exit() {
       const isExit = confirm('Bạn có muốn thoát khỏi thi đấu?')
       if (isExit) {
-        this.$router.push(routerName.home)
+        this.$router.push({ name: routerName.home })
       }
     },
   },
