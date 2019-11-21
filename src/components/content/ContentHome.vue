@@ -35,7 +35,7 @@
 
     <div>
       <div>
-        <img class="mx-auto bg-white" src="/img/undraw/learn.png" width="50%" />
+        <img class="mx-auto bg-white" src="/img/undraw/learn.png" width="300" />
       </div>
     </div>
   </div>

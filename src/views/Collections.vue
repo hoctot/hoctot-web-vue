@@ -70,7 +70,7 @@
                     </a>
                   </li>
                   <li>
-                    <a @click.stop="deleteCollection(item.id)" href="javascript:void(0)">
+                    <a @click.stop="deleteCollection(item.id, item.title)" href="javascript:void(0)">
                       <img
                         alt="delete"
                         title="Xoá"
@@ -101,7 +101,7 @@
       <Promised :promise="itemsPromise" v-slot:combined="{ isPending }">
         <div>
           <NotFoundCollectios v-if="!isPending && !items.length" />
-          <div v-if="isPending" class="text-center">Đang tải...</div>
+          <div v-if="isPending" class="text-center mt-5">Đang tải...</div>
         </div>
       </Promised>
     </div>
@@ -121,8 +121,8 @@ export default {
   },
 
   methods: {
-    deleteCollection(id) {
-      const isDelete = confirm('Bạn có muốn xoá bộ câu hỏi?')
+    deleteCollection(id, title) {
+      const isDelete = confirm(`Bạn có muốn xoá bộ câu hỏi : ${title}?`)
       if (isDelete) {
         this.$store.commit(storeMutations.SET_LOADING, true)
         db.collection('collections')
