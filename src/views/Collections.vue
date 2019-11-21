@@ -8,7 +8,7 @@
         class="w-full sm:w-6/12 md:w-4/12 xl:w-3/12 p-3"
         title="Bấm để tạo bộ câu hỏi mới"
       >
-        <router-link to="collection-editor">
+        <router-link :to="{name: routerName.collectionEditor}">
           <div
             class="mx-auto max-w-sm rounded overflow-hidden shadow-md hover:shadow-lg collections-item"
           >
@@ -32,7 +32,7 @@
         <div
           class="mx-auto max-w-sm rounded overflow-hidden shadow-md hover:shadow-lg collections-item"
         >
-          <router-link :to="{name: 'collection-data', params: { id: index }}">
+          <router-link :to="{name: routerName.collectionData, params: { id: index }}">
             <div class="relative menu-hover">
               <img class="w-full h-40 object-cover bg-gray-300" :src="item.imgUrl" />
               <div class="absolute top-0 right-0 flex">
@@ -57,7 +57,7 @@
                         src="https://image.flaticon.com/icons/svg/748/748113.svg"
                       />
                     </a>
-                  </li> -->
+                  </li>-->
                   <li>
                     <a @click.stop="editCollections(item.id)" href="javascript:void(0)">
                       <img
@@ -70,7 +70,10 @@
                     </a>
                   </li>
                   <li>
-                    <a @click.stop="deleteCollection(item.id, item.title)" href="javascript:void(0)">
+                    <a
+                      @click.stop="deleteCollection(item.id, item.title)"
+                      href="javascript:void(0)"
+                    >
                       <img
                         alt="delete"
                         title="Xoá"
@@ -110,7 +113,8 @@
 
 <script>
 import { db } from '@/firebaseConfig'
-import { storeMutations } from '@/constant'
+import { storeMutations, storeState, dataRef, routerName } from '@/constant'
+import { mapState } from 'vuex'
 
 export default {
   data() {
@@ -119,13 +123,20 @@ export default {
       itemsPromise: null,
     }
   },
-
+  computed: {
+    ...mapState([storeState.user]),
+    routerName() {
+      return routerName
+    },
+  },
   methods: {
     deleteCollection(id, title) {
       const isDelete = confirm(`Bạn có muốn xoá bộ câu hỏi : ${title}?`)
       if (isDelete) {
         this.$store.commit(storeMutations.SET_LOADING, true)
-        db.collection('collections')
+        db.collection(dataRef.collections.root)
+          .doc(this.user.uid)
+          .collection(dataRef.collections.data)
           .doc(id)
           .delete()
           .finally(() => {
@@ -135,19 +146,31 @@ export default {
     },
     openMenu(event) {},
     editCollections(id) {
-      this.$router.push({ name: 'collection-editor-id', params: { id } })
+      this.$router.push({ name: routerName.collectionEditorId, params: { id } })
+    },
+    bindCollection() {
+      this.itemsPromise = this.$bind(
+        'items',
+        db
+          .collection(dataRef.collections.root)
+          .doc(this.user.uid)
+          .collection(dataRef.collections.data),
+      )
+    },
+  },
+  watch: {
+    user(newData, oldData) {
+      if (newData.uid) {
+        this.bindCollection()
+      }
     },
   },
   mounted() {
     window.scrollTo(0, 0)
-    this.itemsPromise = this.$bind('items', db.collection('collections'))
-      .then(doc => {
-        console.log(doc)
-      })
-      .catch(error => {
-        console.log('error in loading: ', error)
-      })
-    console.log(this)
+    console.log('Mounted Collections')
+    if (this.user.uid) {
+      this.bindCollection()
+    }
   },
 }
 </script>

@@ -31,7 +31,6 @@
             />
             <span>
               610s
-
               <img
                 width="22"
                 class="inline-block"
@@ -39,7 +38,6 @@
                 title="Câu hỏi đúng"
               />
               Đúng 1/10
-
               <img
                 width="22"
                 class="inline-block"
@@ -84,6 +82,7 @@
 </template>
 
 <script>
+import { routerName } from '../constant'
 export default {
   data() {
     return {
@@ -103,14 +102,12 @@ export default {
     exit() {
       const isExit = confirm('Bạn có muốn thoát khỏi thi đấu?')
       if (isExit) {
-        this.$router.push('home')
-      } else {
-        console.log(0)
+        this.$router.push(routerName.home)
       }
     },
   },
   mounted() {
-    // this.$refs.answerInput.focus()
+    window.scrollTo(0, 0)
   },
 }
 </script>

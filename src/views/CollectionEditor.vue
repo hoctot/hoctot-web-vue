@@ -80,8 +80,15 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { db } from '@/firebaseConfig'
-import { storeMutations } from '@/constant'
+import {
+  storeMutations,
+  storeState,
+  dataRef,
+  dataSample,
+  routerName,
+} from '@/constant'
 import sample from 'lodash/sample'
 export default {
   data() {
@@ -89,6 +96,7 @@ export default {
       title: '',
       desc: '',
       imgUrl: '',
+      idTimeoutRec: null,
       // Other
       isEditMode: false,
       docId: '',
@@ -103,7 +111,9 @@ export default {
     this.docId = this.$route.params.id
     this.isEditMode = Boolean(this.docId)
     if (this.isEditMode) {
-      db.collection('collections')
+      db.collection(`collections`)
+        .doc(this.user.uid)
+        .collection('data')
         .doc(this.docId)
         .get()
         .then(doc => {
@@ -133,7 +143,6 @@ export default {
 
     if (this.isSupportSpeech) {
       recognition.lang = 'vi-VN'
-      // recognition.start()
       recognition.onspeechend = () => {
         this.isSpeak = false
         recognition.stop()
@@ -142,10 +151,15 @@ export default {
       recognition.onresult = event => {
         try {
           const last = event.results.length - 1
-          console.log('TCL: mounted -> event.results', event.results)
           const result = event.results[last][0].transcript
-          this[this.speakType] = result
-          console.log('TCL: mounted -> result', result, this.speakType)
+          this[this.speakType] += result + ' '
+          console.log('TCL: mounted -> event.results', event.results)
+          console.log(
+            'TCL: mounted -> result',
+            result,
+            'speakType: ',
+            this.speakType,
+          )
           this.speakType = ''
         } catch (error) {
           console.error(error)
@@ -165,83 +179,73 @@ export default {
     this.recognitionInput.stop()
   },
   methods: {
-    startRec(type) {
+    stopRecInput() {
       this.recognitionInput.stop()
       this.isSpeak = false
       this.speakType = ''
-      console.log('Stop')
+    },
+    startRec(type) {
+      if (this.isSpeak && type === this.speakType) {
+        clearTimeout(this.idTimeoutRec)
+        this.stopRecInput()
+        return
+      }
+      this.stopRecInput()
 
-      setTimeout(() => {
-        console.log('Start')
-        this.isSpeak = true
-        this.speakType = type
-        this.recognitionInput.start()
-        const typeEditor = type + 'Editor'
-        this.$refs[typeEditor].focus()
-      }, 300)
+      this.idTimeoutRec = setTimeout(() => {
+        try {
+          this.isSpeak = true
+          this.speakType = type
+          this.recognitionInput.start()
+          const typeEditor = type + 'Editor'
+          this.$refs[typeEditor].focus()
+        } catch (error) {
+          console.error(error)
+        }
+      }, 250)
+    },
+    resetData() {
+      this.title = ''
+      this.desc = ''
+      this.imgUrl = ''
     },
     onSubmit(e) {
       console.log('Submit form')
       this.$store.commit(storeMutations.SET_LOADING, true)
 
+      const docRef = db
+        .collection(dataRef.collections.root)
+        .doc(this.user.uid)
+        .collection(dataRef.collections.data)
+
       if (this.isEditMode) {
-        db.collection('collections')
+        docRef
           .doc(this.docId)
           .set(
             {
-              title: this.title,
-              desc: this.desc,
+              title: this.title.trim().normalize(),
+              desc: this.desc.trim().normalize(),
               imgUrl: this.imgUrl + this.title,
             },
             { merge: true },
           )
-          .then(data => {
-            console.log('xong', data)
-            this.title = ''
-            this.desc = ''
-            this.imgUrl = ''
-            this.$router.push('/collections')
-          })
-          .catch(e => {
-            console.error(e)
-          })
+          .then(data => this.$router.push(routerName.collections))
           .finally(() => {
             this.$store.commit(storeMutations.SET_LOADING, false)
           })
         return
       }
+      const color = sample(dataSample.listColor)
 
-      const color = sample([
-        '3f51b5',
-        '673ab7',
-        'e91e63',
-        'ffc107',
-        '03a9f4',
-        '00bcd4',
-        '009688',
-        '795548',
-        '607d8b',
-        'f44336',
-        'ffc107',
-      ])
-      db.collection('collections')
+      docRef
         .add({
-          title: this.title,
-          desc: this.desc,
+          title: this.title.trim().normalize(),
+          desc: this.desc.trim().normalize(),
           imgUrl: `https://dummyimage.com/1024x680/${color}/fff.jpg&text=${
             this.title
           }`,
         })
-        .then(data => {
-          console.log('xong', data)
-          this.title = ''
-          this.desc = ''
-          this.imgUrl = ''
-          this.$router.push('/collections')
-        })
-        .catch(e => {
-          console.error(e)
-        })
+        .then(data => this.$router.push(routerName.collections))
         .finally(() => {
           this.$store.commit(storeMutations.SET_LOADING, false)
         })
@@ -251,6 +255,7 @@ export default {
     isEdit() {
       return Boolean(this.title && this.desc)
     },
+    ...mapState([storeState.user]),
   },
 }
 </script>
@@ -278,7 +283,6 @@ export default {
 }
 
 .editor-mic.isSpeak {
-  /* pointer-events: none; */
   border-radius: 0%;
   border-bottom: 0.15rem dashed #38d39f;
 }

@@ -10,22 +10,23 @@
       </div>
       <div v-if="items.length">
         <div v-for="item in items" :key="item.id">
-          <router-link to="/editor">
-            <div class="w-full rounded overflow-hidden shadow hover:shadow-lg mb-5">
-              <div class="px-6 py-4">
-                <div class="font-bold text-base mb-2">The Coldest Sunset</div>
-                <p class="text-gray-700 text-sm block-with-text">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam at repudiandae sequi suscipit sint asperiores cum ea totam eligendi perferendis soluta, fuga reprehenderit veritatis laudantium id obcaecati fugiat dolores nobis!
-                </p>
-              </div>
-              <div class="px-6 py-4">
-                <span
-                  class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
-                >photography</span>
-              </div>
+          <div
+            @click="gotoEditor"
+            class="cursor-pointer w-full rounded overflow-hidden shadow hover:shadow-lg mb-5"
+          >
+            <div class="px-6 py-4">
+              <div class="font-bold text-base mb-2">The Coldest Sunset</div>
+              <p class="text-gray-700 text-sm block-with-text">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam at repudiandae sequi suscipit sint asperiores cum ea totam eligendi perferendis soluta, fuga reprehenderit veritatis laudantium id obcaecati fugiat dolores nobis!
+              </p>
             </div>
-          </router-link>
+            <div class="px-6 py-4">
+              <span
+                class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
+              >photography</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -37,6 +38,7 @@
 </template>
 
 <script>
+import { routerName } from '../constant'
 // import { db } from '@/firebaseConfig'
 
 export default {
@@ -49,10 +51,13 @@ export default {
   },
   methods: {
     createQuestion() {
-      this.$router.push('/editor')
+      this.$router.push({ name: routerName.editor })
     },
     playQuiz() {
-      this.$router.push('/play')
+      this.$router.push({ name: routerName.play })
+    },
+    gotoEditor() {
+      this.$router.push({ name: routerName.editor })
     },
   },
   mounted() {

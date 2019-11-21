@@ -1,4 +1,4 @@
-# cunghoctot
+# HocTot Online Web - Comming soon Q1 2020
 
 [![Build Status](https://travis-ci.com/hoctot/hoctot-web.svg?branch=master)](https://travis-ci.com/hoctot/hoctot-web)
 

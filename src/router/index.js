@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home.vue'
+import { routerName } from '@/constant'
 
 // import { auth } from '@/firebaseConfig'
 // import store from '@/store'
@@ -10,12 +11,12 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'home',
+    name: routerName.home,
     component: Home,
   },
   {
     path: '/about',
-    name: 'about',
+    name: routerName.about,
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -24,37 +25,37 @@ const routes = [
   },
   {
     path: '/profile',
-    name: 'profile',
+    name: routerName.profile,
     component: () => import('@/views/Profile.vue'),
   },
   {
     path: '/play',
-    name: 'play',
+    name: routerName.play,
     component: () => import('@/views/Play.vue'),
   },
   {
     path: '/editor',
-    name: 'editor',
+    name: routerName.editor,
     component: () => import('@/views/Editor.vue'),
   },
   {
     path: '/collections',
-    name: 'collections',
+    name: routerName.collections,
     component: () => import('@/views/Collections.vue'),
   },
   {
     path: '/collection-data/:id',
-    name: 'collection-data',
+    name: routerName.collectionData,
     component: () => import('@/views/CollectionData.vue'),
   },
   {
     path: '/collection-editor',
-    name: 'collection-editor',
+    name: routerName.collectionEditor,
     component: () => import('@/views/CollectionEditor.vue'),
   },
   {
     path: '/collection-editor/:id',
-    name: 'collection-editor-id',
+    name: routerName.collectionEditorId,
     component: () => import('@/views/CollectionEditor.vue'),
   },
   {
