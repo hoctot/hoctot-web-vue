@@ -136,25 +136,24 @@ export default {
       // recognition.start()
       recognition.onspeechend = () => {
         this.isSpeak = false
-        this.speakType = ''
-
         recognition.stop()
       }
 
       recognition.onresult = event => {
         try {
           const last = event.results.length - 1
-          console.log("TCL: mounted -> event.results", event.results)
+          console.log('TCL: mounted -> event.results', event.results)
           const result = event.results[last][0].transcript
           this[this.speakType] = result
-          console.log("TCL: mounted -> result", result, this.speakType)
+          console.log('TCL: mounted -> result', result, this.speakType)
+          this.speakType = ''
         } catch (error) {
           console.error(error)
         }
       }
 
-      recognition.onerror = (e) => {
-        console.error('Loi me no roi', e)
+      recognition.onerror = e => {
+        console.error(e)
         this.isSpeak = false
         recognition.stop()
       }
