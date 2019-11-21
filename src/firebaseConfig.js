@@ -1,13 +1,13 @@
 // Firebase App (the core Firebase SDK) is always required and must be listed first
 import * as firebase from 'firebase/app'
-import 'firebase/analytics'
+// import 'firebase/analytics'
 import 'firebase/auth'
 import 'firebase/firestore'
-import 'firebase/storage'
+// import 'firebase/storage'
 import 'firebase/functions'
-import 'firebase/performance'
-import 'firebase/remote-config'
-import 'firebase/messaging' // safari not support
+// import 'firebase/performance'
+// import 'firebase/remote-config'
+// import 'firebase/messaging' // safari not support
 
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_FIREBASE_APIKEY,
@@ -21,19 +21,20 @@ const firebaseConfig = {
 }
 
 firebase.initializeApp(firebaseConfig)
-firebase.analytics()
 firebase.auth().languageCode = 'vi'
+// firebase.analytics()
+// const firebaseStorage = firebase.storage()
 
 const auth = firebase.auth()
 const db = firebase.firestore()
 const googleProvider = new firebase.auth.GoogleAuthProvider()
-const firebaseStorage = firebase.storage()
-let messaging
-if (firebase.messaging.isSupported()) {
-  messaging = firebase.messaging()
-}
 
-export { auth, db, googleProvider, firebaseStorage, messaging }
+// let messaging
+// if (firebase.messaging.isSupported()) {
+//   messaging = firebase.messaging()
+// }
+
+export { auth, db, googleProvider }
 
 if (process.env.NODE_ENV !== 'production') {
   window.fb = firebase
