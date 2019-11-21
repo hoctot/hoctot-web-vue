@@ -39,7 +39,7 @@
               <div class="absolute top-0 right-0 flex">
                 <ul>
                   <li>
-                    <a href="javascript:void(0)">
+                    <a @click.stop="openMenu" href="javascript:void(0)">
                       <img
                         alt="menu"
                         width="30"
@@ -60,7 +60,7 @@
                     </a>
                   </li>
                   <li>
-                    <a @click="deleteCollection(item.id, $event)" href="javascript:void(0)">
+                    <a @click.stop="deleteCollection(item.id)" href="javascript:void(0)">
                       <img
                         alt="edit"
                         title="Chỉnh sửa"
@@ -71,7 +71,7 @@
                     </a>
                   </li>
                   <li>
-                    <a @click="deleteCollection(item.id, $event)" href="javascript:void(0)">
+                    <a @click.stop="deleteCollection(item.id)" href="javascript:void(0)">
                       <img
                         alt="delete"
                         title="Xoá"
@@ -122,11 +122,10 @@ export default {
   },
 
   methods: {
-    deleteCollection(id, event) {
-      event.stopPropagation()
-      this.$store.commit(storeMutations.SET_LOADING, true)
+    deleteCollection(id) {
       const isDelete = confirm('Bạn có muốn xoá bộ câu hỏi?')
       if (isDelete) {
+        this.$store.commit(storeMutations.SET_LOADING, true)
         db.collection('collections')
           .doc(id)
           .delete()
@@ -135,6 +134,7 @@ export default {
           })
       }
     },
+    openMenu(event) {},
     editCollections() {},
   },
   // firestore: {

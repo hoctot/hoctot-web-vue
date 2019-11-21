@@ -19,7 +19,7 @@
         @extend .active;
       }
     }
-    &:hover {
+    &:hover, &:active {
       li {
         opacity: 1;
         pointer-events: initial;
