@@ -37,6 +37,8 @@
 </template>
 
 <script>
+// import { db } from '@/firebaseConfig'
+
 export default {
   data() {
     return {

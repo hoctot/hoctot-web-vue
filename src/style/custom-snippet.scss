@@ -1,31 +1,39 @@
 /* mixin for multiline */
 // http://hackingui.com/front-end/a-pure-css-solution-for-multiline-text-truncation/
-@mixin multiLineEllipsis($lineHeight: 1.2em, $lineCount: 1, $bgColor: white){
-    overflow: hidden;
-    position: relative;
-    line-height: $lineHeight;
-    max-height: $lineHeight * $lineCount; 
-    text-align: start;
-    margin-right: -1em;
-    padding-right: 1em;
-    &:before {
-      content: '᠁';
-      position: absolute;
-      right: 0;
-      bottom: 0;
-    }
-    &:after {
-      content: '';
-      position: absolute;
-      right: 0;
-      width: 1em;
-      height: 1em;
-      margin-top: 0.2em;
-      background: $bgColor;
-    }
-  }
-  
-  .block-with-text {
-    @include multiLineEllipsis($lineHeight: 1.2rem, $lineCount: 2, $bgColor: white);  
-  }
+@mixin multiLineEllipsis($lineHeight: 1.2em, $lineCount: 1, $bgColor: white) {
+  overflow: hidden;
+  position: relative;
+  line-height: $lineHeight;
+  max-height: $lineHeight * $lineCount;
+  margin-right: -1em;
+  padding-right: 1.5em;
 
+  &:before {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+  &:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    width: 1em;
+    height: 1em;
+    margin-top: 0.2em;
+    background: $bgColor;
+  }
+}
+
+.block-with-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  @include multiLineEllipsis(
+    $lineHeight: 1.2rem,
+    $lineCount: 2,
+    $bgColor: white
+  );
+}

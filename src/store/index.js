@@ -8,9 +8,14 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     [storeState.isLogin]: null,
+    [storeState.isLoading]: false,
     [storeState.user]: {},
   },
   mutations: {
+    [storeMutations.SET_LOADING](state, payload) {
+      state[storeState.isLoading] = payload
+      console.log('SET_LOADING', payload)
+    },
     [storeMutations.SET_LOGIN](state, payload) {
       state[storeState.isLogin] = payload
       console.log('SET_LOGIN', payload)

@@ -1,7 +1,7 @@
 <template>
   <div class="container px-8 mt-5 mx-auto">
     <!-- Two columns -->
-    <form id="form"  @submit.prevent="onSubmit">
+    <form id="form" @submit.prevent="onSubmit">
       <div class="flex flex-wrap">
         <div class="w-full sm:w-3/5">
           <div>
@@ -13,7 +13,7 @@
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               type="text"
               ref="titleEditor"
-              minlength="3"
+              minlength="1"
               maxlength="250"
               required
               name="title"
@@ -24,7 +24,7 @@
               @click="startRec('title')"
               class="editor-mic"
             >
-              <img width="24" src="https://image.flaticon.com/icons/svg/107/107737.svg" />
+              <img width="22" src="https://image.flaticon.com/icons/svg/107/107737.svg" />
             </div>
           </div>
 
@@ -34,7 +34,7 @@
           <div class="editor-wrap">
             <textarea
               v-model="desc"
-              minlength="3"
+              minlength="1"
               maxlength="250"
               required
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -48,11 +48,11 @@
               @click="startRec('desc')"
               class="editor-mic"
             >
-              <img width="24" src="https://image.flaticon.com/icons/svg/107/107737.svg" />
+              <img width="22" src="https://image.flaticon.com/icons/svg/107/107737.svg" />
             </div>
           </div>
 
-          <div>
+          <!-- <div>
             <p class="text-left mb-4">URL ảnh (Tuỳ chọn)</p>
           </div>
           <div class="editor-wrap">
@@ -62,7 +62,7 @@
               type="url"
               name="url"
             />
-          </div>
+          </div>-->
 
           <div class="text-center">
             <button
@@ -90,6 +90,9 @@
 </template>
 
 <script>
+import { db } from '@/firebaseConfig'
+import { storeMutations } from '@/constant'
+import sample from 'lodash/sample'
 export default {
   data() {
     return {
@@ -120,7 +123,41 @@ export default {
       }, 300)
     },
     onSubmit(e) {
-      console.log('Submit form', e)
+      console.log('Submit form', this.$buefy)
+      this.$store.commit(storeMutations.SET_LOADING, true)
+      const color = sample([
+        '3f51b5',
+        '673ab7',
+        'e91e63',
+        'ffc107',
+        '03a9f4',
+        '00bcd4',
+        '009688',
+        '795548',
+        '607d8b',
+        'f44336',
+        'ffc107',
+      ])
+      db.collection('collections')
+        .add({
+          title: this.title,
+          desc: this.desc,
+          imgUrl: `https://dummyimage.com/1024x680/${color}/fff.jpg&text=${
+            this.title
+          }`,
+        })
+        .then(data => {
+          console.log('xong', data)
+          this.title = ''
+          this.desc = ''
+          this.imgUrl = ''
+        })
+        .catch(e => {
+          console.error(e)
+        })
+        .finally(() => {
+          this.$store.commit(storeMutations.SET_LOADING, false)
+        })
     },
   },
   computed: {
@@ -185,16 +222,22 @@ export default {
   position: absolute;
   right: 0.5rem;
   padding-bottom: 0.25rem;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 0;
   cursor: pointer;
+  background: #fff;
+  border-radius: 50%;
+  border-bottom: 0.15rem dashed #fff;
+  transition: all ease 0.25s;
+  margin-top: 0.25rem;
+  opacity: 0.75;
 }
 .editor-mic:active {
-  transform: translateY(-50%) scale(0.75);
+  transform: scale(0.75);
 }
 
 .editor-mic.isSpeak {
   /* pointer-events: none; */
-  border-bottom: 0.2rem dashed #38d39f;
+  border-radius: 0%;
+  border-bottom: 0.15rem dashed #38d39f;
 }
 </style>

@@ -1,6 +1,7 @@
 export const storeState = {
   isLogin: 'isLogin',
   user: 'user',
+  isLoading: 'isLoading',
 }
 
 export const storeActions = {
@@ -12,4 +13,5 @@ export const storeActions = {
 export const storeMutations = {
   SET_LOGIN: 'SET_LOGIN',
   SET_USER: 'SET_USER',
+  SET_LOADING: 'SET_LOADING',
 }

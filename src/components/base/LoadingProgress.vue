@@ -1,6 +1,12 @@
 <template>
-  <div class="cssload-loader">
-    <span></span>
+  <div>
+    <div class="cssload-loader">
+      <span></span>
+    </div>
+    <br>
+    <div class="mt-1">
+      <img class="mx-auto" width="48" src="https://image.flaticon.com/icons/svg/1161/1161388.svg" />
+    </div>
   </div>
 </template>
 
@@ -29,11 +35,11 @@ export default {}
   border-radius: 3px;
   padding: 1px;
   zoom: 1;
-  animation: cssload-loader-border 1.0s ease-in infinite;
-  -o-animation: cssload-loader-border 1.0s ease-in infinite;
-  -ms-animation: cssload-loader-border 1.0s ease-in infinite;
-  -webkit-animation: cssload-loader-border 1.0s ease-in infinite;
-  -moz-animation: cssload-loader-border 1.0s ease-in infinite;
+  animation: cssload-loader-border 1s ease-in infinite;
+  -o-animation: cssload-loader-border 1s ease-in infinite;
+  -ms-animation: cssload-loader-border 1s ease-in infinite;
+  -webkit-animation: cssload-loader-border 1s ease-in infinite;
+  -moz-animation: cssload-loader-border 1s ease-in infinite;
 }
 .cssload-loader > span {
   display: block;
@@ -41,11 +47,11 @@ export default {}
   height: 5px;
   background: rgb(204, 204, 204);
   position: relative;
-  animation: cssload-loader-slide 1.0s ease-in infinite;
-  -o-animation: cssload-loader-slide 1.0s ease-in infinite;
-  -ms-animation: cssload-loader-slide 1.0s ease-in infinite;
-  -webkit-animation: cssload-loader-slide 1.0s ease-in infinite;
-  -moz-animation: cssload-loader-slide 1.0s ease-in infinite;
+  animation: cssload-loader-slide 1s ease-in infinite;
+  -o-animation: cssload-loader-slide 1s ease-in infinite;
+  -ms-animation: cssload-loader-slide 1s ease-in infinite;
+  -webkit-animation: cssload-loader-slide 1s ease-in infinite;
+  -moz-animation: cssload-loader-slide 1s ease-in infinite;
 }
 .cssload-loader:before,
 .cssload-loader:after {
