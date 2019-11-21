@@ -3,15 +3,13 @@ import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
 import store from './store'
+import VueTyperPlugin from 'vue-typer'
+import { firestorePlugin } from 'vuefire'
+import { Promised } from 'vue-promised'
 import './baseComponent'
 
 import 'tailwindcss/dist/tailwind.min.css'
 import '@/style/index.scss'
-
-import VueTyperPlugin from 'vue-typer'
-import { firestorePlugin } from 'vuefire'
-import { Promised } from 'vue-promised'
-
 import '@/firebaseConfig'
 
 Vue.config.productionTip = false
