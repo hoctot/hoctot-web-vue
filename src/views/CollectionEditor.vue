@@ -144,6 +144,7 @@ export default {
       recognition.onresult = event => {
         try {
           const last = event.results.length - 1
+          console.log("TCL: mounted -> event.results", event.results)
           const result = event.results[last][0].transcript
           this[this.speakType] = result
         } catch (error) {
@@ -151,8 +152,8 @@ export default {
         }
       }
 
-      recognition.onerror = () => {
-        console.log('Loi me no roi')
+      recognition.onerror = (e) => {
+        console.error('Loi me no roi', e)
         this.isSpeak = false
         recognition.stop()
       }
