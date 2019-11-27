@@ -1,8 +1,8 @@
 <template>
-  <div class="container px-8 my-5 mx-auto">
+  <div class="container px-2 my-5 mx-auto">
     <!-- Two columns -->
     <div class="flex flex-wrap">
-      <div class="w-full sm:w-3/5">
+      <div class="w-full sm:w-8/12">
         <div>
           <p class="text-left">Câu hỏi</p>
         </div>
@@ -57,7 +57,7 @@
         </div>
       </div>
 
-      <div class="w-full sm:w-2/5">
+      <div class="w-full sm:w-4/12">
         <div class="mx-auto text-center">
           <button
             @click="createQuestion"

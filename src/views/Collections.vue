@@ -14,10 +14,10 @@
           >
             <img class="w-full h-40 object-contain" src="/img/undraw/collections.png" />
             <div class="px-6 py-4">
-              <div class="font-bold text-lg mb-2">Tạo bộ câu hỏi mới</div>
+              <div class="font-bold text-lg mb-2">Tạo bộ câu hỏi </div>
               <p
                 class="text-gray-700 text-xs"
-              >Tạo kho kiến thức cùng ôn tập, thi đấu trực tuyến miễn phí</p>
+              >Cùng ôn tập, thi đấu trực tuyến miễn phí</p>
             </div>
           </div>
         </router-link>
