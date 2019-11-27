@@ -261,29 +261,4 @@ export default {
 </script>
 
 <style scoped>
-.editor-wrap {
-  margin-bottom: 2rem;
-  position: relative;
-}
-.editor-mic {
-  position: absolute;
-  right: 0.5rem;
-  padding-bottom: 0.25rem;
-  top: 0;
-  cursor: pointer;
-  background: #fff;
-  border-radius: 50%;
-  border-bottom: 0.15rem dashed #fff;
-  transition: all ease 0.25s;
-  margin-top: 0.25rem;
-  opacity: 0.75;
-}
-.editor-mic:active {
-  transform: scale(0.75);
-}
-
-.editor-mic.isSpeak {
-  border-radius: 0%;
-  border-bottom: 0.15rem dashed #38d39f;
-}
 </style>

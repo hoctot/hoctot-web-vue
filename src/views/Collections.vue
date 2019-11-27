@@ -24,15 +24,13 @@
       </div>
 
       <!-- Collection Card -->
-      <div
-        class="w-full sm:w-6/12 md:w-4/12 xl:w-3/12 p-3"
-        v-for="(item, index) in items"
-        :key="item.id"
-      >
+      <div class="w-full sm:w-6/12 md:w-4/12 xl:w-3/12 p-3" v-for="(item) in items" :key="item.id">
         <div
           class="mx-auto max-w-sm rounded overflow-hidden shadow-md hover:shadow-lg collections-item"
         >
-          <router-link :to="{name: routerName.collectionData, params: { id: index }}">
+          <router-link
+            :to="{name: routerName.collectionData, params: { id: item.id }, query: { item: JSON.stringify(item) }}"
+          >
             <div class="relative menu-hover">
               <img class="w-full h-40 object-cover bg-gray-300" :src="item.imgUrl" />
               <div class="absolute top-0 right-0 flex">
@@ -83,7 +81,11 @@
       <Promised :promise="itemsPromise" v-slot:combined="{ isPending }">
         <div>
           <NotFoundCollections v-if="!isPending && !items.length" />
-          <div v-if="isPending" class="text-center mt-5">Đang tải...</div>
+          <div v-if="isPending" class="text-center mt-5">
+            <!-- <p>Đang tải...</p> -->
+            <!-- <br /> -->
+            <Loading></Loading>
+          </div>
         </div>
       </Promised>
     </div>
@@ -146,7 +148,6 @@ export default {
   },
   mounted() {
     window.scrollTo(0, 0)
-    console.log('Mounted Collections')
     if (this.user.uid) {
       this.bindCollection()
     }

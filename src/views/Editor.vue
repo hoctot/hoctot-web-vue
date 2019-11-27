@@ -8,6 +8,14 @@
         </div>
         <div class="editor-wrap">
           <div id="editor-question" class="editor-input"></div>
+
+          <!-- <div
+            @click="startRec('question')"
+            :class="{isSpeak: speakType === 'question'}"
+            class="editor-mic"
+          >
+            <img width="22" src="https://image.flaticon.com/icons/svg/107/107737.svg" />
+          </div> -->
         </div>
 
         <div>
@@ -15,6 +23,14 @@
         </div>
         <div class="editor-wrap">
           <div id="editor-answer" class="editor-input"></div>
+
+          <!-- <div
+            @click="startRec('answer')"
+            :class="{isSpeak: speakType === 'answer'}"
+            class="editor-mic"
+          >
+            <img width="22" src="https://image.flaticon.com/icons/svg/107/107737.svg" />
+          </div> -->
         </div>
 
         <div>
@@ -22,13 +38,21 @@
         </div>
         <div class="editor-wrap">
           <div id="editor-hint" class="editor-input"></div>
+
+          <!-- <div
+            @click="startRec('hint')"
+            :class="{isSpeak: speakType === 'hint'}"
+            class="editor-mic"
+          >
+            <img width="22" src="https://image.flaticon.com/icons/svg/107/107737.svg" />
+          </div> -->
         </div>
 
         <div>
           <div class="my-5">
             <span
               class="tag-title bg-gray-300 rounded-full px-3 py-2 text-sm font-semibold text-gray-700"
-            >#Lccnte temporecd!</span>
+            >#{{item.title}}</span>
           </div>
         </div>
       </div>
@@ -36,9 +60,11 @@
       <div class="w-full sm:w-2/5">
         <div class="mx-auto text-center">
           <button
+            @click="createQuestion"
             :class="[isEdit? ' ' : 'opacity-50 pointer-events-none shadow-none']"
             class="bg-green-500 shadow appearance-none border font-bold rounded py-4 px-8 text-white leading-tight focus:outline-none focus:shadow-outline"
-          >Tạo câu hỏi</button>
+            v-text="isEditMode ? 'Cập nhật' : 'Tạo câu hỏi'"
+          ></button>
 
           <img
             onmousedown="return false"
@@ -53,8 +79,11 @@
 </template>
 
 <script>
+import { db } from '@/firebaseConfig'
 import * as Quill from 'quill/dist/quill'
 import 'quill/dist/quill.snow.css'
+import { dataRef, storeState, storeMutations, dataSample } from '@/constant'
+import { mapState } from 'vuex'
 
 export default {
   data() {
@@ -69,9 +98,15 @@ export default {
       answerText: '',
       hintHTML: '',
       hintText: '',
+      //
+      isSupportSpeech: false,
+      speakType: '',
+      item: {},
+      isEditMode: false,
     }
   },
   computed: {
+    ...mapState([storeState.user]),
     isEdit() {
       const result = Boolean(
         this.questionText && this.answerText && this.hintText,
@@ -79,15 +114,78 @@ export default {
       return result
     },
   },
+  methods: {
+    startRec(type) {},
+    createQuestion() {
+      this.$store.commit(storeMutations.SET_LOADING, true)
+
+      const docRef = db
+        .collection(dataRef.questions.root)
+        .doc(this.user.uid)
+        .collection(dataRef.questions.data)
+
+      if (this.isEditMode) {
+        docRef
+          .doc(this.$route.query.questionId)
+          .set(
+            {
+              question: this.questionHTML,
+              answer: this.answerText,
+              hint: this.hintHTML,
+            },
+            { merge: true },
+          )
+          .then(() => {
+            this.resetFields()
+            this.$router.back()
+          })
+          .finally(() => {
+            this.$store.commit(storeMutations.SET_LOADING, false)
+          })
+      } else {
+        docRef
+          .add({
+            question: this.questionHTML,
+            answer: this.answerText,
+            hint: this.hintHTML,
+            collectionId: this.$route.query.collectionId,
+          })
+          .then(() => {
+            this.resetFields()
+            this.$router.back()
+          })
+          .finally(() => {
+            this.$store.commit(storeMutations.SET_LOADING, false)
+          })
+      }
+    },
+    resetFields() {
+      this.questionHTML = ''
+      this.questionText = ''
+      this.answerHTML = ''
+      this.answerText = ''
+      this.hintHTML = ''
+      this.hintText = ''
+
+      this.questionEditor.setText('')
+      this.answerEditor.setText('')
+      this.hintEditor.setText('')
+    },
+  },
+  beforeMount() {
+    this.isEditMode = Boolean(this.$route.query.isEditMode)
+    this.item = JSON.parse(this.$route.query.item) || {}
+  },
   mounted() {
+    console.log()
     window.scrollTo(0, 0)
 
     var toolbarOptions = [
       [
         { header: [1, 2, 3, 4, 5, 6, false] },
         { align: ['', 'center', 'right', 'justify'] },
-        'color',
-        'background',
+        { color: dataSample.listColorHex },
+        { background: dataSample.listColorHex },
         'bold',
         'italic',
         'underline',
@@ -140,6 +238,12 @@ export default {
     })
 
     this.questionEditor.focus()
+
+    if (this.isEditMode) {
+      this.questionEditor.clipboard.dangerouslyPasteHTML(0, this.item.question)
+      this.answerEditor.clipboard.dangerouslyPasteHTML(0, this.item.answer)
+      this.hintEditor.clipboard.dangerouslyPasteHTML(0, this.item.hint)
+    }
   },
 }
 </script>

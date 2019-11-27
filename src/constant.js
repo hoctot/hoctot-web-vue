@@ -33,6 +33,10 @@ export const dataRef = {
     root: 'collections',
     data: 'data',
   },
+  questions: {
+    root: 'questions',
+    data: 'data',
+  },
 }
 
 export const dataSample = {
@@ -48,5 +52,21 @@ export const dataSample = {
     '607d8b',
     'f44336',
     'ffc107',
+  ],
+  listColorHex: [
+    '#3f51b5',
+    '#673ab7',
+    '#e91e63',
+    '#ffc107',
+    '#03a9f4',
+    '#00bcd4',
+    '#009688',
+    '#4CAF50',
+    '#795548',
+    '#f44336',
+    '#FF5722',
+    '#607d8b',
+    '#000',
+    '#fff',
   ],
 }
