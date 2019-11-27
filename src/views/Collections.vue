@@ -2,29 +2,37 @@
   <div class="mt-2 mb-20">
     <SearchBarData />
     <!-- List collections -->
-    <div class="container mx-auto flex flex-wrap mt-2">
-      <div
-        v-if="items.length"
-        class="w-full sm:w-6/12 md:w-4/12 xl:w-3/12 p-3"
-        title="Bấm để tạo bộ câu hỏi mới"
-      >
+
+    <div class="text-center my-2" v-if="listCollection.length">
+      {{ listCollection.length }} bộ câu hỏi
+      <img
+        class="inline-block"
+        width="24"
+        src="https://image.flaticon.com/icons/svg/167/167756.svg"
+      />
+    </div>
+
+    <div class="container mx-auto flex flex-wrap mt-2" v-if="listCollection.length">
+      <div class="w-full sm:w-6/12 md:w-4/12 xl:w-3/12 p-3" title="Bấm để tạo bộ câu hỏi mới">
         <router-link :to="{name: routerName.collectionEditor}">
           <div
             class="mx-auto max-w-sm rounded overflow-hidden shadow-md hover:shadow-lg collections-item"
           >
             <img class="w-full h-40 object-contain" src="/img/undraw/collections.png" />
             <div class="px-6 py-4">
-              <div class="font-bold text-lg mb-2">Tạo bộ câu hỏi </div>
-              <p
-                class="text-gray-700 text-xs"
-              >Cùng ôn tập, thi đấu trực tuyến miễn phí</p>
+              <div class="font-bold text-lg mb-2">Tạo bộ câu hỏi</div>
+              <p class="text-gray-700 text-xs">Cùng ôn tập, thi đấu trực tuyến miễn phí</p>
             </div>
           </div>
         </router-link>
       </div>
 
       <!-- Collection Card -->
-      <div class="w-full sm:w-6/12 md:w-4/12 xl:w-3/12 p-3" v-for="(item) in items" :key="item.id">
+      <div
+        class="w-full sm:w-6/12 md:w-4/12 xl:w-3/12 p-3"
+        v-for="(item) in listCollection"
+        :key="item.id"
+      >
         <div
           class="mx-auto max-w-sm rounded overflow-hidden shadow-md hover:shadow-lg collections-item"
         >
@@ -78,34 +86,43 @@
     </div>
 
     <div>
-      <Promised :promise="itemsPromise" v-slot:combined="{ isPending }">
+      <Promised :promise="listCollectionPromise" v-slot:combined="{ isPending }">
         <div>
-          <NotFoundCollections v-if="!isPending && !items.length" />
+          <div class="text-center p-2" v-if="!isPending && !listCollection.length">
+            <BaseButton class="mb-8" @click.native="createCollection">Tạo bộ câu hỏi mới</BaseButton>
+            <NotFoundCollections />
+          </div>
           <div v-if="isPending" class="text-center mt-5">
-            <!-- <p>Đang tải...</p> -->
-            <!-- <br /> -->
             <Loading></Loading>
           </div>
         </div>
       </Promised>
     </div>
+
+    <!-- <div>{{ listCollection }}</div> -->
   </div>
 </template>
 
 <script>
 import { db } from '@/firebaseConfig'
-import { storeMutations, storeState, dataRef, routerName } from '@/constant'
+import {
+  storeMutations,
+  storeState,
+  dataRef,
+  routerName,
+  storeActions,
+} from '@/constant'
 import { mapState } from 'vuex'
 
 export default {
   data() {
     return {
-      items: [],
       itemsPromise: null,
+      listCollectionPromise: null,
     }
   },
   computed: {
-    ...mapState([storeState.user]),
+    ...mapState([storeState.user, storeState.listCollection]),
     routerName() {
       return routerName
     },
@@ -125,39 +142,28 @@ export default {
           })
       }
     },
-    openMenu(event) {},
     editCollections(id) {
       this.$router.push({ name: routerName.collectionEditorId, params: { id } })
     },
-    bindCollection() {
-      this.itemsPromise = this.$bind(
-        'items',
-        db
-          .collection(dataRef.collections.root)
-          .doc(this.user.uid)
-          .collection(dataRef.collections.data),
-      )
+    createCollection() {
+      this.$router.push({
+        name: routerName.collectionEditor,
+      })
     },
-  },
-  watch: {
-    user(newData, oldData) {
-      if (newData.uid) {
-        this.bindCollection()
-      }
-    },
+    openMenu(event) {},
   },
   mounted() {
     window.scrollTo(0, 0)
-    if (this.user.uid) {
-      this.bindCollection()
-    }
+    this.listCollectionPromise = this.$store.dispatch(
+      storeActions.bindListCollection,
+    )
   },
 }
 </script>
 
 <style scoped>
 .collections-item {
-  min-height: 17rem;
+  min-height: 17.5rem;
 }
 .collections-item-desc {
   overflow: hidden;

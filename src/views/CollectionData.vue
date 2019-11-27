@@ -4,14 +4,28 @@
 
     <div class="container mx-auto mt-5">
       <div class="flex flex-wrap justify-center mb-8">
-        <BaseButton @click.native="createQuestion" class="w-full sm:w-3/12 mb-2 mx-0">Tạo câu hỏi</BaseButton>
-        <BaseButton @click.native="playQuiz" class="w-full sm:w-3/12 mb-2">Thi đấu trực tuyến</BaseButton>
-        <BaseButton @click.native="playQuiz" class="w-full sm:w-3/12 mb-2">Ôn tập</BaseButton>
+        <BaseButton
+          @click.native="createQuestion"
+          class="w-full sm:w-3/12 mb-2 mx-0 text-lg"
+        >Tạo câu hỏi</BaseButton>
+        <BaseButton
+          @click.native="playQuiz"
+          class="w-full sm:w-3/12 mb-2 text-lg"
+        >Thi đấu trực tuyến</BaseButton>
+        <BaseButton @click.native="playQuiz" class="w-full sm:w-3/12 mb-2 text-lg">Ôn tập</BaseButton>
       </div>
-      <div v-if="items.length">
-        <div class="text-center">{{items.length}} câu hỏi</div>
-        <br>
-        <div v-for="item in items" :key="item.id">
+
+      <div v-if="listQuestion.length">
+        <div class="text-center">
+          {{listQuestion.length}} câu hỏi
+          <img
+            class="inline-block"
+            width="24"
+            src="https://image.flaticon.com/icons/svg/1660/1660216.svg"
+          />
+        </div>
+        <br />
+        <div v-for="item in listQuestion" :key="item.id">
           <div
             @click="editCollections(item)"
             class="relative menu-hover cursor-pointer w-full rounded overflow-hidden shadow hover:shadow-lg mb-5"
@@ -58,23 +72,29 @@
       </div>
 
       <div>
-        <Promised :promise="itemsPromise" v-slot:combined="{ isPending }">
+        <Promised :promise="listQuestionPromise" v-slot:combined="{ isPending }">
           <div>
-            <NotFoundCollections v-if="!isPending && !items.length" />
+            <NotFoundCollections v-if="!isPending && !listQuestion.length" />
             <div v-if="isPending" class="text-center mt-5">
-              <!-- <p>Đang tải...</p> -->
-              <!-- <br /> -->
               <Loading></Loading>
             </div>
           </div>
         </Promised>
       </div>
+
+      <!-- <div>{{ listQuestion }}</div> -->
     </div>
   </div>
 </template>
 
 <script>
-import { routerName, storeState, dataRef, storeMutations } from '@/constant'
+import {
+  routerName,
+  storeState,
+  dataRef,
+  storeMutations,
+  storeActions,
+} from '@/constant'
 import { mapState } from 'vuex'
 import { db } from '@/firebaseConfig'
 
@@ -84,12 +104,11 @@ export default {
       // items: new Array(10).fill({
       //   title: 'fake',
       // }),
-      items: [],
-      itemsPromise: null,
+      listQuestionPromise: null,
     }
   },
   computed: {
-    ...mapState([storeState.user]),
+    ...mapState([storeState.user, storeState.listQuestion]),
   },
   methods: {
     createQuestion() {
@@ -111,7 +130,10 @@ export default {
           isEditMode: 'true',
           collectionId: this.$route.params.id,
           questionId: item.id,
-          item: JSON.stringify(item),
+          item: JSON.stringify({
+            ...item,
+            title: JSON.parse(this.$route.query.item).title,
+          }),
         },
       })
     },
@@ -130,28 +152,12 @@ export default {
       }
     },
     openMenu(event) {},
-    bindCollection() {
-      this.itemsPromise = this.$bind(
-        'items',
-        db
-          .collection(dataRef.questions.root)
-          .doc(this.user.uid)
-          .collection(dataRef.questions.data),
-      )
-    },
-  },
-  watch: {
-    user(newData, oldData) {
-      if (newData.uid) {
-        this.bindCollection()
-      }
-    },
   },
   mounted() {
     window.scrollTo(0, 0)
-    if (this.user.uid) {
-      this.bindCollection()
-    }
+    this.listQuestionPromise = this.$store.dispatch(
+      storeActions.bindListQuestion,
+    )
   },
 }
 </script>

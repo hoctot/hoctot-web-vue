@@ -17,6 +17,7 @@
               maxlength="250"
               required
               name="title"
+              autocomplete="off"
             />
             <div
               v-if="isSupportSpeech"
@@ -42,6 +43,7 @@
               type="text"
               ref="descEditor"
               name="desc"
+              autocomplete="off"
             />
             <div
               v-if="isSupportSpeech"
@@ -58,7 +60,7 @@
               :class="[
               isEdit ? ' ' : 'opacity-50 pointer-events-none shadow-none',
             ]"
-              class="bg-green-500 shadow appearance-none border font-bold rounded py-4 px-8 text-white leading-tight focus:outline-none focus:shadow-outline"
+              class="bg-green-500 hover:bg-green-400 shadow appearance-none border font-bold rounded py-4 px-8 text-white leading-tight focus:outline-none focus:shadow-outline"
               v-text="isEditMode? 'Cập nhật': 'Tạo bộ câu hỏi'"
             ></button>
           </div>

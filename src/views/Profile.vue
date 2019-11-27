@@ -18,7 +18,7 @@
       <div class="text-center my-10">
         <button
           @click="signOut"
-          class="bg-orange-400 shadow hover:shadow-xl appearance-none border font-bold rounded py-2 px-8 text-white leading-tight focus:outline-none focus:shadow-outline"
+          class="bg-orange-500 hover:bg-orange-400 shadow hover:shadow-xl appearance-none border font-bold rounded py-2 px-8 text-white leading-tight focus:outline-none focus:shadow-outline"
         >Đăng xuất</button>
       </div>
     </div>

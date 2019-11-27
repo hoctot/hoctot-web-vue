@@ -62,7 +62,7 @@
           <button
             @click="createQuestion"
             :class="[isEdit? ' ' : 'opacity-50 pointer-events-none shadow-none']"
-            class="bg-green-500 shadow appearance-none border font-bold rounded py-4 px-8 text-white leading-tight focus:outline-none focus:shadow-outline"
+            class="bg-green-500 hover:bg-green-400 shadow appearance-none border font-bold rounded py-4 px-8 text-white leading-tight focus:outline-none focus:shadow-outline"
             v-text="isEditMode ? 'Cập nhật' : 'Tạo câu hỏi'"
           ></button>
 

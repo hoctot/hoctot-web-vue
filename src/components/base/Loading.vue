@@ -36,7 +36,7 @@
     rgb(88, 86, 214),
     rgb(255, 45, 85)
   );
-  animation: cssload-width 1s cubic-bezier(0.45, 0, 1, 1) infinite;
+  animation: cssload-width 0.5s cubic-bezier(0.45, 0, 1, 1) infinite;
 }
 .progress-shadow {
   height: 4em;

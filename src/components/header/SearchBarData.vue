@@ -12,7 +12,7 @@
       <div class="w-full sm:w-3/12 md:w-3/12 text-center">
         <router-link to="/profile">
           <button
-            class="hover:shadow-xl hover:bg-orange-500 hover:text-white shadow appearance-none border font-bold rounded py-3 px-8 bg-white text-green-500 leading-tight focus:outline-none focus:shadow-outline"
+            class="hover:shadow-xl hover:bg-orange-400 hover:text-white shadow appearance-none border font-bold rounded py-3 px-8 bg-orange-500 text-white leading-tight focus:outline-none focus:shadow-outline"
           >Tài khoản</button>
         </router-link>
       </div>

@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { auth, googleProvider } from '@/firebaseConfig'
-import { storeActions, storeMutations, storeState } from '@/constant'
+import { auth, googleProvider, db } from '@/firebaseConfig'
+import { storeActions, storeMutations, storeState, dataRef } from '@/constant'
+import { vuexfireMutations, firestoreAction } from 'vuexfire'
 import router from '@/router'
 Vue.use(Vuex)
 
@@ -10,8 +11,11 @@ const store = new Vuex.Store({
     [storeState.isLogin]: null,
     [storeState.isLoading]: false,
     [storeState.user]: {},
+    [storeState.listCollection]: [],
+    [storeState.listQuestion]: [],
   },
   mutations: {
+    ...vuexfireMutations,
     [storeMutations.SET_LOADING](state, payload) {
       state[storeState.isLoading] = payload
       console.log('SET_LOADING', payload)
@@ -48,6 +52,50 @@ const store = new Vuex.Store({
     [storeActions.login]() {
       auth.signInWithRedirect(googleProvider)
     },
+    // Firebase
+    [storeActions.bindListQuestion]: firestoreAction(({ bindFirestoreRef }) => {
+      // return the promise returned by `bindFirestoreRef`
+      return new Promise((resolve, reject) => {
+        const unsubscrible = auth.onAuthStateChanged(user => {
+          unsubscrible()
+          if (user && user.uid) {
+            const dataPromise = bindFirestoreRef(
+              storeState.listQuestion,
+              db
+                .collection(dataRef.questions.root)
+                .doc(user.uid)
+                .collection(dataRef.questions.data),
+            )
+            resolve(dataPromise)
+          } else {
+            reject(Error('bindListQuestion error'))
+          }
+        })
+      })
+    }),
+    [storeActions.bindListCollection]: firestoreAction(
+      ({ bindFirestoreRef }) => {
+        // return the promise returned by `bindFirestoreRef`
+        return new Promise((resolve, reject) => {
+          const unsubscrible = auth.onAuthStateChanged(user => {
+            unsubscrible()
+            if (user && user.uid) {
+              console.log(user.uid, dataRef.collections.root)
+              const dataPromise = bindFirestoreRef(
+                storeState.listCollection,
+                db
+                  .collection(dataRef.collections.root)
+                  .doc(user.uid)
+                  .collection(dataRef.collections.data),
+              )
+              resolve(dataPromise)
+            } else {
+              reject(Error('bindListCollection error'))
+            }
+          })
+        })
+      },
+    ),
   },
   modules: {},
 })

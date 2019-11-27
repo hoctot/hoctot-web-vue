@@ -39,11 +39,6 @@ const routes = [
     component: () => import('@/views/Editor.vue'),
   },
   {
-    path: '/editor/:id',
-    name: routerName.editor,
-    component: () => import('@/views/Editor.vue'),
-  },
-  {
     path: '/collections',
     name: routerName.collections,
     component: () => import('@/views/Collections.vue'),

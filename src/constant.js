@@ -2,12 +2,16 @@ export const storeState = {
   isLogin: 'isLogin',
   user: 'user',
   isLoading: 'isLoading',
+  listCollection: 'listCollection',
+  listQuestion: 'listQuestion',
 }
 
 export const storeActions = {
   checkLogin: 'checkLogin',
   login: 'login',
   signOut: 'signOut',
+  bindListCollection: 'bindListCollection',
+  bindListQuestion: 'bindListQuestion',
 }
 
 export const storeMutations = {
