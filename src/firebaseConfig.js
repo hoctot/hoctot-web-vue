@@ -29,12 +29,14 @@ const auth = firebase.auth()
 const db = firebase.firestore()
 const googleProvider = new firebase.auth.GoogleAuthProvider()
 
+const serverTimestamp = firebase.firestore.FieldValue.serverTimestamp
+
 // let messaging
 // if (firebase.messaging.isSupported()) {
 //   messaging = firebase.messaging()
 // }
 
-export { auth, db, googleProvider }
+export { auth, db, googleProvider, serverTimestamp }
 
 if (process.env.NODE_ENV !== 'production') {
   window.fb = firebase

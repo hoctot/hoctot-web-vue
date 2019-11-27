@@ -1,6 +1,6 @@
 <template>
   <div class="mt-2 mb-20">
-    <SearchBarData />
+    <SearchBarData searchType="collection" />
     <!-- List collections -->
 
     <div class="text-center my-2" v-if="listCollection.length">
@@ -13,7 +13,7 @@
     </div>
 
     <div class="container mx-auto flex flex-wrap mt-2" v-if="listCollection.length">
-      <div class="w-full sm:w-6/12 md:w-4/12 xl:w-3/12 p-3" title="Bấm để tạo bộ câu hỏi mới">
+      <div class="order-bottom-mobile w-full sm:w-6/12 md:w-4/12 xl:w-3/12 p-3" title="Bấm để tạo bộ câu hỏi mới">
         <router-link :to="{name: routerName.collectionEditor}">
           <div
             class="mx-auto max-w-sm rounded overflow-hidden shadow-md hover:shadow-lg collections-item"
@@ -78,6 +78,9 @@
             <div class="px-6 py-4">
               <div class="font-bold text-lg mb-2 text-blue-500" v-text="item.title"></div>
               <p class="text-gray-700 text-xs block-with-text" v-text="item.desc"></p>
+            </div>
+            <div class="text-right px-2">
+             <p class="text-gray-700 text-xs">{{item.createdAt && item.createdAt.toDate().toLocaleString('vi-VN')}}</p>
             </div>
           </router-link>
         </div>
@@ -157,13 +160,16 @@ export default {
     this.listCollectionPromise = this.$store.dispatch(
       storeActions.bindListCollection,
     )
+    setTimeout(() => {
+      console.log(this.listCollection)
+    }, 2000);
   },
 }
 </script>
 
 <style scoped>
 .collections-item {
-  min-height: 17.5rem;
+  min-height: 17.65rem;
 }
 .collections-item-desc {
   overflow: hidden;

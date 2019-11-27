@@ -32,6 +32,13 @@ export default {
 
   .logo {
     width: 4.25rem;
+    transition: all .5s ease;
+    &:hover, &:active {
+      transform: rotate(-5deg)
+    }
+    &:active {
+      transform: rotate(-2deg) scale(0.9)
+    }
   }
 }
 </style>

@@ -15,7 +15,7 @@
             class="editor-mic"
           >
             <img width="22" src="https://image.flaticon.com/icons/svg/107/107737.svg" />
-          </div> -->
+          </div>-->
         </div>
 
         <div>
@@ -30,7 +30,7 @@
             class="editor-mic"
           >
             <img width="22" src="https://image.flaticon.com/icons/svg/107/107737.svg" />
-          </div> -->
+          </div>-->
         </div>
 
         <div>
@@ -45,15 +45,7 @@
             class="editor-mic"
           >
             <img width="22" src="https://image.flaticon.com/icons/svg/107/107737.svg" />
-          </div> -->
-        </div>
-
-        <div>
-          <div class="my-5">
-            <span
-              class="tag-title bg-gray-300 rounded-full px-3 py-2 text-sm font-semibold text-gray-700"
-            >#{{item.title}}</span>
-          </div>
+          </div>-->
         </div>
       </div>
 
@@ -72,6 +64,24 @@
             :src="isEdit ? '/img/undraw/add.png' : '/img/undraw/no_data.png'"
             width="275"
           />
+          <div v-if="!isEditMode">
+            <label for="checkBack" class="select-none">
+              <input v-model="disableBack" type="checkbox" name="checkBack" id="checkBack" />
+              <span class="text-base">
+                Ở lại trang
+                <br />khi tạo xong câu hỏi
+              </span>
+            </label>
+          </div>
+          <div>
+            <div class="my-5 px-10 whitespace-normal">
+              <p
+                @click="back"
+                :title="item.title"
+                class="cursor-pointer tag-title hover:underline text-blue-500 px-3 py-2 text-sm font-semibold text-gray-700"
+              >Trở về: {{item.title}}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -79,7 +89,7 @@
 </template>
 
 <script>
-import { db } from '@/firebaseConfig'
+import { db, serverTimestamp } from '@/firebaseConfig'
 import * as Quill from 'quill/dist/quill'
 import 'quill/dist/quill.snow.css'
 import { dataRef, storeState, storeMutations, dataSample } from '@/constant'
@@ -103,6 +113,7 @@ export default {
       speakType: '',
       item: {},
       isEditMode: false,
+      disableBack: false,
     }
   },
   computed: {
@@ -115,6 +126,9 @@ export default {
     },
   },
   methods: {
+    back() {
+      this.$router.back()
+    },
     startRec(type) {},
     createQuestion() {
       this.$store.commit(storeMutations.SET_LOADING, true)
@@ -125,6 +139,7 @@ export default {
         .collection(dataRef.questions.data)
 
       if (this.isEditMode) {
+        // Update
         docRef
           .doc(this.$route.query.questionId)
           .set(
@@ -132,6 +147,7 @@ export default {
               question: this.questionHTML,
               answer: this.answerText,
               hint: this.hintHTML,
+              updatedAt: serverTimestamp(),
             },
             { merge: true },
           )
@@ -143,16 +159,21 @@ export default {
             this.$store.commit(storeMutations.SET_LOADING, false)
           })
       } else {
+        // Create
         docRef
           .add({
             question: this.questionHTML,
             answer: this.answerText,
             hint: this.hintHTML,
             collectionId: this.$route.query.collectionId,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
           })
           .then(() => {
             this.resetFields()
-            this.$router.back()
+            if (!this.disableBack) {
+              this.$router.back()
+            }
           })
           .finally(() => {
             this.$store.commit(storeMutations.SET_LOADING, false)
@@ -264,7 +285,8 @@ export default {
     // border-radius: 0.5rem;
   }
 
-  &:hover {
+  &:hover,
+  &:active {
     .ql-toolbar {
       opacity: 1;
       border-bottom-color: white;

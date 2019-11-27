@@ -29,12 +29,12 @@
   position: relative;
   background-image: linear-gradient(
     to right,
-    rgb(76, 217, 100),
+    rgb(90, 200, 250),
     rgb(90, 200, 250),
     rgb(0, 122, 255),
     rgb(52, 170, 220),
     rgb(88, 86, 214),
-    rgb(255, 45, 85)
+    rgb(76, 217, 100)
   );
   animation: cssload-width 0.5s cubic-bezier(0.45, 0, 1, 1) infinite;
 }

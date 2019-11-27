@@ -1,6 +1,6 @@
  <template>
   <div class="mt-2 mb-20">
-    <SearchBarData />
+    <SearchBarData searchType="question" />
 
     <div class="container mx-auto mt-5">
       <div class="flex flex-wrap justify-center mb-8">
@@ -15,7 +15,7 @@
         <BaseButton @click.native="playQuiz" class="w-full sm:w-3/12 mb-2 text-lg">Ôn tập</BaseButton>
       </div>
 
-      <div v-if="listQuestion.length">
+      <div v-if="listQuestion.length" class="px-2">
         <div class="text-center">
           {{listQuestion.length}} câu hỏi
           <img
@@ -35,6 +35,11 @@
               <hr />
               <br />
               <div class="text-gray-700 text-sm block-with-text mb-5" v-text="item.answer"></div>
+              <div class="text-right px-2">
+                <p
+                  class="text-gray-700 text-xs"
+                >{{item.createdAt && item.createdAt.toDate().toLocaleString('vi-VN')}}</p>
+              </div>
             </div>
 
             <div class="absolute top-0 right-0 flex">

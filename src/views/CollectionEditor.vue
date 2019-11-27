@@ -83,7 +83,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { db } from '@/firebaseConfig'
+import { db, serverTimestamp } from '@/firebaseConfig'
 import {
   storeMutations,
   storeState,
@@ -228,6 +228,7 @@ export default {
               title: this.title.trim().normalize(),
               desc: this.desc.trim().normalize(),
               imgUrl: this.imgUrl + this.title,
+              updatedAt: serverTimestamp(),
             },
             { merge: true },
           )
@@ -246,6 +247,8 @@ export default {
           imgUrl: `https://dummyimage.com/1024x680/${color}/fff.jpg&text=${
             this.title
           }`,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
         })
         .then(data => this.$router.push({ name: routerName.collections }))
         .finally(() => {
