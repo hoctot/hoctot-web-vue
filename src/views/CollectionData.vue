@@ -11,7 +11,7 @@
         <BaseButton
           @click.native="playQuiz"
           class="w-full sm:w-3/12 mb-2 text-lg"
-        >Thi đấu trực tuyến</BaseButton>
+        >Thi đấu</BaseButton>
         <BaseButton @click.native="playQuiz" class="w-full sm:w-3/12 mb-2 text-lg">Ôn tập</BaseButton>
       </div>
 
