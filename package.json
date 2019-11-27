@@ -8,9 +8,6 @@
     "lint": "vue-cli-service lint",
     "surge": "npm run build && cd ./dist && cp index.html 200.html && surge -p ./ -d https://hoctot.surge.sh && cd .."
   },
-  "gitHooks": {
-    "pre-push": "npm run surge"
-  },
   "dependencies": {
     "buefy": "^0.8.6",
     "core-js": "^3.3.2",
