@@ -4,23 +4,37 @@
     <div>collectionId {{ $route.query.collectionId }}</div>
     <div>List user</div>
     <div>room type: basic</div>
-    <BaseButton v-if="isHost(room)">Bắt đầu</BaseButton>
-    <BaseButton v-if="isGuess(room)">Thoát phòng</BaseButton>
+    <BaseButton v-if="isHost(room) && roomListUser.length > 1">Bắt đầu</BaseButton>
+    <BaseButton
+      v-if="isGuess(room)"
+      @click.native="$store.dispatch(storeActions.exitRoom, {
+        roomId: $route.query.roomId
+      })"
+    >Thoát phòng</BaseButton>
     <BaseButton
       v-if="isHost(room)"
-      @click.native="$store.dispatch(storeActions.deleteRoom, $route.query.roomId)"
+      @click.native="$store.dispatch(storeActions.deleteRoom,{
+        roomId: $route.query.roomId
+      })"
     >Xoá phòng</BaseButton>
     <div>
+      <div v-if="roomListUser.length">
+        <pre> {{ roomListUser }} </pre>
+        <div class="inline-block m-2" v-for="item in roomListUser" :key="item.uid">
+          <!-- {{ item }} -->
+          <img class="rounded-full border hover:border-green-500" :src="item.photoURL" width="48" />
+        </div>
+      </div>
+
       <pre> {{ room }} </pre>
       <br />
-      <pre> {{ listRoomUser }} </pre>
     </div>
   </div>
 </template>
 
 <script>
-import { storeActions, storeState } from '@/constant'
-import { mapState } from 'vuex'
+import { storeActions, storeState, storeGetter } from '@/constant'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -45,14 +59,11 @@ export default {
     this.$store.dispatch(storeActions.setRoomData, {
       roomId: this.$route.query.roomId,
     })
-
-    this.$store.dispatch(storeActions.bindRoomListUser)
   },
-  computed: mapState([
-    storeState.room,
-    storeState.user,
-    storeState.listRoomUser,
-  ]),
+  computed: {
+    ...mapState([storeState.room, storeState.user]),
+    ...mapGetters([storeGetter.roomListUser]),
+  },
 }
 </script>
 

@@ -31,12 +31,13 @@ const googleProvider = new firebase.auth.GoogleAuthProvider()
 
 const serverTimestamp = firebase.firestore.FieldValue.serverTimestamp
 
+const deleteField = firebase.firestore.FieldValue.delete
 // let messaging
 // if (firebase.messaging.isSupported()) {
 //   messaging = firebase.messaging()
 // }
 
-export { auth, db, googleProvider, serverTimestamp }
+export { auth, db, googleProvider, serverTimestamp, deleteField }
 
 if (process.env.NODE_ENV !== 'production') {
   window.fb = firebase

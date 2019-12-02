@@ -1,6 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { auth, googleProvider, db, serverTimestamp } from '@/firebaseConfig'
+import {
+  auth,
+  googleProvider,
+  db,
+  serverTimestamp,
+  deleteField,
+} from '@/firebaseConfig'
 import {
   storeActions,
   storeMutations,
@@ -8,6 +14,8 @@ import {
   dataRef,
   routerName,
   roomStatus,
+  dataPrefix,
+  storeGetter,
 } from '@/constant'
 import { vuexfireMutations, firestoreAction } from 'vuexfire'
 import router from '@/router'
@@ -22,36 +30,44 @@ const store = new Vuex.Store({
     [storeState.listCollection]: [],
     [storeState.listQuestion]: [],
     [storeState.listRoom]: [],
-    [storeState.listRoomUser]: [],
+  },
+  getters: {
+    [storeGetter.roomListUser]: state => {
+      const a = state.room
+      return Object.keys(a)
+        .filter(i => i.includes(dataPrefix.user))
+        .map(i => a[i])
+    },
   },
   mutations: {
     ...vuexfireMutations,
     [storeMutations.SET_LOADING](state, payload) {
       state[storeState.isLoading] = payload
-      console.log('SET_LOADING', payload)
+      console.log('💎 SET_LOADING', payload)
     },
     [storeMutations.SET_LOGIN](state, payload) {
       state[storeState.isLogin] = payload
-      console.log('SET_LOGIN', payload)
+      console.log('💎 SET_LOGIN', payload)
     },
     [storeMutations.SET_USER](state, payload) {
       state[storeState.user] = payload
-      console.log('SET_USER', payload)
+      console.log('💎 SET_USER', payload)
     },
     [storeMutations.SET_ROOM](state, payload) {
-      console.log('SET_ROOM', payload)
-      state[storeState.room] = { ...state[storeState.room], ...payload }
+      console.log('💎 SET_ROOM', payload)
+      state[storeState.room] = payload
     },
   },
   actions: {
-    [storeActions.checkLogin]() {
-      console.log('checkLogin')
-
+    [storeActions.checkLogin]({ dispatch }) {
+      console.log('⌛ checkLogin')
       auth.onAuthStateChanged(function(user) {
         store.commit(storeMutations.SET_LOGIN, Boolean(user))
         store.commit(storeMutations.SET_USER, user)
         if (user) {
           // User is signed in.
+          // Check in room
+          dispatch(storeActions.checkInRoom)
         } else {
           // No user is signed in.
           if (router.currentRoute.path !== '/') {
@@ -59,6 +75,19 @@ const store = new Vuex.Store({
           }
         }
       })
+    },
+    [storeActions.checkInRoom]({ state, dispatch }) {
+      db.collection(dataRef.rooms.root)
+        // .where('hostInfo.uid', '==', state.user.uid)
+        .where(dataPrefix.user + state.user.uid + '.uid', '==', state.user.uid)
+        .get()
+        .then(s => {
+          if (s.size) {
+            // const room = s.docs[0].data()
+            const roomId = s.docs[0].id
+            dispatch(storeActions.enterRoom, { roomId })
+          }
+        })
     },
     [storeActions.signOut]() {
       auth.signOut()
@@ -126,28 +155,18 @@ const store = new Vuex.Store({
         })
       })
     }),
-    // List User in room
-    [storeActions.bindRoomListUser]: firestoreAction(({ bindFirestoreRef }) => {
-      return new Promise((resolve, reject) => {
-        const unsubscrible = auth.onAuthStateChanged(user => {
-          unsubscrible()
-          if (user && user.uid) {
-            const dataPromise = bindFirestoreRef(
-              storeState.listRoomUser,
-              db.collection(dataRef.roomListUser.root),
-            )
-            resolve(dataPromise)
-          } else {
-            reject(Error('bindListCollection error'))
-          }
-        })
-      })
-    }),
     // Create Room
-    [storeActions.createRoom]({ commit }, payload) {
-      console.log('Create room', payload)
+    [storeActions.createRoom]({ commit, state }, payload) {
+      console.log('⌛ Create room', payload)
       commit(storeMutations.SET_LOADING, true)
       const { host, collectionId } = payload
+      const { displayName, uid, photoURL, email } = state.user
+      const enterRoomData = {
+        displayName,
+        uid,
+        photoURL,
+        email,
+      }
       const roomData = {
         collectionId,
         hostInfo: {
@@ -156,6 +175,7 @@ const store = new Vuex.Store({
           uid: host.uid,
           photoURL: host.photoURL,
         },
+        [dataPrefix.user + uid]: enterRoomData,
         status: roomStatus.waitOpen,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
@@ -165,8 +185,6 @@ const store = new Vuex.Store({
         .add(roomData)
         .then(async snapshot => {
           try {
-            // const doc = await snapshot.get()
-            // commit(storeMutations.SET_ROOM, doc.data())
             router.push({
               name: routerName.roomWait,
               query: {
@@ -183,16 +201,12 @@ const store = new Vuex.Store({
         })
     },
     async [storeActions.deleteRoom]({ commit }, payload) {
-      console.log('Delete room', payload)
+      console.log('⌛ Delete room', payload)
       commit(storeMutations.SET_LOADING, true)
       try {
         await db
           .collection(dataRef.rooms.root)
-          .doc(payload)
-          .delete()
-        await db
-          .collection(dataRef.roomListUser.root)
-          .doc(payload)
+          .doc(payload.roomId)
           .delete()
         router
           .push({
@@ -206,7 +220,7 @@ const store = new Vuex.Store({
       }
     },
     [storeActions.updateRoom]({ commit }, payload) {
-      console.log('updateRoom room', payload)
+      console.log('⌛ updateRoom room', payload)
       commit(storeMutations.SET_LOADING, true)
       db.collection(dataRef.rooms.root)
         .doc(payload.roomId)
@@ -217,7 +231,7 @@ const store = new Vuex.Store({
         })
     },
     [storeActions.enterRoom]({ commit, state }, payload) {
-      console.log('enterRoom room', payload)
+      console.log('⌛ enterRoom room', payload)
       commit(storeMutations.SET_LOADING, true)
       const { displayName, uid, photoURL, email } = state.user
       const enterRoomData = {
@@ -226,15 +240,19 @@ const store = new Vuex.Store({
         photoURL,
         email,
       }
-      db.collection(dataRef.roomListUser.root)
+      db.collection(dataRef.rooms.root)
         .doc(payload.roomId)
-        .set(enterRoomData)
+        .set(
+          {
+            [dataPrefix.user + uid]: enterRoomData,
+          },
+          { merge: true },
+        )
         .then(() => {
           router.push({
             name: routerName.roomWait,
             query: {
               roomId: payload.roomId,
-              collectionId: payload.collectionId,
             },
           })
         })
@@ -242,8 +260,8 @@ const store = new Vuex.Store({
           commit(storeMutations.SET_LOADING, false)
         })
     },
-    async [storeActions.setRoomData]({ commit }, payload) {
-      console.log('setRoomData room', payload)
+    async [storeActions.setRoomData]({ commit, state }, payload) {
+      console.log('⌛ setRoomData room', payload)
       commit(storeMutations.SET_LOADING, true)
       try {
         const docRoom = await db
@@ -256,17 +274,41 @@ const store = new Vuex.Store({
         const unsub = db
           .collection(dataRef.rooms.root)
           .doc(payload.roomId)
-          .onSnapshot({ includeMetadataChanges: true }, doc => {
-            console.log(doc)
+          .onSnapshot(doc => {
+            console.group('🎉 [NEW_DATA]')
+            console.log(doc.data())
+            console.groupEnd()
+
+            commit(storeMutations.SET_ROOM, doc.data())
             if (!doc.exists) {
               unsub()
-              router
-                .push({
-                  name: routerName.collections,
-                })
-                .catch(() => {})
+              // Reset
+              commit(storeMutations.SET_ROOM, {})
+              router.push({
+                name: routerName.collections,
+              })
             }
           })
+      } catch (error) {
+        console.error(error)
+      } finally {
+        commit(storeMutations.SET_LOADING, false)
+      }
+    },
+    async [storeActions.exitRoom]({ commit, state }, payload) {
+      commit(storeMutations.SET_LOADING, true)
+      try {
+        const { uid } = state.user
+        await db
+          .collection(dataRef.rooms.root)
+          .doc(payload.roomId)
+          .set(
+            {
+              [dataPrefix.user + uid]: deleteField(),
+            },
+            { merge: true },
+          )
+        router.back()
       } catch (error) {
         console.error(error)
       } finally {

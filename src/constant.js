@@ -6,7 +6,10 @@ export const storeState = {
   listQuestion: 'listQuestion',
   listRoom: 'listRoom',
   room: 'room',
-  listRoomUser: 'listRoomUser',
+}
+
+export const storeGetter = {
+  roomListUser: 'roomListUser',
 }
 
 export const storeActions = {
@@ -16,12 +19,13 @@ export const storeActions = {
   bindListCollection: 'bindListCollection',
   bindListQuestion: 'bindListQuestion',
   bindListRoom: 'bindListRoom',
-  bindRoomListUser: 'bindRoomListUser',
   createRoom: 'createRoom',
   enterRoom: 'enterRoom',
+  exitRoom: 'exitRoom',
   deleteRoom: 'deleteRoom',
   updateRoom: 'updateRoom',
   setRoomData: 'setRoomData',
+  checkInRoom: 'checkInRoom',
 }
 
 export const storeMutations = {
@@ -57,9 +61,6 @@ export const dataRef = {
   rooms: {
     root: 'rooms',
   },
-  roomListUser: {
-    root: 'roomListUser',
-  },
 }
 
 export const roomType = {
@@ -70,6 +71,10 @@ export const roomStatus = {
   waitOpen: 'wait-open',
   waitLock: 'wait-lock',
   playing: 'playing',
+}
+
+export const dataPrefix = {
+  user: 'User_',
 }
 
 export const dataSample = {

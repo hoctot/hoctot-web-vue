@@ -1,8 +1,11 @@
 <template>
   <div class="container mx-auto">
     <div v-if="listRoom.length">
-      <div class="bg-white border p-4 rounded" v-for="item in listRoom" :key="item.id">
-        <pre class="text-xs">{{ item }}</pre>
+      <div class="bg-white border p-4 rounded mb-4" v-for="item in listRoom" :key="item.id">
+        <details>
+          <summary>Data.</summary>
+          <pre class="text-xs">{{ item }}</pre>
+        </details>
         <div class="flex justify-between">
           <div v-if="user.uid !== (item.hostInfo && item.hostInfo.uid)">
             <button
@@ -10,10 +13,10 @@
               class="text-blue-500"
             >Vào</button>
           </div>
-          <div>
+          <div v-if="user.uid === (item.hostInfo && item.hostInfo.uid) && ((item.status && item.status === 'wait-open'))">
             <button
               class="text-red-500"
-              @click="$store.dispatch(storeActions.deleteRoom, item.id)"
+              @click="$store.dispatch(storeActions.deleteRoom, {roomId: item.id})"
             >Xoá</button>
           </div>
         </div>

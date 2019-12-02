@@ -48,7 +48,6 @@
           </div>-->
         </div>
       </div>
-
       <div class="w-full sm:w-4/12">
         <div class="mx-auto text-center">
           <button

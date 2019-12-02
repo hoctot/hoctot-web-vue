@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home.vue'
 import { routerName } from '@/constant'
-
+import store from '@/store'
 // import { auth } from '@/firebaseConfig'
 // import store from '@/store'
 
@@ -88,7 +88,13 @@ router.beforeEach((to, from, next) => {
       buildTime.remove()
     }
   }
-  next()
+  // TODO: Optimize router check
+  const isInRoom = Boolean(store.state.room && store.state.room.collectionId)
+  if (isInRoom) {
+    return false
+  } else {
+    next()
+  }
   // ...
   // console.debug(to, from)
   // let isAuthenticated = store.state.isLogin
