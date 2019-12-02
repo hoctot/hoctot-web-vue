@@ -127,6 +127,7 @@ export default {
     createRoom() {
       this.$store.dispatch(storeActions.createRoom, {
         collectionId: this.$route.params.id,
+        item: JSON.parse(this.$route.query.item),
         host: this.user,
       })
     },

@@ -68,8 +68,7 @@ export const roomType = {
 }
 
 export const roomStatus = {
-  waitOpen: 'wait-open',
-  waitLock: 'wait-lock',
+  wait: 'wait',
   playing: 'playing',
 }
 

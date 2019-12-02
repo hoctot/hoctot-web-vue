@@ -2,7 +2,6 @@
   <div>
     <div>roomId {{ $route.query.roomId }}</div>
     <div>collectionId {{ $route.query.collectionId }}</div>
-    <div>List user</div>
     <div>room type: basic</div>
     <BaseButton v-if="isHost(room) && roomListUser.length > 1">Bắt đầu</BaseButton>
     <BaseButton

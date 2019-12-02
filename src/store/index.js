@@ -169,6 +169,7 @@ const store = new Vuex.Store({
       }
       const roomData = {
         collectionId,
+        collection: payload.item,
         hostInfo: {
           displayName: host.displayName,
           email: host.email,
@@ -176,7 +177,7 @@ const store = new Vuex.Store({
           photoURL: host.photoURL,
         },
         [dataPrefix.user + uid]: enterRoomData,
-        status: roomStatus.waitOpen,
+        status: roomStatus.wait,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       }
@@ -308,6 +309,7 @@ const store = new Vuex.Store({
             },
             { merge: true },
           )
+        commit(storeMutations.SET_ROOM, {})
         router.back()
       } catch (error) {
         console.error(error)

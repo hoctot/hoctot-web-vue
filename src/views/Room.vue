@@ -13,7 +13,9 @@
               class="text-blue-500"
             >Vào</button>
           </div>
-          <div v-if="user.uid === (item.hostInfo && item.hostInfo.uid) && ((item.status && item.status === 'wait-open'))">
+          <div
+            v-if="user.uid === (item.hostInfo && item.hostInfo.uid) && ((item.status && item.status === roomStatus.wait))"
+          >
             <button
               class="text-red-500"
               @click="$store.dispatch(storeActions.deleteRoom, {roomId: item.id})"
@@ -36,16 +38,23 @@
 </template>
 
 <script>
-import { storeActions, storeState } from '@/constant'
+import { storeActions, storeState, roomStatus } from '@/constant'
 import { mapState } from 'vuex'
 export default {
   data() {
     return {
       listRommPromise: null,
-      storeActions: storeActions,
     }
   },
-  computed: mapState([storeState.listRoom, storeState.user]),
+  computed: {
+    ...mapState([storeState.listRoom, storeState.user]),
+    storeActions() {
+      return storeActions
+    },
+    roomStatus() {
+      return roomStatus
+    },
+  },
   methods: {
     isHost(user, item) {
       return Boolean(user.uid === (item.hostInfo && item.hostInfo.uid))
