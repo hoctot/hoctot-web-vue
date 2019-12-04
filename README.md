@@ -2,6 +2,12 @@
 
 [![Build Status](https://travis-ci.com/hoctot/hoctot-web.svg?branch=master)](https://travis-ci.com/hoctot/hoctot-web)
 
+## Create .env file
+```
+VUE_APP_FIREBASE_APIKEY=AIzaSyAeswcVyMU3Cuu1nhEIG1J_oLbUrVUuBEo
+```
+
+
 ## Project setup
 ```
 npm install
