@@ -1,19 +1,20 @@
 <template>
-  <div class="container mx-auto mb-10">
+  <div class="container mx-auto mb-10 mt-2">
     <!-- List Account -->
-    <div class="list-account mb-5">
+    <div class="list-account mt-5 mb-5">
       <div class="overflow-auto whitespace-no-wrap text-center">
         <div
-          v-for="(item, index) in users"
+          v-for="(item) in roomListUser"
           :key="item.id"
-          :class="{'border-green-500': index == 0}"
+          :class="{'border-green-500': (user && (user.uid === item.uid)) == 0}"
           class="inline-block border-b-2 border-white pb-2 mx-2"
         >
           <img
             onmousedown="return false"
-            class="rounded-full bg-gray-500 h-10 w-10 flex items-center justify-center"
-            :src="`https://api.adorable.io/avatars/160/${index}@adorable.png`"
+            class="mx-auto rounded-full bg-gray-500 h-10 w-10 flex items-center justify-center"
+            :src="item.photoURL"
           />
+          <p>{{item.displayName}}</p>
         </div>
       </div>
     </div>
@@ -23,28 +24,14 @@
       <div class="container mx-auto flex justify-center px-2">
         <div class="text-center">
           <p class="text-sm">
-            <img
-              class="inline-block"
-              width="22"
-              src="https://image.flaticon.com/icons/svg/148/148933.svg"
-              title="Thời gian"
-            />
             <span>
-              610s
               <img
                 width="22"
                 class="inline-block"
                 src="https://image.flaticon.com/icons/svg/148/148767.svg"
                 title="Câu hỏi đúng"
               />
-              Đúng 1/10
-              <img
-                width="22"
-                class="inline-block"
-                src="https://image.flaticon.com/icons/svg/1153/1153111.svg"
-                title="Thể loại"
-              />
-              Ôn tập
+              Đúng 0/10
             </span>
           </p>
         </div>
@@ -52,15 +39,14 @@
     </div>
 
     <!-- Game play -->
-    <div>
+    <div v-if="listPlayQuestion && listPlayQuestion.length">
       <div class="mb-5 p-2">
         <h4>Câu hỏi:</h4>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo voluptates commodi saepe non nihil neque perferendis error earum sunt facilis officiis praesentium nobis, delectus illum illo similique iure? Iure, sunt.</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem voluptatum, culpa veniam laboriosam temporibus a omnis illum, eum, illo sed doloremque aperiam. Laboriosam itaque hic aliquid modi? Quasi atque vero saepe dignissimos officiis, nihil quaerat a, accusamus, deserunt maiores fugiat. Impedit vitae velit et ducimus dicta, quia maxime illo cumque, id dolor qui itaque doloribus rerum odit laudantium laborum adipisci, accusantium</p>
+        <div v-html="listPlayQuestion[0].question"></div>
       </div>
       <div class="p-2">
         <h4>Gợi ý:</h4>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Culpa voluptatibus officiis debitis ea illum? Voluptatibus totam libero quidem ab. Iste non sit et molestiae quisquam labore soluta libero veniam minus!</p>
+        <div v-html="listPlayQuestion[0].hint"></div>
       </div>
       <div class="mt-10 text-center">
         <textarea
@@ -73,30 +59,50 @@
         <br />
         <BaseButton class="mb-4" @click.native="sentAnswer" :isDisable="!answer">Gửi đáp án</BaseButton>
       </div>
+      <pre>
+        {{ listPlayQuestion[0] }}
+      </pre>
       <div class="pb-10">
         <img class="mx-auto" src="/img/undraw/transfer.png" width="300" />
       </div>
+    </div>
+    <div v-else>
+      <Loading></Loading>
     </div>
     <!-- Game play -->
   </div>
 </template>
 
 <script>
-import { routerName } from '../constant'
+import { storeState, routerName, storeGetter, storeActions } from '@/constant'
+import { mapState, mapGetters } from 'vuex'
 export default {
   data() {
     return {
       answer: '',
+      storeActions: storeActions,
       users: new Array(2).fill({
         name: 'user',
         isActive: false,
       }),
     }
   },
+  computed: {
+    ...mapState([
+      storeState.listRoom,
+      storeState.user,
+      storeState.listPlayQuestion,
+    ]),
+    ...mapGetters([storeGetter.roomListUser]),
+  },
   methods: {
     sentAnswer() {
-      this.answer = ''
       // this.$refs.answerInput.focus()
+      const question = this.listPlayQuestion[0]
+      if (this.answer === question.answer) {
+        alert('Đúng')
+      }
+      this.answer = ''
       window.scrollTo(0, 0)
     },
     exit() {

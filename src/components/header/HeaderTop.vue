@@ -1,5 +1,5 @@
 <template>
-  <nav class="top-nav animated fadeInDown mb-2">
+  <nav v-if="!isPlaying" class="top-nav animated fadeInDown mb-2">
     <img
       @click="goToPage"
       tabindex="0"
@@ -15,7 +15,7 @@
 import { mapState } from 'vuex'
 import { storeState, routerName } from '@/constant'
 export default {
-  computed: mapState([storeState.isLogin]),
+  computed: mapState([storeState.isLogin, storeState.isPlaying]),
   methods: {
     goToPage() {
       const name = this.isLogin ? routerName.collections : routerName.home

@@ -2,9 +2,11 @@ export const storeState = {
   isLogin: 'isLogin',
   user: 'user',
   isLoading: 'isLoading',
+  isPlaying: 'isPlaying',
   listCollection: 'listCollection',
   listQuestion: 'listQuestion',
   listRoom: 'listRoom',
+  listPlayQuestion: 'listPlayQuestion',
   room: 'room',
 }
 
@@ -26,6 +28,11 @@ export const storeActions = {
   updateRoom: 'updateRoom',
   setRoomData: 'setRoomData',
   checkInRoom: 'checkInRoom',
+  startRoom: 'startRoom',
+  setPlayData: 'setPlayData',
+  getListPlayQuestion: 'getListPlayQuestion',
+  checkRightAnswer: 'checkRightAnswer',
+  test: 'test',
 }
 
 export const storeMutations = {
@@ -33,6 +40,10 @@ export const storeMutations = {
   SET_USER: 'SET_USER',
   SET_LOADING: 'SET_LOADING',
   SET_ROOM: 'SET_ROOM',
+  SET_IS_PLAYING: 'SET_IS_PLAYING',
+  CHECK_TO_PLAY_ROOM: 'CHECK_TO_PLAY_ROOM',
+  SET_PLAY_DATA: 'SET_PLAY_DATA',
+  SET_LIST_PLAY_QUESTION: 'SET_LIST_PLAY_QUESTION',
 }
 
 export const routerName = {
@@ -65,6 +76,13 @@ export const dataRef = {
 
 export const roomType = {
   basic: 'basic',
+}
+
+export const roomRule = {
+  basic: {
+    type: 'score',
+    scoreWin: 10,
+  },
 }
 
 export const roomStatus = {

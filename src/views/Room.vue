@@ -2,26 +2,25 @@
   <div class="container mx-auto">
     <div v-if="listRoom.length">
       <div class="bg-white border p-4 rounded mb-4" v-for="item in listRoom" :key="item.id">
-        <details>
-          <summary>Data.</summary>
-          <pre class="text-xs">{{ item }}</pre>
-        </details>
         <div class="flex justify-between">
           <div v-if="user.uid !== (item.hostInfo && item.hostInfo.uid)">
             <button
               @click="$store.dispatch(storeActions.enterRoom, {roomId: item.id})"
-              class="text-blue-500"
-            >Vào</button>
+              class="text-white px-4 py-4 border rounded bg-green-500"
+            >Vào Phòng</button>
           </div>
-          <div
-            v-if="user.uid === (item.hostInfo && item.hostInfo.uid) && ((item.status && item.status === roomStatus.wait))"
-          >
+          <div v-if="user.uid === (item.hostInfo && item.hostInfo.uid)">
             <button
-              class="text-red-500"
+              class="text-white px-4 py-4 border rounded bg-red-500"
               @click="$store.dispatch(storeActions.deleteRoom, {roomId: item.id})"
             >Xoá</button>
           </div>
         </div>
+
+        <details>
+          <summary>Data.</summary>
+          <pre class="text-xs">{{ item }}</pre>
+        </details>
       </div>
     </div>
     <div>

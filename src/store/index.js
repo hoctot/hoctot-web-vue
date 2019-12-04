@@ -16,20 +16,26 @@ import {
   roomStatus,
   dataPrefix,
   storeGetter,
+  roomType,
 } from '@/constant'
 import { vuexfireMutations, firestoreAction } from 'vuexfire'
 import router from '@/router'
+
+import shuffle from 'lodash/shuffle'
+
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
     [storeState.isLogin]: null,
     [storeState.isLoading]: false,
+    [storeState.isPlaying]: false,
     [storeState.user]: {},
     [storeState.room]: {},
     [storeState.listCollection]: [],
     [storeState.listQuestion]: [],
     [storeState.listRoom]: [],
+    [storeState.listPlayQuestion]: [],
   },
   getters: {
     [storeGetter.roomListUser]: state => {
@@ -56,6 +62,14 @@ const store = new Vuex.Store({
     [storeMutations.SET_ROOM](state, payload) {
       console.log('💎 SET_ROOM', payload)
       state[storeState.room] = payload
+    },
+    [storeMutations.SET_IS_PLAYING](state, payload) {
+      console.log('💎 SET_IS_PLAYING', payload)
+      state[storeState.isPlaying] = payload
+    },
+    [storeMutations.SET_LIST_PLAY_QUESTION](state, payload) {
+      console.log('💎 SET_LIST_PLAY_QUESTION', payload)
+      state[storeState.listPlayQuestion] = payload
     },
   },
   actions: {
@@ -178,6 +192,7 @@ const store = new Vuex.Store({
         },
         [dataPrefix.user + uid]: enterRoomData,
         status: roomStatus.wait,
+        roomType: roomType.basic,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       }
@@ -261,7 +276,7 @@ const store = new Vuex.Store({
           commit(storeMutations.SET_LOADING, false)
         })
     },
-    async [storeActions.setRoomData]({ commit, state }, payload) {
+    async [storeActions.setRoomData]({ commit, state, dispatch }, payload) {
       console.log('⌛ setRoomData room', payload)
       commit(storeMutations.SET_LOADING, true)
       try {
@@ -272,15 +287,26 @@ const store = new Vuex.Store({
         const data = docRoom.data()
         commit(storeMutations.SET_ROOM, { ...data, roomId: docRoom.id })
 
+        // Watch data
         const unsub = db
           .collection(dataRef.rooms.root)
           .doc(payload.roomId)
           .onSnapshot(doc => {
-            console.group('🎉 [NEW_DATA]')
-            console.log(doc.data())
-            console.groupEnd()
+            console.log('🎉 [NEW_DATA]')
+            const data = doc.data()
+            const { isPlaying } = state
+            commit(storeMutations.SET_ROOM, data)
+            // Check data
+            if (data && data.status === roomStatus.playing && !isPlaying) {
+              // Flow:0 Push to play room
+              commit(storeMutations.SET_IS_PLAYING, true)
+              dispatch(storeActions.getListPlayQuestion).then(() => {
+                router.push({
+                  name: routerName.play,
+                })
+              })
+            }
 
-            commit(storeMutations.SET_ROOM, doc.data())
             if (!doc.exists) {
               unsub()
               // Reset
@@ -310,6 +336,7 @@ const store = new Vuex.Store({
             { merge: true },
           )
         commit(storeMutations.SET_ROOM, {})
+        commit(storeMutations.SET_IS_PLAYING, false)
         router.back()
       } catch (error) {
         console.error(error)
@@ -317,6 +344,95 @@ const store = new Vuex.Store({
         commit(storeMutations.SET_LOADING, false)
       }
     },
+    // Start Room
+    async [storeActions.startRoom]({ commit, state, dispatch }, payload) {
+      commit(storeMutations.SET_LOADING, true)
+      try {
+        await db
+          .collection(dataRef.rooms.root)
+          .doc(payload.roomId)
+          .set(
+            {
+              status: roomStatus.playing,
+            },
+            { merge: true },
+          )
+      } catch (error) {
+        console.error(error)
+      } finally {
+        commit(storeMutations.SET_LOADING, false)
+      }
+    },
+    // SET getListPlayQuestion
+    async [storeActions.getListPlayQuestion]({ commit, state }, payload) {
+      commit(storeMutations.SET_LOADING, true)
+      try {
+        const { room } = state
+        const s = await db
+          .collection(dataRef.questions.root)
+          .doc(room.hostInfo.uid)
+          .collection(dataRef.questions.data)
+          .where('collectionId', '==', room.collectionId)
+          .get()
+
+        const listData = shuffle(s.docs.map(s => s.data()))
+        commit(storeMutations.SET_LIST_PLAY_QUESTION, listData)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        commit(storeMutations.SET_LOADING, false)
+      }
+    },
+    // SET Play data
+    async [storeActions.setPlayData]({ commit, state }, payload) {
+      commit(storeMutations.SET_LOADING, true)
+      try {
+        // const { uid } = state.user
+        await db
+          .collection(dataRef.rooms.root)
+          .doc(payload.roomId)
+          .set({}, { merge: true })
+      } catch (error) {
+        console.error(error)
+      } finally {
+        commit(storeMutations.SET_LOADING, false)
+      }
+    },
+    // Template
+    async [storeActions.checkRightAnswer]({ commit, state }, payload) {
+      commit(storeMutations.SET_LOADING, true)
+      try {
+        // const { uid } = state.user
+        // const { room } = state
+        // await db
+        //   .collection(dataRef.rooms.root)
+        //   .doc(room.roomId)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        commit(storeMutations.SET_LOADING, false)
+      }
+    },
+    async [storeActions.test]({ commit, state }, payload) {
+      commit(storeMutations.SET_LOADING, true)
+      try {
+        const { uid } = state.user
+        await db
+          .collection(dataRef.rooms.root)
+          .doc(payload.roomId)
+          .set(
+            {
+              [dataPrefix.user + uid]: deleteField(),
+            },
+            { merge: true },
+          )
+      } catch (error) {
+        console.error(error)
+      } finally {
+        commit(storeMutations.SET_LOADING, false)
+      }
+    },
+    // End actions
   },
   modules: {},
 })

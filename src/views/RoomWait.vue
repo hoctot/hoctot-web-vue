@@ -3,7 +3,12 @@
     <div>roomId {{ $route.query.roomId }}</div>
     <div>collectionId {{ $route.query.collectionId }}</div>
     <div>room type: basic</div>
-    <BaseButton v-if="isHost(room) && roomListUser.length > 1">Bắt đầu</BaseButton>
+    <BaseButton
+      v-if="isHost(room) && roomListUser.length > 1"
+      @click.native="$store.dispatch(storeActions.startRoom, {
+        roomId: $route.query.roomId
+      })"
+    >Bắt đầu</BaseButton>
     <BaseButton
       v-if="isGuess(room)"
       @click.native="$store.dispatch(storeActions.exitRoom, {
