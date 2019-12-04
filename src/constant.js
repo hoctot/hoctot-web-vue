@@ -1,17 +1,12 @@
 export const storeState = {
   isLogin: 'isLogin',
   user: 'user',
-  isLoading: 'isLoading',
   isPlaying: 'isPlaying',
   listCollection: 'listCollection',
   listQuestion: 'listQuestion',
-  listRoom: 'listRoom',
-  listPlayQuestion: 'listPlayQuestion',
-  room: 'room',
 }
 
 export const storeGetter = {
-  roomListUser: 'roomListUser',
 }
 
 export const storeActions = {
@@ -39,20 +34,12 @@ export const storeMutations = {
   SET_LOGIN: 'SET_LOGIN',
   SET_USER: 'SET_USER',
   SET_LOADING: 'SET_LOADING',
-  SET_ROOM: 'SET_ROOM',
-  SET_IS_PLAYING: 'SET_IS_PLAYING',
-  CHECK_TO_PLAY_ROOM: 'CHECK_TO_PLAY_ROOM',
-  SET_PLAY_DATA: 'SET_PLAY_DATA',
-  SET_LIST_PLAY_QUESTION: 'SET_LIST_PLAY_QUESTION',
 }
 
 export const routerName = {
   home: 'home',
   about: 'about',
   profile: 'profile',
-  play: 'play',
-  room: 'room',
-  roomWait: 'roomWait',
   editor: 'editor',
   collections: 'collections',
   collectionData: 'collectionData',
@@ -69,29 +56,6 @@ export const dataRef = {
     root: 'questions',
     data: 'data',
   },
-  rooms: {
-    root: 'rooms',
-  },
-}
-
-export const roomType = {
-  basic: 'basic',
-}
-
-export const roomRule = {
-  basic: {
-    type: 'score',
-    scoreWin: 10,
-  },
-}
-
-export const roomStatus = {
-  wait: 'wait',
-  playing: 'playing',
-}
-
-export const dataPrefix = {
-  user: 'User_',
 }
 
 export const dataSample = {

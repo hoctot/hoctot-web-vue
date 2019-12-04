@@ -29,21 +29,6 @@ const routes = [
     component: () => import('@/views/Profile.vue'),
   },
   {
-    path: '/play',
-    name: routerName.play,
-    component: () => import('@/views/Play.vue'),
-  },
-  {
-    path: '/room',
-    name: routerName.room,
-    component: () => import('@/views/Room.vue'),
-  },
-  {
-    path: '/room-wait',
-    name: routerName.roomWait,
-    component: () => import('@/views/RoomWait.vue'),
-  },
-  {
     path: '/editor',
     name: routerName.editor,
     component: () => import('@/views/Editor.vue'),

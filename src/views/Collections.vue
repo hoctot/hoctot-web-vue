@@ -2,10 +2,6 @@
   <div class="mt-2 mb-20">
     <SearchBarData searchType="collection" />
     <!-- List collections -->
-    <div class="my-5">
-      <PlayRoomLink></PlayRoomLink>
-    </div>
-
     <div class="text-center my-2" v-if="listCollection.length">
       {{ listCollection.length }} bộ câu hỏi
       <img

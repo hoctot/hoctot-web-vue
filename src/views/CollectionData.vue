@@ -8,8 +8,8 @@
           @click.native="createQuestion"
           class="w-full sm:w-3/12 mb-2 mx-0 text-lg"
         >Tạo câu hỏi</BaseButton>
-        <BaseButton @click.native="createRoom" class="w-full sm:w-3/12 mb-2 text-lg">Thi đấu</BaseButton>
-        <BaseButton @click.native="createRoom" class="w-full sm:w-3/12 mb-2 text-lg">Ôn tập</BaseButton>
+        <!-- <BaseButton @click.native="createRoom" class="w-full sm:w-3/12 mb-2 text-lg">Thi đấu</BaseButton> -->
+        <!-- <BaseButton @click.native="createRoom" class="w-full sm:w-3/12 mb-2 text-lg">Ôn tập</BaseButton> -->
       </div>
 
       <div v-if="listQuestion.length" class="px-2">
@@ -21,8 +21,6 @@
             src="https://image.flaticon.com/icons/svg/1660/1660216.svg"
           />
         </div>
-        <br />
-        <PlayRoomLink></PlayRoomLink>
         <br />
         <div v-for="item in listQuestion" :key="item.id">
           <div
