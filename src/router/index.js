@@ -1,10 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home.vue'
-import { routerName } from '@/constant'
-// import store from '@/store'
+import { routerName, storeMutations } from '@/constant'
+import store from '@/store'
 // import { auth } from '@/firebaseConfig'
-// import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -82,6 +81,7 @@ router.beforeEach((to, from, next) => {
   // } else {
   //   next()
   // }
+  store.commit(storeMutations.SET_SEARCH, '')
 
   next()
 
