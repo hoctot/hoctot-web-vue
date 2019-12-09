@@ -14,7 +14,7 @@
 
       <div v-if="listQuestion.length" class="px-2">
         <div class="text-center">
-          {{listQuestion.length}} câu hỏi
+          {{getListSearch('listQuestion').length}} câu hỏi {{ search ? 'được tìm thấy' : ''}}
           <img
             class="inline-block"
             width="24"
@@ -111,7 +111,7 @@ export default {
     }
   },
   computed: {
-    ...mapState([storeState.user, storeState.listQuestion]),
+    ...mapState([storeState.user, storeState.search, storeState.listQuestion]),
     ...mapGetters([storeGetter.getListSearch]),
   },
   methods: {

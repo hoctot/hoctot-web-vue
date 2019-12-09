@@ -3,12 +3,14 @@
     <SearchBarData searchType="collection" />
     <!-- List collections -->
     <div class="text-center my-2" v-if="listCollection.length">
-      <p>{{ listCollection.length }} bộ câu hỏi</p>
-      <img
-        class="inline-block"
-        width="24"
-        src="https://image.flaticon.com/icons/svg/167/167756.svg"
-      />
+      <p>
+        {{ search ? 'Tìm thấy ' : ''}} {{ getListSearch('listCollection').length }} bộ câu hỏi
+        <img
+          class="inline-block"
+          width="24"
+          src="https://image.flaticon.com/icons/svg/167/167756.svg"
+        />
+      </p>
     </div>
 
     <div class="container mx-auto flex flex-wrap mt-2" v-if="listCollection.length">
@@ -132,7 +134,11 @@ export default {
     }
   },
   computed: {
-    ...mapState([storeState.user, storeState.listCollection]),
+    ...mapState([
+      storeState.user,
+      storeState.listCollection,
+      storeState.search,
+    ]),
     ...mapGetters([storeGetter.getListSearch]),
     routerName() {
       return routerName
