@@ -12,8 +12,6 @@ export const storeState = {
 
 export const storeGetter = {
   getListSearch: 'getListSearch',
-
-  roomModule: {},
 }
 
 export const storeActions = {
@@ -35,8 +33,6 @@ export const storeActions = {
   getListPlayQuestion: 'getListPlayQuestion',
   checkRightAnswer: 'checkRightAnswer',
   test: 'test',
-
-  roomModule: {},
 }
 
 export const storeMutations = {
@@ -44,8 +40,6 @@ export const storeMutations = {
   SET_USER: 'SET_USER',
   SET_LOADING: 'SET_LOADING',
   SET_SEARCH: 'SET_SEARCH',
-
-  roomModule: {},
 }
 
 export const routerName = {
@@ -57,8 +51,6 @@ export const routerName = {
   collectionData: 'collectionData',
   collectionEditor: 'collectionEditor',
   collectionEditorId: 'collectionEditorId',
-
-  roomModule: {},
 }
 
 export const dataRef = {
@@ -70,8 +62,6 @@ export const dataRef = {
     root: 'questions',
     data: 'data',
   },
-
-  roomModule: {},
 }
 
 export const dataSample = {

@@ -1,6 +1,39 @@
 <template>
   <div class="mt-2 mb-20">
     <SearchBarData searchType="collection" />
+
+    <!-- List Room -->
+    <div class="container mx-auto flex flex-wrap">
+      <div
+        v-for="item in $store.state.room.listRoom"
+        :key="item.id"
+        class="order-bottom-mobile w-full sm:w-6/12 md:w-4/12 xl:w-3/12 p-3"
+      >
+        <div
+          class="mx-auto max-w-sm rounded overflow-hidden shadow-md hover:shadow-lg collections-item"
+        >
+          <img class="w-full h-20 object-cover mt-2" :src="item.collection.imgUrl" />
+          <div class="px-6 py-4 text-center">
+            <p class="text-gray-700 mb-2 font-bold" v-text="item.title"></p>
+            <div class="text-xs mb-2" v-text="item.desc"></div>
+            <BaseButton class="mt-2 mb-2">Vào phòng</BaseButton>
+            <div>
+              <button
+                @click="$store.dispatch('room/deleteRoom', item.id)"
+                class="text-red-500 hover:text-orange-500 mt-2 font-bold cursor-pointer"
+              >Xoá</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <hr>
+    <br>
+
+    <!-- <pre> {{ $store.state.room.listRoom }} </pre> -->
+    <!-- End List Room -->
+
     <!-- List collections -->
     <div class="text-center my-2" v-if="listCollection.length">
       <p>
@@ -24,7 +57,11 @@
           <img class="w-full h-20 object-contain" src="/img/undraw/collections.png" />
           <div class="px-6 py-4 text-center">
             <!-- <p class="text-gray-700 mb-4 font-bold">Tạo: </p> -->
-            <BaseButton class="mb-4">Thi đấu Online</BaseButton>
+            <BaseButton
+              @click.native="$store.dispatch('room/createRoom', { collectionId: 'L1MHyOOh2JbQwlp4G6oN' })"
+              class="mb-4"
+            >Thi đấu Online</BaseButton>
+
             <router-link :to="{name: routerName.collectionEditor}">
               <BaseButton>Bộ câu hỏi mới</BaseButton>
             </router-link>
@@ -54,6 +91,18 @@
                       <img
                         class="bg-white hover:bg-gray-200 p-1 w-8"
                         src="https://image.flaticon.com/icons/svg/61/61499.svg"
+                      />
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      @click.stop="$store.dispatch('room/createRoom', { collectionId: 'L1MHyOOh2JbQwlp4G6oN', collection: item })"
+                      href="javascript:void(0)"
+                    >
+                      <img
+                        title="Thi đấu Online"
+                        class="bg-white hover:bg-blue-200 p-1 ml-auto w-8"
+                        src="https://image.flaticon.com/icons/svg/149/149145.svg"
                       />
                     </a>
                   </li>
@@ -174,6 +223,7 @@ export default {
     this.listCollectionPromise = this.$store.dispatch(
       storeActions.bindListCollection,
     )
+    this.$store.dispatch('room/bindListRoom')
   },
 }
 </script>

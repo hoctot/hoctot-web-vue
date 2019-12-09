@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { auth, googleProvider, db } from '@/firebaseConfig'
+import roomModule from './room'
 import {
   storeActions,
   storeMutations,
@@ -113,23 +114,6 @@ const store = new Vuex.Store({
         })
       },
     ),
-    // Rooms
-    [storeActions.bindListRoom]: firestoreAction(({ bindFirestoreRef }) => {
-      return new Promise((resolve, reject) => {
-        const unsubscrible = auth.onAuthStateChanged(user => {
-          unsubscrible()
-          if (user && user.uid) {
-            const dataPromise = bindFirestoreRef(
-              storeState.listRoom,
-              db.collection(dataRef.rooms.root),
-            )
-            resolve(dataPromise)
-          } else {
-            reject(Error('bindListCollection error'))
-          }
-        })
-      })
-    }),
     // Template
     async [storeActions.test]({ commit, state }, payload) {
       commit(storeMutations.SET_LOADING, true)
@@ -146,7 +130,9 @@ const store = new Vuex.Store({
     },
     // End actions
   },
-  modules: {},
+  modules: {
+    room: roomModule,
+  },
 })
 
 store.dispatch(storeActions.checkLogin)
