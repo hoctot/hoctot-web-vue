@@ -4,6 +4,7 @@ export const storeState = {
   isPlaying: 'isPlaying',
   listCollection: 'listCollection',
   listQuestion: 'listQuestion',
+  isLoading: 'isLoading',
 }
 
 export const storeGetter = {
