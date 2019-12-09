@@ -1,9 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { auth, googleProvider, db } from '@/firebaseConfig'
-import { storeActions, storeMutations, storeState, dataRef } from '@/constant'
+import {
+  storeActions,
+  storeMutations,
+  storeState,
+  dataRef,
+  storeGetter,
+} from '@/constant'
 import { vuexfireMutations, firestoreAction } from 'vuexfire'
 import router from '@/router'
+import { filter, includes, upperCase } from 'lodash'
 
 Vue.use(Vuex)
 
@@ -14,8 +21,14 @@ const store = new Vuex.Store({
     [storeState.user]: {},
     [storeState.listCollection]: [],
     [storeState.listQuestion]: [],
+    [storeState.search]: '',
   },
-  getters: {},
+  getters: {
+    [storeGetter.getListSearch]: state => stateName =>
+      filter(state[stateName], o =>
+        includes(upperCase(o.title || o.question), upperCase(state.search)),
+      ),
+  },
   mutations: {
     ...vuexfireMutations,
     [storeMutations.SET_LOADING](state, payload) {
@@ -29,6 +42,10 @@ const store = new Vuex.Store({
     [storeMutations.SET_USER](state, payload) {
       state[storeState.user] = payload
       console.log('💎 SET_USER', payload)
+    },
+    [storeMutations.SET_SEARCH](state, payload) {
+      state[storeState.search] = payload
+      console.log('💎 SET_SEARCH', payload)
     },
   },
   actions: {

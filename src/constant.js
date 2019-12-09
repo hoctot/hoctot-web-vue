@@ -5,9 +5,11 @@ export const storeState = {
   listCollection: 'listCollection',
   listQuestion: 'listQuestion',
   isLoading: 'isLoading',
+  search: 'search',
 }
 
 export const storeGetter = {
+  getListSearch: 'getListSearch',
 }
 
 export const storeActions = {
@@ -35,6 +37,7 @@ export const storeMutations = {
   SET_LOGIN: 'SET_LOGIN',
   SET_USER: 'SET_USER',
   SET_LOADING: 'SET_LOADING',
+  SET_SEARCH: 'SET_SEARCH',
 }
 
 export const routerName = {

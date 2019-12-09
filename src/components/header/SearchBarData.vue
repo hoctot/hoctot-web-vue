@@ -6,6 +6,7 @@
           class="search-collection w-full shadow appearance-none border rounded py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           type="text"
           placeholder="🔍 Tìm kiếm ..."
+          v-model="search"
         />
       </div>
 
@@ -21,7 +22,19 @@
 </template>
 
 <script>
-export default {}
+import { storeMutations } from '@/constant'
+export default {
+  computed: {
+    search: {
+      get() {
+        return this.$store.state.search
+      },
+      set(value) {
+        this.$store.commit(storeMutations.SET_SEARCH, value)
+      },
+    },
+  },
+}
 </script>
 
 <style scoped>

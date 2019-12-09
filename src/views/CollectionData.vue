@@ -22,7 +22,7 @@
           />
         </div>
         <br />
-        <div v-for="item in listQuestion" :key="item.id">
+        <div v-for="item in getListSearch('listQuestion')" :key="item.id">
           <div
             @click="editCollections(item)"
             class="relative menu-hover cursor-pointer w-full rounded overflow-hidden shadow hover:shadow-lg mb-5"
@@ -96,8 +96,9 @@ import {
   dataRef,
   storeMutations,
   storeActions,
+  storeGetter,
 } from '@/constant'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import { db } from '@/firebaseConfig'
 
 export default {
@@ -111,6 +112,7 @@ export default {
   },
   computed: {
     ...mapState([storeState.user, storeState.listQuestion]),
+    ...mapGetters([storeGetter.getListSearch]),
   },
   methods: {
     createQuestion() {

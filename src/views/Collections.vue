@@ -3,7 +3,7 @@
     <SearchBarData searchType="collection" />
     <!-- List collections -->
     <div class="text-center my-2" v-if="listCollection.length">
-      {{ listCollection.length }} bộ câu hỏi
+      <p>{{ listCollection.length }} bộ câu hỏi</p>
       <img
         class="inline-block"
         width="24"
@@ -16,23 +16,25 @@
         class="order-bottom-mobile w-full sm:w-6/12 md:w-4/12 xl:w-3/12 p-3"
         title="Bấm để tạo bộ câu hỏi mới"
       >
-        <router-link :to="{name: routerName.collectionEditor}">
-          <div
-            class="mx-auto max-w-sm rounded overflow-hidden shadow-md hover:shadow-lg collections-item"
-          >
-            <img class="w-full h-40 object-contain" src="/img/undraw/collections.png" />
-            <div class="px-6 py-4">
-              <div class="font-bold text-lg mb-2">Tạo bộ câu hỏi</div>
-              <p class="text-gray-700 text-xs">Cùng ôn tập, thi đấu trực tuyến miễn phí</p>
-            </div>
+        <div
+          class="mx-auto max-w-sm rounded overflow-hidden shadow-md hover:shadow-lg collections-item"
+        >
+          <img class="w-full h-20 object-contain" src="/img/undraw/collections.png" />
+          <div class="px-6 py-4 text-center">
+            <!-- <p class="text-gray-700 mb-4 font-bold">Tạo: </p> -->
+            <BaseButton class="mb-4">Thi đấu Online</BaseButton>
+            <router-link :to="{name: routerName.collectionEditor}">
+              <BaseButton>Bộ câu hỏi mới</BaseButton>
+            </router-link>
+            <!-- <div class="font-bold text-lg mb-2">Tạo bộ câu hỏi</div> -->
           </div>
-        </router-link>
+        </div>
       </div>
 
       <!-- Collection Card -->
       <div
         class="w-full sm:w-6/12 md:w-4/12 xl:w-3/12 p-3"
-        v-for="(item) in listCollection"
+        v-for="(item) in getListSearch('listCollection')"
         :key="item.id"
       >
         <div
@@ -106,7 +108,7 @@
       </Promised>
     </div>
 
-    <!-- <div>{{ listCollection }}</div> -->
+    <!-- <pre>{{ listCollection }}</pre> -->
   </div>
 </template>
 
@@ -118,8 +120,9 @@ import {
   dataRef,
   routerName,
   storeActions,
+  storeGetter,
 } from '@/constant'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -130,6 +133,7 @@ export default {
   },
   computed: {
     ...mapState([storeState.user, storeState.listCollection]),
+    ...mapGetters([storeGetter.getListSearch]),
     routerName() {
       return routerName
     },
