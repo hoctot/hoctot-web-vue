@@ -91,7 +91,7 @@
 import { db, serverTimestamp } from '@/firebaseConfig'
 import * as Quill from 'quill/dist/quill'
 import 'quill/dist/quill.snow.css'
-import { dataRef, storeState, storeMutations, dataSample } from '@/constant'
+import { ref, s, m, dataSample } from '@/constant'
 import { mapState } from 'vuex'
 
 export default {
@@ -116,7 +116,7 @@ export default {
     }
   },
   computed: {
-    ...mapState([storeState.user]),
+    ...mapState([s.user]),
     isEdit() {
       const result = Boolean(
         this.questionText && this.answerText && this.hintText,
@@ -130,12 +130,12 @@ export default {
     },
     startRec(type) {},
     createQuestion() {
-      this.$store.commit(storeMutations.SET_LOADING, true)
+      this.$store.commit(m.SET_LOADING, true)
 
       const docRef = db
-        .collection(dataRef.questions.root)
+        .collection(ref.questions.root)
         .doc(this.user.uid)
-        .collection(dataRef.questions.data)
+        .collection(ref.questions.data)
 
       if (this.isEditMode) {
         // Update
@@ -155,7 +155,7 @@ export default {
             this.$router.back()
           })
           .finally(() => {
-            this.$store.commit(storeMutations.SET_LOADING, false)
+            this.$store.commit(m.SET_LOADING, false)
           })
       } else {
         // Create
@@ -175,7 +175,7 @@ export default {
             }
           })
           .finally(() => {
-            this.$store.commit(storeMutations.SET_LOADING, false)
+            this.$store.commit(m.SET_LOADING, false)
           })
       }
     },

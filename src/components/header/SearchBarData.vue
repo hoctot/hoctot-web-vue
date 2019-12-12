@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { storeMutations } from '@/constant'
+import { m } from '@/constant'
 export default {
   computed: {
     search: {
@@ -30,7 +30,7 @@ export default {
         return this.$store.state.search
       },
       set(value) {
-        this.$store.commit(storeMutations.SET_SEARCH, value)
+        this.$store.commit(m.SET_SEARCH, value)
       },
     },
   },

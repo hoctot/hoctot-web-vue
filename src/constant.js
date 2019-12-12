@@ -1,4 +1,4 @@
-export const storeState = {
+export const s = {
   isLogin: 'isLogin',
   user: 'user',
   isPlaying: 'isPlaying',
@@ -10,11 +10,11 @@ export const storeState = {
   roomModule: {},
 }
 
-export const storeGetter = {
+export const g = {
   getListSearch: 'getListSearch',
 }
 
-export const storeActions = {
+export const a = {
   checkLogin: 'checkLogin',
   login: 'login',
   signOut: 'signOut',
@@ -35,14 +35,14 @@ export const storeActions = {
   test: 'test',
 }
 
-export const storeMutations = {
+export const m = {
   SET_LOGIN: 'SET_LOGIN',
   SET_USER: 'SET_USER',
   SET_LOADING: 'SET_LOADING',
   SET_SEARCH: 'SET_SEARCH',
 }
 
-export const routerName = {
+export const rn = {
   home: 'home',
   about: 'about',
   profile: 'profile',
@@ -55,7 +55,7 @@ export const routerName = {
   room: 'room',
 }
 
-export const dataRef = {
+export const ref = {
   collections: {
     root: 'collections',
     data: 'data',

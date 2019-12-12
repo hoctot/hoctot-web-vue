@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home.vue'
-import { routerName, storeMutations } from '@/constant'
+import { rn, m } from '@/constant'
 import store from '@/store'
 // import { auth } from '@/firebaseConfig'
 
@@ -10,12 +10,12 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: routerName.home,
+    name: rn.home,
     component: Home,
   },
   {
     path: '/about',
-    name: routerName.about,
+    name: rn.about,
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -24,37 +24,37 @@ const routes = [
   },
   {
     path: '/profile',
-    name: routerName.profile,
+    name: rn.profile,
     component: () => import('@/views/Profile.vue'),
   },
   {
     path: '/editor',
-    name: routerName.editor,
+    name: rn.editor,
     component: () => import('@/views/Editor.vue'),
   },
   {
     path: '/collections',
-    name: routerName.collections,
+    name: rn.collections,
     component: () => import('@/views/Collections.vue'),
   },
   {
     path: '/collection-data/:id',
-    name: routerName.collectionData,
+    name: rn.collectionData,
     component: () => import('@/views/CollectionData.vue'),
   },
   {
     path: '/collection-editor',
-    name: routerName.collectionEditor,
+    name: rn.collectionEditor,
     component: () => import('@/views/CollectionEditor.vue'),
   },
   {
     path: '/collection-editor/:id',
-    name: routerName.collectionEditorId,
+    name: rn.collectionEditorId,
     component: () => import('@/views/CollectionEditor.vue'),
   },
   {
     path: '/room/:roomId',
-    name: routerName.room,
+    name: rn.room,
     component: () => import('@/views/Room.vue'),
   },
   {
@@ -86,7 +86,7 @@ router.beforeEach((to, from, next) => {
   // } else {
   //   next()
   // }
-  store.commit(storeMutations.SET_SEARCH, '')
+  store.commit(m.SET_SEARCH, '')
 
   next()
 

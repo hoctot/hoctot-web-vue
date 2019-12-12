@@ -91,12 +91,12 @@
 
 <script>
 import {
-  routerName,
-  storeState,
-  dataRef,
-  storeMutations,
-  storeActions,
-  storeGetter,
+  rn,
+  s,
+  ref,
+  m,
+  a,
+  g,
 } from '@/constant'
 import { mapState, mapGetters } from 'vuex'
 import { db } from '@/firebaseConfig'
@@ -111,13 +111,13 @@ export default {
     }
   },
   computed: {
-    ...mapState([storeState.user, storeState.search, storeState.listQuestion]),
-    ...mapGetters([storeGetter.getListSearch]),
+    ...mapState([s.user, s.search, s.listQuestion]),
+    ...mapGetters([g.getListSearch]),
   },
   methods: {
     createQuestion() {
       this.$router.push({
-        name: routerName.editor,
+        name: rn.editor,
         query: {
           collectionId: this.$route.params.id,
           item: this.$route.query.item,
@@ -125,7 +125,7 @@ export default {
       })
     },
     createRoom() {
-      this.$store.dispatch(storeActions.createRoom, {
+      this.$ACTION(a.createRoom, {
         collectionId: this.$route.params.id,
         item: JSON.parse(this.$route.query.item),
         host: this.user,
@@ -133,7 +133,7 @@ export default {
     },
     editCollections(item) {
       this.$router.push({
-        name: routerName.editor,
+        name: rn.editor,
         query: {
           isEditMode: 'true',
           collectionId: this.$route.params.id,
@@ -148,14 +148,14 @@ export default {
     deleteCollection(id) {
       const isDelete = confirm(`Bạn có muốn xoá câu hỏi?`)
       if (isDelete) {
-        this.$store.commit(storeMutations.SET_LOADING, true)
-        db.collection(dataRef.questions.root)
+        this.$store.commit(m.SET_LOADING, true)
+        db.collection(ref.questions.root)
           .doc(this.user.uid)
-          .collection(dataRef.questions.data)
+          .collection(ref.questions.data)
           .doc(id)
           .delete()
           .finally(() => {
-            this.$store.commit(storeMutations.SET_LOADING, false)
+            this.$store.commit(m.SET_LOADING, false)
           })
       }
     },
@@ -163,8 +163,8 @@ export default {
   },
   mounted() {
     window.scrollTo(0, 0)
-    this.listQuestionPromise = this.$store.dispatch(
-      storeActions.bindListQuestion,
+    this.listQuestionPromise = this.$ACTION(
+      a.bindListQuestion,
     )
   },
 }

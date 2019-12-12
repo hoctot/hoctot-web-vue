@@ -16,10 +16,10 @@
           <div class="px-6 py-4 text-center">
             <p class="text-gray-700 mb-2 font-bold" v-text="item.title"></p>
             <div class="text-xs mb-2" v-text="item.desc"></div>
-            <BaseButton class="mt-2 mb-2">Vào phòng</BaseButton>
+            <BaseButton @click.native="$ACTION('room/enterRoom', item)" class="mt-2 mb-2">Vào phòng</BaseButton>
             <div>
               <button
-                @click="$store.dispatch('room/deleteRoom', item.id)"
+                @click="$ACTION('room/deleteRoom', item.id)"
                 class="text-red-500 hover:text-orange-500 mt-2 font-bold cursor-pointer"
               >Xoá</button>
             </div>
@@ -58,11 +58,11 @@
           <div class="px-6 py-4 text-center">
             <!-- <p class="text-gray-700 mb-4 font-bold">Tạo: </p> -->
             <BaseButton
-              @click.native="$store.dispatch('room/createRoom', { collectionId: 'L1MHyOOh2JbQwlp4G6oN' })"
+              @click.native="$ACTION('room/createRoom', { collectionId: 'L1MHyOOh2JbQwlp4G6oN' })"
               class="mb-4"
             >Thi đấu Online</BaseButton>
 
-            <router-link :to="{name: routerName.collectionEditor}">
+            <router-link :to="{name: rn.collectionEditor}">
               <BaseButton>Bộ câu hỏi mới</BaseButton>
             </router-link>
             <!-- <div class="font-bold text-lg mb-2">Tạo bộ câu hỏi</div> -->
@@ -73,14 +73,14 @@
       <!-- Collection Card -->
       <div
         class="w-full sm:w-6/12 md:w-4/12 xl:w-3/12 p-3"
-        v-for="(item) in getListSearch('listCollection')"
+        v-for="(item) in $GETTER('getListSearch', 'listCollection')"
         :key="item.id"
       >
         <div
           class="mx-auto max-w-sm rounded overflow-hidden shadow-md hover:shadow-lg collections-item"
         >
           <router-link
-            :to="{name: routerName.collectionData, params: { id: item.id }, query: { item: JSON.stringify(item) }}"
+            :to="{name: rn.collectionData, params: { id: item.id }, query: { item: JSON.stringify(item) }}"
           >
             <div class="relative menu-hover">
               <img class="w-full h-40 object-cover bg-gray-300" :src="item.imgUrl" />
@@ -96,7 +96,7 @@
                   </li>
                   <li>
                     <a
-                      @click.stop="$store.dispatch('room/createRoom', { collectionId: 'L1MHyOOh2JbQwlp4G6oN', collection: item })"
+                      @click.stop="$ACTION('room/createRoom', { collectionId: 'L1MHyOOh2JbQwlp4G6oN', collection: item })"
                       href="javascript:void(0)"
                     >
                       <img
@@ -165,14 +165,7 @@
 
 <script>
 import { db } from '@/firebaseConfig'
-import {
-  storeMutations,
-  storeState,
-  dataRef,
-  routerName,
-  storeActions,
-  storeGetter,
-} from '@/constant'
+import { m, s, ref, rn, a, g } from '@/constant'
 import { mapState, mapGetters } from 'vuex'
 
 export default {
@@ -183,43 +176,39 @@ export default {
     }
   },
   computed: {
-    ...mapState([
-      storeState.user,
-      storeState.listCollection,
-      storeState.search,
-    ]),
-    ...mapGetters([storeGetter.getListSearch]),
-    routerName() {
-      return routerName
+    ...mapState([s.user, s.listCollection, s.search]),
+    ...mapGetters([g.getListSearch]),
+    rn() {
+      return rn
     },
   },
   methods: {
     deleteCollection(id, title) {
       const isDelete = confirm(`Bạn có muốn xoá bộ câu hỏi : ${title}?`)
       if (isDelete) {
-        this.$COMMIT(storeMutations.SET_LOADING, true)
+        this.$COMMIT(m.SET_LOADING, true)
 
-        db.collection(dataRef.collections.root)
+        db.collection(ref.collections.root)
           .doc(this.user.uid)
-          .collection(dataRef.collections.data)
+          .collection(ref.collections.data)
           .doc(id)
           .delete()
           .finally(() => {
-            this.$store.commit(storeMutations.SET_LOADING, false)
+            this.$store.commit(m.SET_LOADING, false)
           })
       }
     },
     editCollections(id) {
-      this.$GO({ name: routerName.collectionEditorId, params: { id } })
+      this.$GO({ name: rn.collectionEditorId, params: { id } })
     },
     createCollection() {
-      this.$GO(routerName.collectionEditor)
+      this.$GO(rn.collectionEditor)
     },
     openMenu(event) {},
   },
   mounted() {
     window.scrollTo(0, 0)
-    this.listCollectionPromise = this.$ACTION(storeActions.bindListCollection)
+    this.listCollectionPromise = this.$ACTION(a.bindListCollection)
     this.$ACTION('room/bindListRoom')
   },
 }

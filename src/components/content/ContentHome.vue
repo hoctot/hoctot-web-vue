@@ -14,7 +14,7 @@
       </div>
       <div>
         <div v-if="isLogin === true">
-          <router-link :to="routerName.collections">
+          <router-link :to="rn.collections">
             <BaseButton>Bộ câu hỏi</BaseButton>
           </router-link>
         </div>
@@ -26,7 +26,7 @@
         <Loading v-if="isLogin === null"></Loading>
 
         <div>
-          <router-link :to="routerName.about">
+          <router-link :to="rn.about">
             <button class="text-blue-500 mt-5">Giới thiệu</button>
           </router-link>
         </div>
@@ -43,18 +43,18 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-import { storeActions, storeState, routerName } from '@/constant'
+import { a, s, rn } from '@/constant'
 
 export default {
   beforeMount() {},
   computed: {
-    ...mapState([storeState.isLogin]),
-    routerName() {
-      return routerName
+    ...mapState([s.isLogin]),
+    rn() {
+      return rn
     },
   },
   methods: {
-    ...mapActions([storeActions.login]),
+    ...mapActions([a.login]),
   },
 }
 </script>

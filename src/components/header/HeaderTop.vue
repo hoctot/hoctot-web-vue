@@ -13,12 +13,12 @@
 
 <script>
 import { mapState } from 'vuex'
-import { storeState, routerName } from '@/constant'
+import { s, rn } from '@/constant'
 export default {
-  computed: mapState([storeState.isLogin, storeState.isPlaying]),
+  computed: mapState([s.isLogin, s.isPlaying]),
   methods: {
     goToPage() {
-      const name = this.isLogin ? routerName.collections : routerName.home
+      const name = this.isLogin ? rn.collections : rn.home
       this.$router.push({ name }).catch(() => {})
     },
   },

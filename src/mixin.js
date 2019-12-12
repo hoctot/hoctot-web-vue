@@ -8,8 +8,12 @@ export default {
     $STATE(key) {
       return get(this.$store.state, key)
     },
-    $GETTER(key) {
-      return get(this.$store.getters, key)
+    $GETTER(key, stateKey) {
+      if (stateKey) {
+        return get(this.$store.getters, key)(stateKey)
+      } else {
+        return get(this.$store.getters, key)
+      }
     },
     $ACTION(name, value) {
       return this.$store.dispatch(name, value)

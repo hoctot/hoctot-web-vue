@@ -1,5 +1,5 @@
 import { db, fieldValue, auth } from '@/firebaseConfig'
-import { storeMutations, routerName } from '@/constant'
+import { m, rn } from '@/constant'
 import { getUserData } from '@/utils'
 import { vuexfireMutations, firestoreAction } from 'vuexfire'
 import router from '@/router'
@@ -12,7 +12,7 @@ const firebaseRef = {
 //   user: 'User_',
 // }
 
-const roomDataRef = {
+const roomref = {
   root: 'rooms',
   data: 'data',
 }
@@ -81,7 +81,7 @@ export default {
       })
     }),
     async createRoom({ state, dispatch, commit, rootState }, payload) {
-      commit(storeMutations.SET_LOADING, true, { root: true })
+      commit(m.SET_LOADING, true, { root: true })
       try {
         const { collectionId, collection = {} } = payload
         const addData = {
@@ -103,18 +103,18 @@ export default {
           // Room Users
           users: {},
         }
-        const result = await db.collection(roomDataRef.root).add(addData)
+        const result = await db.collection(roomref.root).add(addData)
         console.log(`TCL: createRoom -> result`, result)
         dispatch('enterRoom', result)
       } catch (error) {
         console.error(`TCL: createRoom -> error`, error)
       } finally {
-        commit(storeMutations.SET_LOADING, false, { root: true })
+        commit(m.SET_LOADING, false, { root: true })
       }
     },
     async enterRoom({ dispatch, commit, rootState }, item) {
       try {
-        commit(storeMutations.SET_LOADING, true, { root: true })
+        commit(m.SET_LOADING, true, { root: true })
         const userData = {
           ...getUserData(rootState.user),
           status: roomUserStatus.waiting,
@@ -126,7 +126,7 @@ export default {
         })
         // Config Room
         router.push({
-          name: routerName.room,
+          name: rn.room,
           params: {
             roomId: item.id,
           },
@@ -141,8 +141,8 @@ export default {
             value: data || {},
           })
           if (!data) {
-            router.currentRoute.name !== routerName.collections &&
-              router.push({ name: routerName.collections })
+            router.currentRoute.name !== rn.collections &&
+              router.push({ name: rn.collections })
           }
         })
 
@@ -153,12 +153,12 @@ export default {
       } catch (error) {
         console.error(`TCL: enterRoom -> error`, error)
       } finally {
-        commit(storeMutations.SET_LOADING, false, { root: true })
+        commit(m.SET_LOADING, false, { root: true })
       }
     },
     async updateRoom({ dispatch, commit, rootState }, payload) {
       try {
-        commit(storeMutations.SET_LOADING, true, { root: true })
+        commit(m.SET_LOADING, true, { root: true })
         // const userData = getUserData(rootState.user)
         const result = await firebaseRef.room.doc(payload.roomId).update({
           ['users.' + rootState.user.uid + '.score']: fieldValue.increment(1),
@@ -167,18 +167,18 @@ export default {
       } catch (error) {
         console.error(`TCL: enterRoom -> error`, error)
       } finally {
-        commit(storeMutations.SET_LOADING, false, { root: true })
+        commit(m.SET_LOADING, false, { root: true })
       }
     },
 
     async exitRoom({ dispatch, commit, rootState, state }, { roomId }) {
       try {
-        commit(storeMutations.SET_LOADING, true, { root: true })
+        commit(m.SET_LOADING, true, { root: true })
         const result = await firebaseRef.room.doc(roomId).update({
           ['users.' + rootState.user.uid]: fieldValue.delete(),
         })
         // Config Room
-        router.push({ name: routerName.collections })
+        router.push({ name: rn.collections })
         commit('RESET_STATE', {
           key: 'current',
           value: {},
@@ -195,12 +195,12 @@ export default {
       } catch (error) {
         console.error(`TCL: exitRoom -> error`, error)
       } finally {
-        commit(storeMutations.SET_LOADING, false, { root: true })
+        commit(m.SET_LOADING, false, { root: true })
       }
     },
     async deleteRoom({ dispatch, commit, state }, collectionId) {
       try {
-        commit(storeMutations.SET_LOADING, true, { root: true })
+        commit(m.SET_LOADING, true, { root: true })
         const result = await firebaseRef.room.doc(collectionId).delete()
         console.log(`TCL: deleteRoom -> result`, result)
         commit('RESET_STATE', {
@@ -218,7 +218,7 @@ export default {
       } catch (error) {
         console.error(`TCL: deleteRoom -> error`, error)
       } finally {
-        commit(storeMutations.SET_LOADING, false, { root: true })
+        commit(m.SET_LOADING, false, { root: true })
       }
     },
   },

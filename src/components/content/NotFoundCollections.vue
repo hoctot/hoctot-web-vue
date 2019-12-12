@@ -15,11 +15,11 @@
 </template>
 
 <script>
-// import { routerName } from '@/constant'
+// import { rn } from '@/constant'
 export default {
   methods: {
     goToEditorPage() {
-      // this.$router.push({ name: routerName.collectionEditor })
+      // this.$router.push({ name: rn.collectionEditor })
     },
   },
 }

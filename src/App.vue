@@ -20,9 +20,9 @@
 
 <script>
 import { mapState } from 'vuex'
-import { storeState } from '@/constant'
+import { s } from '@/constant'
 export default {
-  computed: mapState([storeState.isLogin, storeState.isLoading]),
+  computed: mapState([s.isLogin, s.isLoading]),
 }
 </script>
 

@@ -27,13 +27,13 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import { storeState, storeActions } from '@/constant'
+import { s, a } from '@/constant'
 export default {
   data() {
     return {}
   },
-  computed: mapState([storeState.isLogin, storeState.user]),
-  methods: mapActions([storeActions.signOut]),
+  computed: mapState([s.isLogin, s.user]),
+  methods: mapActions([a.signOut]),
 }
 </script>
 

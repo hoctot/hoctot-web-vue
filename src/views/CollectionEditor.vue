@@ -85,11 +85,11 @@
 import { mapState } from 'vuex'
 import { db, serverTimestamp } from '@/firebaseConfig'
 import {
-  storeMutations,
-  storeState,
-  dataRef,
+  m,
+  s,
+  ref,
   dataSample,
-  routerName,
+  rn,
 } from '@/constant'
 import sample from 'lodash/sample'
 export default {
@@ -213,12 +213,12 @@ export default {
     },
     onSubmit(e) {
       console.log('Submit form')
-      this.$store.commit(storeMutations.SET_LOADING, true)
+      this.$store.commit(m.SET_LOADING, true)
 
       const docRef = db
-        .collection(dataRef.collections.root)
+        .collection(ref.collections.root)
         .doc(this.user.uid)
-        .collection(dataRef.collections.data)
+        .collection(ref.collections.data)
 
       if (this.isEditMode) {
         docRef
@@ -232,9 +232,9 @@ export default {
             },
             { merge: true },
           )
-          .then(data => this.$router.push({ name: routerName.collections }))
+          .then(data => this.$router.push({ name: rn.collections }))
           .finally(() => {
-            this.$store.commit(storeMutations.SET_LOADING, false)
+            this.$store.commit(m.SET_LOADING, false)
           })
         return
       }
@@ -250,9 +250,9 @@ export default {
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp(),
         })
-        .then(data => this.$router.push({ name: routerName.collections }))
+        .then(data => this.$router.push({ name: rn.collections }))
         .finally(() => {
-          this.$store.commit(storeMutations.SET_LOADING, false)
+          this.$store.commit(m.SET_LOADING, false)
         })
     },
   },
@@ -260,7 +260,7 @@ export default {
     isEdit() {
       return Boolean(this.title && this.desc)
     },
-    ...mapState([storeState.user]),
+    ...mapState([s.user]),
   },
 }
 </script>
