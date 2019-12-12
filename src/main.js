@@ -11,12 +11,15 @@ import './baseComponent'
 import 'tailwindcss/dist/tailwind.min.css'
 import '@/style/index.scss'
 import '@/firebaseConfig'
+import globalMixin from './mixin'
 
 Vue.config.productionTip = false
 
 Vue.component('Promised', Promised)
 Vue.use(VueTyperPlugin)
 Vue.use(firestorePlugin)
+
+Vue.mixin(globalMixin)
 
 const vm = new Vue({
   router,

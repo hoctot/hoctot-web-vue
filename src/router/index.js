@@ -53,6 +53,11 @@ const routes = [
     component: () => import('@/views/CollectionEditor.vue'),
   },
   {
+    path: '/room/:roomId',
+    name: routerName.room,
+    component: () => import('@/views/Room.vue'),
+  },
+  {
     path: '*',
     name: 'notfound',
     component: Home,

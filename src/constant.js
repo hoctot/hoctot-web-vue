@@ -51,6 +51,8 @@ export const routerName = {
   collectionData: 'collectionData',
   collectionEditor: 'collectionEditor',
   collectionEditorId: 'collectionEditorId',
+  // Room
+  room: 'room',
 }
 
 export const dataRef = {

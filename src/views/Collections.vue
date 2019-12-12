@@ -27,9 +27,9 @@
         </div>
       </div>
     </div>
-    <br>
-    <hr>
-    <br>
+    <br />
+    <hr />
+    <br />
 
     <!-- <pre> {{ $store.state.room.listRoom }} </pre> -->
     <!-- End List Room -->
@@ -197,7 +197,8 @@ export default {
     deleteCollection(id, title) {
       const isDelete = confirm(`Bạn có muốn xoá bộ câu hỏi : ${title}?`)
       if (isDelete) {
-        this.$store.commit(storeMutations.SET_LOADING, true)
+        this.$COMMIT(storeMutations.SET_LOADING, true)
+
         db.collection(dataRef.collections.root)
           .doc(this.user.uid)
           .collection(dataRef.collections.data)
@@ -209,21 +210,17 @@ export default {
       }
     },
     editCollections(id) {
-      this.$router.push({ name: routerName.collectionEditorId, params: { id } })
+      this.$GO({ name: routerName.collectionEditorId, params: { id } })
     },
     createCollection() {
-      this.$router.push({
-        name: routerName.collectionEditor,
-      })
+      this.$GO(routerName.collectionEditor)
     },
     openMenu(event) {},
   },
   mounted() {
     window.scrollTo(0, 0)
-    this.listCollectionPromise = this.$store.dispatch(
-      storeActions.bindListCollection,
-    )
-    this.$store.dispatch('room/bindListRoom')
+    this.listCollectionPromise = this.$ACTION(storeActions.bindListCollection)
+    this.$ACTION('room/bindListRoom')
   },
 }
 </script>
