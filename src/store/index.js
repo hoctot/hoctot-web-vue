@@ -112,7 +112,7 @@ const store = new Vuex.Store({
       filter(mutation, stateBefore, stateAfter) {
         // returns `true` if a mutation should be logged
         // `mutation` is a `{ type, payload }`
-        return !['vuexfire/ARRAY_ADD', 'vuexfire/SET_VALUE'].includes(
+        return !['vuexfire/ARRAY_ADD', 'vuexfire/SET_VALUE', 'vuexfire/ARRAY_REMOVE'].includes(
           mutation.type,
         )
       },
