@@ -16,10 +16,10 @@
           <div class="px-6 py-4 text-center">
             <p class="text-gray-700 mb-2 font-bold" v-text="item.title"></p>
             <div class="text-xs mb-2" v-text="item.desc"></div>
-            <BaseButton @click.native="$ACTION('room/enterRoom', item)" class="mt-2 mb-2">Vào phòng</BaseButton>
+            <BaseButton @click.native="$ACTION('room/$enterRoom', item)" class="mt-2 mb-2">Vào phòng</BaseButton>
             <div>
               <button
-                @click="$ACTION('room/deleteRoom', item.id)"
+                @click="$ACTION('room/$deleteRoom', item.id)"
                 class="text-red-500 hover:text-orange-500 mt-2 font-bold cursor-pointer"
               >Xoá</button>
             </div>
@@ -58,7 +58,7 @@
           <div class="px-6 py-4 text-center">
             <!-- <p class="text-gray-700 mb-4 font-bold">Tạo: </p> -->
             <BaseButton
-              @click.native="$ACTION('room/createRoom', { collectionId: 'L1MHyOOh2JbQwlp4G6oN' })"
+              @click.native="$ACTION('room/$createRoom', { collectionId: 'L1MHyOOh2JbQwlp4G6oN' })"
               class="mb-4"
             >Thi đấu Online</BaseButton>
 
@@ -96,7 +96,7 @@
                   </li>
                   <li>
                     <a
-                      @click.stop="$ACTION('room/createRoom', { collectionId: 'L1MHyOOh2JbQwlp4G6oN', collection: item })"
+                      @click.stop="$ACTION('room/$createRoom', { collectionId: 'L1MHyOOh2JbQwlp4G6oN', collection: item })"
                       href="javascript:void(0)"
                     >
                       <img

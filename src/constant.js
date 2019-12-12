@@ -21,17 +21,6 @@ export const a = {
   bindListCollection: 'bindListCollection',
   bindListQuestion: 'bindListQuestion',
   bindListRoom: 'bindListRoom',
-  createRoom: 'createRoom',
-  enterRoom: 'enterRoom',
-  exitRoom: 'exitRoom',
-  deleteRoom: 'deleteRoom',
-  updateRoom: 'updateRoom',
-  setRoomData: 'setRoomData',
-  checkInRoom: 'checkInRoom',
-  startRoom: 'startRoom',
-  setPlayData: 'setPlayData',
-  getListPlayQuestion: 'getListPlayQuestion',
-  checkRightAnswer: 'checkRightAnswer',
   test: 'test',
 }
 

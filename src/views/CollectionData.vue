@@ -8,8 +8,6 @@
           @click.native="createQuestion"
           class="w-full sm:w-3/12 mb-2 mx-0 text-lg"
         >Tạo câu hỏi</BaseButton>
-        <!-- <BaseButton @click.native="createRoom" class="w-full sm:w-3/12 mb-2 text-lg">Thi đấu</BaseButton> -->
-        <!-- <BaseButton @click.native="createRoom" class="w-full sm:w-3/12 mb-2 text-lg">Ôn tập</BaseButton> -->
       </div>
 
       <div v-if="listQuestion.length" class="px-2">
@@ -90,14 +88,7 @@
 </template>
 
 <script>
-import {
-  rn,
-  s,
-  ref,
-  m,
-  a,
-  g,
-} from '@/constant'
+import { rn, s, ref, m, a, g } from '@/constant'
 import { mapState, mapGetters } from 'vuex'
 import { db } from '@/firebaseConfig'
 
@@ -122,13 +113,6 @@ export default {
           collectionId: this.$route.params.id,
           item: this.$route.query.item,
         },
-      })
-    },
-    createRoom() {
-      this.$ACTION(a.createRoom, {
-        collectionId: this.$route.params.id,
-        item: JSON.parse(this.$route.query.item),
-        host: this.user,
       })
     },
     editCollections(item) {
@@ -163,9 +147,7 @@ export default {
   },
   mounted() {
     window.scrollTo(0, 0)
-    this.listQuestionPromise = this.$ACTION(
-      a.bindListQuestion,
-    )
+    this.listQuestionPromise = this.$ACTION(a.bindListQuestion)
   },
 }
 </script>

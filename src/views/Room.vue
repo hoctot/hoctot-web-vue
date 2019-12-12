@@ -2,10 +2,10 @@
   <div class="container mx-auto px-2">
     <div>
       <BaseButton
-        @click.native="$ACTION('room/updateRoom', { roomId: $route.params.roomId })"
+        @click.native="$ACTION('room/$updateRoom', { roomId: $route.params.roomId })"
       >+ Điểm {{$route.params.roomId}}</BaseButton>
       <BaseButton
-        @click.native="$ACTION('room/exitRoom', { roomId: $route.params.roomId })"
+        @click.native="$ACTION('room/$exitRoom', { roomId: $route.params.roomId })"
       >- Thoát phòng</BaseButton>
     </div>
     <div>{{ $STATE('test') }}</div>

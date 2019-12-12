@@ -80,7 +80,7 @@ export default {
         })
       })
     }),
-    async createRoom({ state, dispatch, commit, rootState }, payload) {
+    async $createRoom({ state, dispatch, commit, rootState }, payload) {
       try {
         const { collectionId, collection = {} } = payload
         const addData = {
@@ -103,14 +103,12 @@ export default {
           users: {},
         }
         const result = await db.collection(roomref.root).add(addData)
-        console.log(`TCL: createRoom -> result`, result)
-        dispatch('enterRoom', result)
+        dispatch('$enterRoom', result)
       } catch (error) {
-        console.error(`TCL: createRoom -> error`, error)
       } finally {
       }
     },
-    async enterRoom({ dispatch, commit, rootState }, item) {
+    async $enterRoom({ dispatch, commit, rootState }, item) {
       try {
         const userData = {
           ...getUserData(rootState.user),
@@ -148,11 +146,11 @@ export default {
           value: unsubscribe,
         })
       } catch (error) {
-        console.error(`TCL: enterRoom -> error`, error)
+        console.error(`TCL: $enterRoom -> error`, error)
       } finally {
       }
     },
-    async updateRoom({ dispatch, commit, rootState }, payload) {
+    async $updateRoom({ dispatch, commit, rootState }, payload) {
       try {
         // const userData = getUserData(rootState.user)
         const result = await firebaseRef.room.doc(payload.roomId).update({
@@ -165,7 +163,7 @@ export default {
       }
     },
 
-    async exitRoom({ dispatch, commit, rootState, state }, { roomId }) {
+    async $exitRoom({ dispatch, commit, rootState, state }, { roomId }) {
       try {
         const result = await firebaseRef.room.doc(roomId).update({
           ['users.' + rootState.user.uid]: fieldValue.delete(),
@@ -190,7 +188,7 @@ export default {
       } finally {
       }
     },
-    async deleteRoom({ dispatch, commit, state }, collectionId) {
+    async $deleteRoom({ dispatch, commit, state }, collectionId) {
       try {
         const result = await firebaseRef.room.doc(collectionId).delete()
         console.log(`TCL: deleteRoom -> result`, result)
