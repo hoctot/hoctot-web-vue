@@ -19,7 +19,7 @@
             <BaseButton @click.native="$ACTION('room/$enterRoom', item)" class="mt-2 mb-2">Vào phòng</BaseButton>
             <div>
               <button
-                v-if="$IS_HOST"
+                v-if="$CHECK_IS_HOST(item)"
                 @click="$ACTION('room/$deleteRoom', item.id)"
                 class="text-red-500 hover:text-orange-500 mt-2 font-bold cursor-pointer"
               >Xoá</button>

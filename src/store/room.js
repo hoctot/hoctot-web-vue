@@ -2,6 +2,7 @@ import { db, fieldValue } from '@/firebaseConfig'
 import { rn } from '@/constant'
 import { getUserData, bindDataActionPromise } from '@/utils'
 import router from '@/router'
+import { get } from 'lodash'
 
 const dbRef = {
   room: db.collection('rooms'),
@@ -41,10 +42,22 @@ export default {
     current: {},
     listRoom: [],
     listQuestion: [],
-    test: 'test',
+    test: 'test Room',
     unsubscribe: undefined,
   },
-  getters: {},
+  getters: {
+    userInRoom(state, getters, rootState) {
+      return get(state.current, 'users.' + get(rootState.user, 'uid'))
+    },
+    isUserReady(state, getters, rootState) {
+      return Boolean(
+        get(
+          state.current,
+          'users.' + get(rootState.user, 'uid') + '.status',
+        ) === 'ready',
+      )
+    },
+  },
   mutations: {
     // ...vuexfireMutations,
     SET_STATE(state, payload) {
@@ -74,8 +87,6 @@ export default {
           createdAt: fieldValue.serverTimestamp(),
           updatedAt: fieldValue.serverTimestamp(),
           // Room Config
-          score: 0,
-          time: 0,
           answerType: [roomAnswerType.input],
           answerMode: roomAnswerMode.score,
           ruleWin: ['score', '>', 20],
@@ -125,7 +136,9 @@ export default {
       try {
         // const userData = getUserData(rootState.user)
         await dbRef.room.doc(payload.roomId).update({
-          ['users.' + rootState.user.uid + '.score']: fieldValue.increment(1),
+          [`users.${rootState.user.uid}.${payload.key}`]: payload.fieldValue
+            ? fieldValue[payload.fieldValue](payload.value)
+            : payload.value,
         })
       } catch (error) {
         console.error(`TCL: $updateRoom -> error`, error)

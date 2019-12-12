@@ -19,6 +19,7 @@ const store = new Vuex.Store({
     [s.listCollection]: [],
     [s.listQuestion]: [],
     [s.search]: '',
+    test: 'Global'
   },
   getters: {
     [g.getListSearch]: state => stateName =>
