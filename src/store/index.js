@@ -107,7 +107,18 @@ const store = new Vuex.Store({
   modules: {
     room: roomModule,
   },
-  plugins: [createLogger(), loadingPlugin],
+  plugins: [
+    createLogger({
+      filter(mutation, stateBefore, stateAfter) {
+        // returns `true` if a mutation should be logged
+        // `mutation` is a `{ type, payload }`
+        return !['vuexfire/ARRAY_ADD', 'vuexfire/SET_VALUE'].includes(
+          mutation.type,
+        )
+      },
+    }),
+    loadingPlugin,
+  ],
 })
 
 store.dispatch(a.checkLogin)

@@ -1,16 +1,11 @@
-import { db, fieldValue, auth } from '@/firebaseConfig'
+import { db, fieldValue } from '@/firebaseConfig'
 import { rn } from '@/constant'
-import { getUserData } from '@/utils'
-import { vuexfireMutations, firestoreAction } from 'vuexfire'
+import { getUserData, bindDataActionPromise } from '@/utils'
 import router from '@/router'
 
-const firebaseRef = {
+const dbRef = {
   room: db.collection('rooms'),
 }
-
-// const roomPrefix = {
-//   user: 'User_',
-// }
 
 const roomref = {
   root: 'rooms',
@@ -51,35 +46,20 @@ export default {
   },
   getters: {},
   mutations: {
-    ...vuexfireMutations,
+    // ...vuexfireMutations,
     SET_STATE(state, payload) {
-      console.log('📩 SET_STATE', payload)
       state[payload.key] = payload.value
     },
     UPDATE_STATE(state, payload) {
-      console.log('🆗 UPDATE_STATE', payload)
       state[payload.key] = { ...state[payload.key], ...payload }
     },
     RESET_STATE(state, payload) {
-      console.log('🧨 RESET_STATE', payload)
       state[payload.key] = payload.value
     },
   },
   actions: {
-    bindListRoom: firestoreAction(({ bindFirestoreRef }) => {
-      console.log('bindListRoom')
-      return new Promise((resolve, reject) => {
-        const unsubscrible = auth.onAuthStateChanged(user => {
-          unsubscrible()
-          if (user && user.uid) {
-            const dataPromise = bindFirestoreRef('listRoom', firebaseRef.room)
-            resolve(dataPromise)
-          } else {
-            reject(Error('bindListQuestion error'))
-          }
-        })
-      })
-    }),
+    bindListRoom: bindDataActionPromise('listRoom', dbRef.room),
+
     async $createRoom({ state, dispatch, commit, rootState }, payload) {
       try {
         const { collectionId, collection = {} } = payload
@@ -105,7 +85,7 @@ export default {
         const result = await db.collection(roomref.root).add(addData)
         dispatch('$enterRoom', result)
       } catch (error) {
-      } finally {
+        console.log(`TCL: $createRoom -> catch`, error)
       }
     },
     async $enterRoom({ dispatch, commit, rootState }, item) {
@@ -116,7 +96,7 @@ export default {
           score: 0,
           time: 0,
         }
-        await firebaseRef.room.doc(item.id).update({
+        await dbRef.room.doc(item.id).update({
           ['users.' + rootState.user.uid]: userData,
         })
         // Config Room
@@ -127,86 +107,58 @@ export default {
           },
         })
 
-        const unsubscribe = firebaseRef.room.doc(item.id).onSnapshot(doc => {
-          const source = doc.metadata.hasPendingWrites ? 'Local' : 'Server'
+        const unsubscribe = dbRef.room.doc(item.id).onSnapshot(doc => {
           const data = doc.data()
-          console.log(source, ' data: ', data)
-          commit('SET_STATE', {
-            key: 'current',
-            value: data || {},
-          })
+          commit('SET_STATE', { key: 'current', value: data || {} })
           if (!data) {
             router.currentRoute.name !== rn.collections &&
               router.push({ name: rn.collections })
           }
         })
 
-        commit('SET_STATE', {
-          key: 'unsubscribe',
-          value: unsubscribe,
-        })
+        commit('SET_STATE', { key: 'unsubscribe', value: unsubscribe })
       } catch (error) {
         console.error(`TCL: $enterRoom -> error`, error)
-      } finally {
       }
     },
     async $updateRoom({ dispatch, commit, rootState }, payload) {
       try {
         // const userData = getUserData(rootState.user)
-        const result = await firebaseRef.room.doc(payload.roomId).update({
+        await dbRef.room.doc(payload.roomId).update({
           ['users.' + rootState.user.uid + '.score']: fieldValue.increment(1),
         })
-        console.log(`TCL: enterRoom -> result`, result)
       } catch (error) {
-        console.error(`TCL: enterRoom -> error`, error)
-      } finally {
+        console.error(`TCL: $updateRoom -> error`, error)
       }
     },
 
     async $exitRoom({ dispatch, commit, rootState, state }, { roomId }) {
       try {
-        const result = await firebaseRef.room.doc(roomId).update({
+        await dbRef.room.doc(roomId).update({
           ['users.' + rootState.user.uid]: fieldValue.delete(),
         })
         // Config Room
         router.push({ name: rn.collections })
-        commit('RESET_STATE', {
-          key: 'current',
-          value: {},
-        })
+        commit('RESET_STATE', { key: 'current', value: {} })
         if (state.unsubscribe) {
           state.unsubscribe()
-          commit('RESET_STATE', {
-            key: 'unsubscribe',
-            value: undefined,
-          })
+          commit('RESET_STATE', { key: 'unsubscribe', value: undefined })
         }
-
-        console.log(`TCL: exitRoom -> result`, result)
       } catch (error) {
         console.error(`TCL: exitRoom -> error`, error)
-      } finally {
       }
     },
     async $deleteRoom({ dispatch, commit, state }, collectionId) {
       try {
-        const result = await firebaseRef.room.doc(collectionId).delete()
-        console.log(`TCL: deleteRoom -> result`, result)
-        commit('RESET_STATE', {
-          key: 'current',
-          value: {},
-        })
+        await dbRef.room.doc(collectionId).delete()
+        commit('RESET_STATE', { key: 'current', value: {} })
 
         if (state.unsubscribe) {
           state.unsubscribe()
-          commit('RESET_STATE', {
-            key: 'unsubscribe',
-            value: undefined,
-          })
+          commit('RESET_STATE', { key: 'unsubscribe', value: undefined })
         }
       } catch (error) {
         console.error(`TCL: deleteRoom -> error`, error)
-      } finally {
       }
     },
   },
