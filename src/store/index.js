@@ -2,16 +2,12 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import { auth, googleProvider, db } from '@/firebaseConfig'
 import roomModule from './room'
-import {
-  a,
-  m,
-  s,
-  ref,
-  g,
-} from '@/constant'
+import { a, m, s, ref, g } from '@/constant'
 import { vuexfireMutations, firestoreAction } from 'vuexfire'
 import router from '@/router'
 import { filter, includes, upperCase } from 'lodash'
+import { loadingPlugin } from './plugin'
+import createLogger from 'vuex/dist/logger'
 
 Vue.use(Vuex)
 
@@ -34,24 +30,19 @@ const store = new Vuex.Store({
     ...vuexfireMutations,
     [m.SET_LOADING](state, payload) {
       state[s.isLoading] = payload
-      console.log('💎 SET_LOADING', payload)
     },
     [m.SET_LOGIN](state, payload) {
       state[s.isLogin] = payload
-      console.log('💎 SET_LOGIN', payload)
     },
     [m.SET_USER](state, payload) {
       state[s.user] = payload
-      console.log('💎 SET_USER', payload)
     },
     [m.SET_SEARCH](state, payload) {
       state[s.search] = payload
-      console.log('💎 SET_SEARCH', payload)
     },
   },
   actions: {
     [a.checkLogin]({ dispatch }) {
-      console.log('⌛ checkLogin')
       auth.onAuthStateChanged(function(user) {
         store.commit(m.SET_LOGIN, Boolean(user))
         store.commit(m.SET_USER, user)
@@ -71,7 +62,6 @@ const store = new Vuex.Store({
     [a.login]() {
       auth.signInWithRedirect(googleProvider)
     },
-    // Firebase
     // List Question
     [a.bindListQuestion]: firestoreAction(({ bindFirestoreRef }) => {
       return new Promise((resolve, reject) => {
@@ -93,46 +83,31 @@ const store = new Vuex.Store({
       })
     }),
     // List Collection
-    [a.bindListCollection]: firestoreAction(
-      ({ bindFirestoreRef }) => {
-        return new Promise((resolve, reject) => {
-          const unsubscrible = auth.onAuthStateChanged(user => {
-            unsubscrible()
-            if (user && user.uid) {
-              const dataPromise = bindFirestoreRef(
-                s.listCollection,
-                db
-                  .collection(ref.collections.root)
-                  .doc(user.uid)
-                  .collection(ref.collections.data),
-              )
-              resolve(dataPromise)
-            } else {
-              reject(Error('bindListCollection error'))
-            }
-          })
+    [a.bindListCollection]: firestoreAction(({ bindFirestoreRef }) => {
+      return new Promise((resolve, reject) => {
+        const unsubscrible = auth.onAuthStateChanged(user => {
+          unsubscrible()
+          if (user && user.uid) {
+            const dataPromise = bindFirestoreRef(
+              s.listCollection,
+              db
+                .collection(ref.collections.root)
+                .doc(user.uid)
+                .collection(ref.collections.data),
+            )
+            resolve(dataPromise)
+          } else {
+            reject(Error('bindListCollection error'))
+          }
         })
-      },
-    ),
-    // Template
-    async [a.test]({ commit, state }, payload) {
-      commit(m.SET_LOADING, true)
-      try {
-        await db
-          .collection(ref.rooms.root)
-          .doc(payload.roomId)
-          .set({}, { merge: true })
-      } catch (error) {
-        console.error(error)
-      } finally {
-        commit(m.SET_LOADING, false)
-      }
-    },
+      })
+    }),
     // End actions
   },
   modules: {
     room: roomModule,
   },
+  plugins: [createLogger(), loadingPlugin],
 })
 
 store.dispatch(a.checkLogin)

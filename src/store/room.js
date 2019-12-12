@@ -1,5 +1,5 @@
 import { db, fieldValue, auth } from '@/firebaseConfig'
-import { m, rn } from '@/constant'
+import { rn } from '@/constant'
 import { getUserData } from '@/utils'
 import { vuexfireMutations, firestoreAction } from 'vuexfire'
 import router from '@/router'
@@ -81,7 +81,6 @@ export default {
       })
     }),
     async createRoom({ state, dispatch, commit, rootState }, payload) {
-      commit(m.SET_LOADING, true, { root: true })
       try {
         const { collectionId, collection = {} } = payload
         const addData = {
@@ -109,12 +108,10 @@ export default {
       } catch (error) {
         console.error(`TCL: createRoom -> error`, error)
       } finally {
-        commit(m.SET_LOADING, false, { root: true })
       }
     },
     async enterRoom({ dispatch, commit, rootState }, item) {
       try {
-        commit(m.SET_LOADING, true, { root: true })
         const userData = {
           ...getUserData(rootState.user),
           status: roomUserStatus.waiting,
@@ -153,12 +150,10 @@ export default {
       } catch (error) {
         console.error(`TCL: enterRoom -> error`, error)
       } finally {
-        commit(m.SET_LOADING, false, { root: true })
       }
     },
     async updateRoom({ dispatch, commit, rootState }, payload) {
       try {
-        commit(m.SET_LOADING, true, { root: true })
         // const userData = getUserData(rootState.user)
         const result = await firebaseRef.room.doc(payload.roomId).update({
           ['users.' + rootState.user.uid + '.score']: fieldValue.increment(1),
@@ -167,13 +162,11 @@ export default {
       } catch (error) {
         console.error(`TCL: enterRoom -> error`, error)
       } finally {
-        commit(m.SET_LOADING, false, { root: true })
       }
     },
 
     async exitRoom({ dispatch, commit, rootState, state }, { roomId }) {
       try {
-        commit(m.SET_LOADING, true, { root: true })
         const result = await firebaseRef.room.doc(roomId).update({
           ['users.' + rootState.user.uid]: fieldValue.delete(),
         })
@@ -195,12 +188,10 @@ export default {
       } catch (error) {
         console.error(`TCL: exitRoom -> error`, error)
       } finally {
-        commit(m.SET_LOADING, false, { root: true })
       }
     },
     async deleteRoom({ dispatch, commit, state }, collectionId) {
       try {
-        commit(m.SET_LOADING, true, { root: true })
         const result = await firebaseRef.room.doc(collectionId).delete()
         console.log(`TCL: deleteRoom -> result`, result)
         commit('RESET_STATE', {
@@ -218,7 +209,6 @@ export default {
       } catch (error) {
         console.error(`TCL: deleteRoom -> error`, error)
       } finally {
-        commit(m.SET_LOADING, false, { root: true })
       }
     },
   },
