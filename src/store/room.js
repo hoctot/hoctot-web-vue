@@ -132,7 +132,7 @@ export default {
         console.error(`TCL: $enterRoom -> error`, error)
       }
     },
-    async $updateRoom({ dispatch, commit, rootState }, payload) {
+    async $updateUserRoom({ dispatch, commit, rootState }, payload) {
       try {
         // const userData = getUserData(rootState.user)
         await dbRef.room.doc(payload.roomId).update({
@@ -141,10 +141,20 @@ export default {
             : payload.value,
         })
       } catch (error) {
-        console.error(`TCL: $updateRoom -> error`, error)
+        console.error(`TCL: $updateUserRoom -> error`, error)
       }
     },
-
+    async $updateRoom({ dispatch, commit, rootState }, payload) {
+      try {
+        await dbRef.room.doc(payload.roomId).update({
+          [`${payload.key}`]: payload.fieldValue
+            ? fieldValue[payload.fieldValue](payload.value)
+            : payload.value,
+        })
+      } catch (error) {
+        console.error(`TCL: $updateUserRoom -> error`, error)
+      }
+    },
     async $exitRoom({ dispatch, commit, rootState, state }, { roomId }) {
       try {
         await dbRef.room.doc(roomId).update({

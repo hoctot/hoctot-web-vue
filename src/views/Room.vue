@@ -3,7 +3,7 @@
     <div>
       <BaseButton
         @click.native="
-          $ACTION('room/$updateRoom', {
+          $ACTION('room/$updateUserRoom', {
             roomId: $route.params.roomId,
             key: 'score',
             value: 1,
@@ -15,7 +15,7 @@
 
       <BaseButton
         @click.native="
-          $ACTION('room/$updateRoom', {
+          $ACTION('room/$updateUserRoom', {
             roomId: $route.params.roomId,
             key: 'status',
             value: $GETTER('room/isUserReady') ? 'waiting' : 'ready',
