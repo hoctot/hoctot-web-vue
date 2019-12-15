@@ -5,6 +5,7 @@ export const s = {
   listCollection: 'listCollection',
   listQuestion: 'listQuestion',
   isLoading: 'isLoading',
+  isLoadingGlobal: 'isLoadingGlobal',
   search: 'search',
 
   roomModule: {},
@@ -28,6 +29,7 @@ export const m = {
   SET_LOGIN: 'SET_LOGIN',
   SET_USER: 'SET_USER',
   SET_LOADING: 'SET_LOADING',
+  SET_LOADING_GLOBAL: 'SET_LOADING_GLOBAL',
   SET_SEARCH: 'SET_SEARCH',
 }
 

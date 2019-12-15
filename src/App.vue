@@ -4,7 +4,7 @@
     <div v-show="isLogin !== null">
       <router-view />
     </div>
-    <div v-if="isLoading" class="full-page-loading">
+    <div v-if="isLoading && !isLoadingGlobal" class="full-page-loading">
       <div>
         <div class="lds-ripple">
           <div></div>
@@ -12,6 +12,21 @@
         </div>
       </div>
     </div>
+
+    <div v-if="isLoadingGlobal" class="full-page-loading">
+      <div>
+        <div class="loadingio-spinner-reload-jw1ivwv342">
+          <div class="ldio-n4w6u70v4xj">
+            <div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div v-if="isLogin === null" class="mx-auto container text-center mt-10">
       <LoadingProgress></LoadingProgress>
     </div>
@@ -22,7 +37,7 @@
 import { mapState } from 'vuex'
 import { s } from '@/constant'
 export default {
-  computed: mapState([s.isLogin, s.isLoading]),
+  computed: mapState([s.isLogin, s.isLoading, s.isLoadingGlobal]),
 }
 </script>
 

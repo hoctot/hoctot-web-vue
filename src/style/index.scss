@@ -1,5 +1,7 @@
 @use 'custom-font';
 @use 'custom-snippet';
+@use 'custom-loading.scss';
+
 
 * {
   font-family: 'IBM Plex Mono', monospace;
@@ -93,7 +95,6 @@
   }
 }
 
-
 /* width */
 ::-webkit-scrollbar {
   width: 10px;
@@ -101,15 +102,15 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; 
+  background: #f1f1f1;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #999; 
+  background: #999;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #38d39f; 
+  background: #38d39f;
 }

@@ -25,6 +25,7 @@
     "vuexfire": "^3.2.0"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.7.5",
     "@vue/cli-plugin-babel": "^4.0.0",
     "@vue/cli-plugin-eslint": "^4.0.0",
     "@vue/cli-plugin-pwa": "^4.0.0",

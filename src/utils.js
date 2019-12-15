@@ -8,6 +8,11 @@ export const getUserData = user => ({
   displayName: user.displayName,
 })
 
+export const userDataPromise = () =>
+  new Promise((resolve, reject) => {
+    auth.onAuthStateChanged(user => resolve(user))
+  })
+
 export const bindDataActionPromise = (stateKey, dbRef) =>
   firestoreAction(({ bindFirestoreRef }) => {
     return new Promise((resolve, reject) => {

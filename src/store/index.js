@@ -15,11 +15,12 @@ const store = new Vuex.Store({
   state: {
     [s.isLogin]: null,
     [s.isLoading]: false,
+    [s.isLoadingGlobal]: false,
     [s.user]: {},
     [s.listCollection]: [],
     [s.listQuestion]: [],
     [s.search]: '',
-    test: 'Global'
+    test: 'Global',
   },
   getters: {
     [g.getListSearch]: state => stateName =>
@@ -31,6 +32,9 @@ const store = new Vuex.Store({
     ...vuexfireMutations,
     [m.SET_LOADING](state, payload) {
       state[s.isLoading] = payload
+    },
+    [m.SET_LOADING_GLOBAL](state, payload) {
+      state[s.isLoadingGlobal] = payload
     },
     [m.SET_LOGIN](state, payload) {
       state[s.isLogin] = payload
@@ -113,9 +117,11 @@ const store = new Vuex.Store({
       filter(mutation, stateBefore, stateAfter) {
         // returns `true` if a mutation should be logged
         // `mutation` is a `{ type, payload }`
-        return !['vuexfire/ARRAY_ADD', 'vuexfire/SET_VALUE', 'vuexfire/ARRAY_REMOVE'].includes(
-          mutation.type,
-        )
+        return ![
+          'vuexfire/ARRAY_ADD',
+          'vuexfire/SET_VALUE',
+          'vuexfire/ARRAY_REMOVE',
+        ].includes(mutation.type)
       },
     }),
     loadingPlugin,

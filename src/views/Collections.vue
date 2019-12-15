@@ -12,25 +12,37 @@
         <div
           class="mx-auto max-w-sm rounded overflow-hidden shadow-md hover:shadow-lg collections-item"
         >
-          <img class="w-full h-20 object-cover mt-2" :src="item.collection.imgUrl" />
+          <img
+            class="w-full h-20 object-cover mt-2"
+            :src="item.collection.imgUrl"
+          />
           <div class="px-6 py-4 text-center">
             <p class="text-gray-700 mb-2 font-bold" v-text="item.title"></p>
             <div class="text-xs mb-2" v-text="item.desc"></div>
-            <BaseButton @click.native="$ACTION('room/$enterRoom', item)" class="mt-2 mb-2">Vào phòng</BaseButton>
+            <BaseButton
+              @click.native="
+                $router.push({ name: 'room', params: { roomId: item.id } })
+              "
+              class="mt-2 mb-2"
+              >Vào phòng
+            </BaseButton>
             <div>
               <button
                 v-if="$CHECK_IS_HOST(item)"
                 @click="$ACTION('room/$deleteRoom', item.id)"
                 class="text-red-500 hover:text-orange-500 mt-2 font-bold cursor-pointer"
-              >Xoá</button>
+              >
+                Xoá
+              </button>
             </div>
           </div>
         </div>
       </div>
+      <br />
+      <hr />
+      <br />
+
     </div>
-    <br />
-    <hr />
-    <br />
 
     <!-- <pre> {{ $store.state.room.listRoom }} </pre> -->
     <!-- End List Room -->
@@ -38,7 +50,8 @@
     <!-- List collections -->
     <div class="text-center my-2" v-if="listCollection.length">
       <p>
-        {{ search ? 'Tìm thấy ' : ''}} {{ getListSearch('listCollection').length }} bộ câu hỏi
+        {{ search ? 'Tìm thấy ' : '' }}
+        {{ getListSearch('listCollection').length }} bộ câu hỏi
         <img
           class="inline-block"
           width="24"
@@ -47,7 +60,10 @@
       </p>
     </div>
 
-    <div class="container mx-auto flex flex-wrap mt-2" v-if="listCollection.length">
+    <div
+      class="container mx-auto flex flex-wrap mt-2"
+      v-if="listCollection.length"
+    >
       <div
         class="order-bottom-mobile w-full sm:w-6/12 md:w-4/12 xl:w-3/12 p-3"
         title="Bấm để tạo bộ câu hỏi mới"
@@ -55,15 +71,23 @@
         <div
           class="mx-auto max-w-sm rounded overflow-hidden shadow-md hover:shadow-lg collections-item"
         >
-          <img class="w-full h-20 object-contain" src="/img/undraw/collections.png" />
+          <img
+            class="w-full h-20 object-contain"
+            src="/img/undraw/collections.png"
+          />
           <div class="px-6 py-4 text-center">
             <!-- <p class="text-gray-700 mb-4 font-bold">Tạo: </p> -->
             <BaseButton
-              @click.native="$ACTION('room/$createRoom', { collectionId: 'L1MHyOOh2JbQwlp4G6oN' })"
+              @click.native="
+                $ACTION('room/$createRoom', {
+                  collectionId: 'L1MHyOOh2JbQwlp4G6oN',
+                })
+              "
               class="mb-4"
-            >Thi đấu Online</BaseButton>
+              >Thi đấu Online</BaseButton
+            >
 
-            <router-link :to="{name: rn.collectionEditor}">
+            <router-link :to="{ name: rn.collectionEditor }">
               <BaseButton>Bộ câu hỏi mới</BaseButton>
             </router-link>
             <!-- <div class="font-bold text-lg mb-2">Tạo bộ câu hỏi</div> -->
@@ -74,17 +98,24 @@
       <!-- Collection Card -->
       <div
         class="w-full sm:w-6/12 md:w-4/12 xl:w-3/12 p-3"
-        v-for="(item) in $GETTER('getListSearch', 'listCollection')"
+        v-for="item in $GETTER_FILTER('getListSearch', 'listCollection')"
         :key="item.id"
       >
         <div
           class="mx-auto max-w-sm rounded overflow-hidden shadow-md hover:shadow-lg collections-item"
         >
           <router-link
-            :to="{name: rn.collectionData, params: { id: item.id }, query: { item: JSON.stringify(item) }}"
+            :to="{
+              name: rn.collectionData,
+              params: { id: item.id },
+              query: { item: JSON.stringify(item) },
+            }"
           >
             <div class="relative menu-hover">
-              <img class="w-full h-40 object-cover bg-gray-300" :src="item.imgUrl" />
+              <img
+                class="w-full h-40 object-cover bg-gray-300"
+                :src="item.imgUrl"
+              />
               <div class="absolute top-0 right-0 flex">
                 <ul>
                   <li>
@@ -97,7 +128,12 @@
                   </li>
                   <li>
                     <a
-                      @click.stop="$ACTION('room/$createRoom', { collectionId: 'L1MHyOOh2JbQwlp4G6oN', collection: item })"
+                      @click.stop="
+                        $ACTION('room/$createRoom', {
+                          collectionId: 'L1MHyOOh2JbQwlp4G6oN',
+                          collection: item,
+                        })
+                      "
                       href="javascript:void(0)"
                     >
                       <img
@@ -108,7 +144,10 @@
                     </a>
                   </li>
                   <li>
-                    <a @click.stop="editCollections(item.id)" href="javascript:void(0)">
+                    <a
+                      @click.stop="editCollections(item.id)"
+                      href="javascript:void(0)"
+                    >
                       <img
                         title="Chỉnh sửa"
                         class="bg-white hover:bg-blue-200 p-1 ml-auto w-8"
@@ -132,13 +171,22 @@
               </div>
             </div>
             <div class="px-6 py-4">
-              <div class="font-bold text-lg mb-2 text-blue-500" v-text="item.title"></div>
-              <p class="text-gray-700 text-xs block-with-text" v-text="item.desc"></p>
+              <div
+                class="font-bold text-lg mb-2 text-blue-500"
+                v-text="item.title"
+              ></div>
+              <p
+                class="text-gray-700 text-xs block-with-text"
+                v-text="item.desc"
+              ></p>
             </div>
             <div class="text-right px-2">
-              <p
-                class="text-gray-700 text-xs"
-              >{{item.createdAt && item.createdAt.toDate().toLocaleString('vi-VN')}}</p>
+              <p class="text-gray-700 text-xs">
+                {{
+                  item.createdAt &&
+                    item.createdAt.toDate().toLocaleString('vi-VN')
+                }}
+              </p>
             </div>
           </router-link>
         </div>
@@ -147,10 +195,18 @@
     </div>
 
     <div>
-      <Promised :promise="listCollectionPromise" v-slot:combined="{ isPending }">
+      <Promised
+        :promise="listCollectionPromise"
+        v-slot:combined="{ isPending }"
+      >
         <div>
-          <div class="text-center p-2" v-if="!isPending && !listCollection.length">
-            <BaseButton class="mb-8" @click.native="createCollection">Tạo bộ câu hỏi mới</BaseButton>
+          <div
+            class="text-center p-2"
+            v-if="!isPending && !listCollection.length"
+          >
+            <BaseButton class="mb-8" @click.native="createCollection"
+              >Tạo bộ câu hỏi mới</BaseButton
+            >
             <NotFoundCollections />
           </div>
           <div v-if="isPending" class="text-center mt-5">

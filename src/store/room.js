@@ -1,8 +1,8 @@
 import { db, fieldValue } from '@/firebaseConfig'
-import { rn } from '@/constant'
-import { getUserData, bindDataActionPromise } from '@/utils'
+import { rn, m } from '@/constant'
+import { getUserData, bindDataActionPromise, userDataPromise } from '@/utils'
 import router from '@/router'
-import { get } from 'lodash'
+import { get, transform, orderBy } from 'lodash'
 
 const dbRef = {
   room: db.collection('rooms'),
@@ -46,6 +46,8 @@ export default {
     unsubscribe: undefined,
   },
   getters: {
+    listUserOrder: (state, getters) => (listKey, listOrderType) =>
+      orderBy(state.current.users, listKey, listOrderType),
     userInRoom(state, getters, rootState) {
       return get(state.current, 'users.' + get(rootState.user, 'uid'))
     },
@@ -86,44 +88,77 @@ export default {
           status: roomStatus.waiting,
           createdAt: fieldValue.serverTimestamp(),
           updatedAt: fieldValue.serverTimestamp(),
+          gameOver: false,
           // Room Config
           answerType: [roomAnswerType.input],
           answerMode: roomAnswerMode.score,
           ruleWin: ['score', '>', 20],
-          // Room Users
+          // ...
           users: {},
         }
-        const result = await db.collection(roomref.root).add(addData)
-        dispatch('$enterRoom', result)
+        await db.collection(roomref.root).add(addData)
+        // dispatch('$enterRoom', result)
       } catch (error) {
         console.log(`TCL: $createRoom -> catch`, error)
       }
     },
     async $enterRoom({ dispatch, commit, rootState }, item) {
       try {
-        const userData = {
-          ...getUserData(rootState.user),
-          status: roomUserStatus.waiting,
-          score: 0,
-          time: 0,
+        const userData = await userDataPromise()
+
+        // TODO: check has data
+        const dataSnap = await dbRef.room.doc(item.id).get()
+        const currentData = dataSnap.data()
+        if (!currentData.users[userData.uid]) {
+          const initUserData = {
+            ...getUserData(userData),
+            score: 0,
+            time: 0,
+            status: roomUserStatus.waiting,
+          }
+          const updateData = transform(
+            initUserData,
+            (result, value, key) => {
+              result['users.' + userData.uid + '.' + key] = value
+            },
+            {},
+          )
+          await dbRef.room.doc(item.id).update(updateData)
         }
-        await dbRef.room.doc(item.id).update({
-          ['users.' + rootState.user.uid]: userData,
-        })
-        // Config Room
-        router.push({
-          name: rn.room,
-          params: {
-            roomId: item.id,
-          },
-        })
 
         const unsubscribe = dbRef.room.doc(item.id).onSnapshot(doc => {
           const data = doc.data()
           commit('SET_STATE', { key: 'current', value: data || {} })
+          // TODO: Check rule win
+          // Back if room deleted
           if (!data) {
             router.currentRoute.name !== rn.collections &&
               router.push({ name: rn.collections })
+          } else {
+            const { users, gameOver } = data
+            if (users && !gameOver) {
+              for (const key in users) {
+                if (users.hasOwnProperty(key)) {
+                  const { score } = users[key]
+                  if (score > 3) {
+                    // WIN
+                    commit(m.SET_LOADING_GLOBAL, true, { root: true })
+                    setTimeout(() => {
+                      doc.ref
+                        .update({
+                          gameOver: true,
+                          gameOverTime: fieldValue.serverTimestamp(),
+                        })
+                        .then(() => {})
+                        .finally(() =>
+                          commit(m.SET_LOADING_GLOBAL, false, { root: true }),
+                        )
+                    }, 300)
+                    return
+                  }
+                }
+              }
+            }
           }
         })
 
@@ -137,8 +172,8 @@ export default {
         // const userData = getUserData(rootState.user)
         await dbRef.room.doc(payload.roomId).update({
           [`users.${rootState.user.uid}.${payload.key}`]: payload.fieldValue
-            ? fieldValue[payload.fieldValue](payload.value)
-            : payload.value,
+            ? fieldValue[payload.fieldValue](payload.value) // ex : increment(1)
+            : payload.value, // ex: status ...
         })
       } catch (error) {
         console.error(`TCL: $updateUserRoom -> error`, error)
@@ -163,10 +198,6 @@ export default {
         // Config Room
         router.push({ name: rn.collections })
         commit('RESET_STATE', { key: 'current', value: {} })
-        if (state.unsubscribe) {
-          state.unsubscribe()
-          commit('RESET_STATE', { key: 'unsubscribe', value: undefined })
-        }
       } catch (error) {
         console.error(`TCL: exitRoom -> error`, error)
       }
@@ -175,14 +206,20 @@ export default {
       try {
         await dbRef.room.doc(collectionId).delete()
         commit('RESET_STATE', { key: 'current', value: {} })
-
-        if (state.unsubscribe) {
-          state.unsubscribe()
-          commit('RESET_STATE', { key: 'unsubscribe', value: undefined })
-        }
       } catch (error) {
         console.error(`TCL: deleteRoom -> error`, error)
       }
     },
+    unsubscribe({ commit, state }) {
+      if (state.unsubscribe) {
+        state.unsubscribe()
+        commit('SET_STATE', { key: 'unsubscribe', value: undefined })
+      }
+    },
+    /* TODO:
+    + Get list question
+    + Check answer
+    + Check User in room
+    */
   },
 }
