@@ -71,12 +71,6 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.path !== '/') {
-    const buildTime = document.getElementById('build')
-    if (buildTime) {
-      buildTime.remove()
-    }
-  }
   // TODO: Optimize router check
   // const { isPlaying, room } = store.state
 
