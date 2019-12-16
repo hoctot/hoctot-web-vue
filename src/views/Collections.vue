@@ -3,14 +3,27 @@
     <SearchBarData searchType="collection" />
 
     <!-- List Room -->
-    <div class="container mx-auto flex flex-wrap">
+    <div
+      v-if="$store.state.room.listRoom.length"
+      class="container mx-auto text-center"
+    >
+      <p>
+        Phòng thi đấu
+        <img
+          class="inline-block"
+          width="24"
+          src="https://image.flaticon.com/icons/png/512/1632/1632670.png"
+        />
+      </p>
+    </div>
+    <div class="container mx-auto flex flex-wrap justify-center ">
       <div
         v-for="item in $store.state.room.listRoom"
         :key="item.id"
         class="order-bottom-mobile w-full sm:w-6/12 md:w-4/12 xl:w-3/12 p-3"
       >
         <div
-          class="mx-auto max-w-sm rounded overflow-hidden shadow-md hover:shadow-lg collections-item"
+          class="rounded mx-auto max-w-sm rounded overflow-hidden shadow-md hover:shadow-lg collections-item"
         >
           <img
             class="w-full h-20 object-cover mt-2"
@@ -41,7 +54,6 @@
       <br />
       <hr />
       <br />
-
     </div>
 
     <!-- <pre> {{ $store.state.room.listRoom }} </pre> -->
@@ -68,29 +80,15 @@
         class="order-bottom-mobile w-full sm:w-6/12 md:w-4/12 xl:w-3/12 p-3"
         title="Bấm để tạo bộ câu hỏi mới"
       >
-        <div
-          class="mx-auto max-w-sm rounded overflow-hidden shadow-md hover:shadow-lg collections-item"
-        >
+        <div class="mx-auto max-w-sm rounded overflow-hidden ">
           <img
-            class="w-full h-20 object-contain"
+            class="w-full h-30 object-contain"
             src="/img/undraw/collections.png"
           />
           <div class="px-6 py-4 text-center">
-            <!-- <p class="text-gray-700 mb-4 font-bold">Tạo: </p> -->
-            <BaseButton
-              @click.native="
-                $ACTION('room/$createRoom', {
-                  collectionId: 'L1MHyOOh2JbQwlp4G6oN',
-                })
-              "
-              class="mb-4"
-              >Thi đấu Online</BaseButton
-            >
-
             <router-link :to="{ name: rn.collectionEditor }">
               <BaseButton>Bộ câu hỏi mới</BaseButton>
             </router-link>
-            <!-- <div class="font-bold text-lg mb-2">Tạo bộ câu hỏi</div> -->
           </div>
         </div>
       </div>
@@ -127,15 +125,7 @@
                     </a>
                   </li>
                   <li>
-                    <a
-                      @click.stop="
-                        $ACTION('room/$createRoom', {
-                          collectionId: 'L1MHyOOh2JbQwlp4G6oN',
-                          collection: item,
-                        })
-                      "
-                      href="javascript:void(0)"
-                    >
+                    <a @click.stop="newRoom(item)" href="javascript:void(0)">
                       <img
                         title="Thi đấu Online"
                         class="bg-white hover:bg-blue-200 p-1 ml-auto w-8"
@@ -172,13 +162,25 @@
             </div>
             <div class="px-6 py-4">
               <div
-                class="font-bold text-lg mb-2 text-blue-500"
+                class="font-bold text-lg mb-2 text-blue-500 text-center"
                 v-text="item.title"
               ></div>
-              <p
+              <a
+                title="Bấm để tạo phòng"
+                class="block "
+                @click.stop="newRoom(item)"
+                href="javascript:void(0)"
+              >
+                <p
+                  class="p-4 hover:shadow hover:bg-green-400 text-center bg-green-500 text-white font-bold  rounded"
+                >
+                  Tạo phòng
+                </p>
+              </a>
+              <!-- <p
                 class="text-gray-700 text-xs block-with-text"
                 v-text="item.desc"
-              ></p>
+              ></p> -->
             </div>
             <div class="text-right px-2">
               <p class="text-gray-700 text-xs">
@@ -260,6 +262,15 @@ export default {
     },
     createCollection() {
       this.$GO(rn.collectionEditor)
+    },
+    newRoom(item) {
+      this.$ACTION('room/$createRoom', {
+        collectionId: item.id,
+        collection: item,
+        options: {
+          isRedirect: true,
+        },
+      })
     },
     openMenu(event) {},
   },

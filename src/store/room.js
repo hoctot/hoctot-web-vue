@@ -92,7 +92,17 @@ export default {
           // ...
           users: {},
         }
-        await db.collection(roomref.root).add(addData)
+        const newRoomRef = await db.collection(roomref.root).add(addData)
+        const { options = {} } = payload
+        const isRedirect = options
+        if (isRedirect) {
+          router.push({
+            name: rn.room,
+            params: {
+              roomId: newRoomRef.id,
+            },
+          })
+        }
         // dispatch('$enterRoom', result)
       } catch (error) {
         console.log(`TCL: $createRoom -> catch`, error)
@@ -103,8 +113,8 @@ export default {
         const userData = await userDataPromise()
 
         // TODO: check has data
-        const dataSnap = await dbRef.room.doc(item.id).get()
-        const currentRoom = dataSnap.data()
+        const roomSnap = await dbRef.room.doc(item.id).get()
+        const currentRoom = roomSnap.data()
         if (!currentRoom.users[userData.uid]) {
           const initUserData = {
             ...getUserData(userData),
