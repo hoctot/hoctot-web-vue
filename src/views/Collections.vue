@@ -51,11 +51,14 @@
           </div>
         </div>
       </div>
-      <br />
-      <hr />
-      <br />
     </div>
 
+    <div
+      v-if="$store.state.room.listRoom.length"
+      class="my-4 container mx-auto"
+    >
+      <hr />
+    </div>
     <!-- <pre> {{ $store.state.room.listRoom }} </pre> -->
     <!-- End List Room -->
 
