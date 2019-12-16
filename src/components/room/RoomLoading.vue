@@ -1,6 +1,6 @@
 <template>
   <section v-if="!$STATE('room.current.hostInfo')">
-    <h1 class="text-center">Đang tải thông tin phòng ...</h1>
+    <h3 class="text-center">Đang tải thông tin phòng ...</h3>
     <br />
     <Loading></Loading>
   </section>

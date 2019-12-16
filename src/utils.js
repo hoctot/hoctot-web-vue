@@ -13,6 +13,11 @@ export const userDataPromise = () =>
     auth.onAuthStateChanged(user => resolve(user))
   })
 
+export const operatorsCompare = {
+  '<': (a, b) => a < b,
+  '>': (a, b) => a > b,
+}
+
 export const bindDataActionPromise = (stateKey, dbRef) =>
   firestoreAction(({ bindFirestoreRef }) => {
     return new Promise((resolve, reject) => {

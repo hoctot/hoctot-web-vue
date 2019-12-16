@@ -18,6 +18,13 @@
           >
             Xoá phòng
           </button>
+          <button
+            v-if="!$IS_HOST"
+            @click="$router.push({ name: 'collections' })"
+            class="text-red-500 hover:text-orange-500 mt-2 font-bold cursor-pointer"
+          >
+            Thoát phòng
+          </button>
         </div>
       </div>
       <br />

@@ -1,7 +1,8 @@
 @use 'custom-font';
 @use 'custom-snippet';
 @use 'custom-loading.scss';
-
+@import "~noty/src/noty.scss";
+@import "~noty/src/themes/mint.scss";
 
 * {
   font-family: 'IBM Plex Mono', monospace;

@@ -10,6 +10,7 @@
     <RoomLoading></RoomLoading>
 
     <!-- //TODO: Game Play -->
+    <RoomPlaying></RoomPlaying>
   </div>
 </template>
 
@@ -20,6 +21,7 @@ export default {
       id: this.$route.params.roomId,
     })
   },
+  mounted() {},
   beforeDestroy() {
     this.$ACTION('room/unsubscribe')
   },

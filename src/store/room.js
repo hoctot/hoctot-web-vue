@@ -1,11 +1,17 @@
 import { db, fieldValue } from '@/firebaseConfig'
 import { rn, m } from '@/constant'
-import { getUserData, bindDataActionPromise, userDataPromise } from '@/utils'
+import {
+  getUserData,
+  bindDataActionPromise,
+  userDataPromise,
+  operatorsCompare,
+} from '@/utils'
 import router from '@/router'
-import { get, transform, orderBy } from 'lodash'
+import { get, transform, orderBy, filter, shuffle } from 'lodash'
 
 const dbRef = {
   room: db.collection('rooms'),
+  questions: db.collection('questions'),
 }
 
 const roomref = {
@@ -19,7 +25,7 @@ const roomAnswerType = {
   match: 'match',
 }
 
-const roomAnswerMode = {
+const roomGameMode = {
   pk: 'pk',
   score: 'score',
   time: 'time',
@@ -40,6 +46,9 @@ export default {
       orderBy(state.current.users, listKey, listOrderType),
     userInRoom(state, getters, rootState) {
       return get(state.current, 'users.' + get(rootState.user, 'uid'))
+    },
+    listUserReady(state, getters, rootState) {
+      return filter(state.current.users, o => o.isReady)
     },
     isUserReady(state, getters, rootState) {
       return Boolean(
@@ -78,8 +87,8 @@ export default {
           isGameOver: false,
           // Room Config
           answerType: [roomAnswerType.input],
-          answerMode: roomAnswerMode.score,
-          ruleWin: ['score', '>', 20],
+          gameMode: roomGameMode.score,
+          ruleWin: ['score', '>', 4],
           // ...
           users: {},
         }
@@ -95,8 +104,8 @@ export default {
 
         // TODO: check has data
         const dataSnap = await dbRef.room.doc(item.id).get()
-        const currentData = dataSnap.data()
-        if (!currentData.users[userData.uid]) {
+        const currentRoom = dataSnap.data()
+        if (!currentRoom.users[userData.uid]) {
           const initUserData = {
             ...getUserData(userData),
             score: 0,
@@ -113,6 +122,24 @@ export default {
           await dbRef.room.doc(item.id).update(updateData)
         }
 
+        // Get set listQuestion
+        if (currentRoom) {
+          const { collectionId } = currentRoom
+          const collectionSnap = await dbRef.questions
+            .doc(currentRoom.hostInfo.uid)
+            .collection('data')
+            .where('collectionId', '==', collectionId)
+            .get()
+
+          const listQuestionData = collectionSnap.docs.map(i =>
+            i.exists ? i.data() : null,
+          )
+          commit('SET_STATE', {
+            key: 'listQuestion',
+            value: shuffle(listQuestionData),
+          })
+        }
+
         const unsubscribe = dbRef.room.doc(item.id).onSnapshot(doc => {
           const data = doc.data()
           commit('SET_STATE', { key: 'current', value: data || {} })
@@ -126,8 +153,18 @@ export default {
             if (users && !isGameOver) {
               for (const key in users) {
                 if (users.hasOwnProperty(key)) {
-                  const { score } = users[key]
-                  if (score > 3) {
+                  const [
+                    ruleType,
+                    ruleCondition,
+                    ruleValue,
+                  ] = currentRoom.ruleWin
+
+                  if (
+                    operatorsCompare[ruleCondition](
+                      users[key][ruleType],
+                      ruleValue,
+                    )
+                  ) {
                     // WIN
                     commit(m.SET_LOADING_GLOBAL, true, { root: true })
                     setTimeout(() => {
@@ -140,7 +177,7 @@ export default {
                         .finally(() =>
                           commit(m.SET_LOADING_GLOBAL, false, { root: true }),
                         )
-                    }, 300)
+                    }, 500)
                     return
                   }
                 }

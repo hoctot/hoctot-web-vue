@@ -1,6 +1,10 @@
 <template>
   <section
-    v-if="$STATE('room.current.hostInfo') && !$STATE('room.current.isGameOver')"
+    v-if="
+      $STATE('room.current.hostInfo') &&
+        !$STATE('room.current.isGameOver') &&
+        !$STATE('room.current.isPlaying')
+    "
   >
     <div class="text-center">
       <!-- <BaseButton
@@ -22,38 +26,19 @@
         >
           Thoát phòng
         </button>
+        <button
+          v-if="$IS_HOST"
+          @click="$ACTION('room/$deleteRoom', $route.params.roomId)"
+          class="ml-4 text-red-500 hover:text-orange-500 font-bold cursor-pointer"
+        >
+          Xoá phòng
+        </button>
       </div>
     </div>
     <hr />
 
-    <div
-      class="mt-4 mb-6 flex justify-center"
-      v-if="$STATE('room.current.users')"
-    >
-      <div
-        class="text-center inline-block mx-2 py-2"
-        v-for="item in $STATE('room.current.users')"
-        :key="item.uid"
-      >
-        <div class="">
-          <img
-            class="mx-auto border rounded-full border-green-500 "
-            :src="item.photoURL"
-            width="48"
-          />
-        </div>
-        <p class="mt-2 text-sm">
-          <span
-            :class="[item.isReady ? 'bg-green-500' : 'bg-gray-500']"
-            class="inline-block w-2 h-2 mx-auto rounded-full"
-          ></span>
-          {{ item.displayName }}
-        </p>
-        <!-- <p>
-          Điểm:
-          <span v-text="item.score ? item.score : 0"></span>
-        </p> -->
-      </div>
+    <div class="mt-4 mb-6 ">
+      <RoomListUserStatus></RoomListUserStatus>
     </div>
 
     <div class="text-center mt-2">
@@ -68,7 +53,7 @@
         >Sẵn sàng
       </BaseButton> -->
       <BaseButton
-        v-if="$IS_HOST"
+        v-if="$IS_HOST && $GETTER('room/listUserReady').length > 1"
         @click.native="
           $ACTION('room/$updateRoom', {
             roomId: $route.params.roomId,
@@ -78,11 +63,19 @@
         "
         >Bắt đầu thi đấu
       </BaseButton>
-      <p>{{ $STATE('room.current.status') }}</p>
-      <p v-if="!$IS_HOST" class="text-blue-500">
-        Đợi chủ phòng bắt đầu
-      </p>
-      <div>
+      <div v-if="$IS_HOST && $GETTER('room/listUserReady').length <= 1">
+        <h3 class="text-blue-500">
+          Đang chờ người tham gia phòng...
+        </h3>
+      </div>
+
+      <div v-if="!$IS_HOST">
+        <h3 class="text-blue-500">
+          Đợi chủ phòng bắt đầu ...
+        </h3>
+      </div>
+
+      <div class="mt-4">
         <img class="mx-auto" width="300" src="/img/undraw/team.png" />
       </div>
     </div>
