@@ -7,7 +7,7 @@
       v-if="$store.state.room.listRoom.length"
       class="container mx-auto text-center"
     >
-      <p>
+      <p class="mt-2">
         Phòng thi đấu
         <img
           class="inline-block"
