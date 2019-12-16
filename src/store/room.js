@@ -13,16 +13,6 @@ const roomref = {
   data: 'data',
 }
 
-const roomStatus = {
-  waiting: 'waiting',
-  playing: 'playing',
-}
-
-const roomUserStatus = {
-  waiting: 'waiting',
-  ready: 'ready',
-}
-
 const roomAnswerType = {
   correct: 'correct',
   input: 'input',
@@ -53,10 +43,7 @@ export default {
     },
     isUserReady(state, getters, rootState) {
       return Boolean(
-        get(
-          state.current,
-          'users.' + get(rootState.user, 'uid') + '.status',
-        ) === 'ready',
+        get(state.current, 'users.' + get(rootState.user, 'uid') + '.isReady'),
       )
     },
   },
@@ -85,10 +72,10 @@ export default {
           collectionId,
           collection,
           hostInfo: getUserData(rootState.user),
-          status: roomStatus.waiting,
+          isPlaying: false,
           createdAt: fieldValue.serverTimestamp(),
           updatedAt: fieldValue.serverTimestamp(),
-          gameOver: false,
+          isGameOver: false,
           // Room Config
           answerType: [roomAnswerType.input],
           answerMode: roomAnswerMode.score,
@@ -114,7 +101,7 @@ export default {
             ...getUserData(userData),
             score: 0,
             time: 0,
-            status: roomUserStatus.waiting,
+            isReady: true,
           }
           const updateData = transform(
             initUserData,
@@ -135,8 +122,8 @@ export default {
             router.currentRoute.name !== rn.collections &&
               router.push({ name: rn.collections })
           } else {
-            const { users, gameOver } = data
-            if (users && !gameOver) {
+            const { users, isGameOver } = data
+            if (users && !isGameOver) {
               for (const key in users) {
                 if (users.hasOwnProperty(key)) {
                   const { score } = users[key]
@@ -146,7 +133,7 @@ export default {
                     setTimeout(() => {
                       doc.ref
                         .update({
-                          gameOver: true,
+                          isGameOver: true,
                           gameOverTime: fieldValue.serverTimestamp(),
                         })
                         .then(() => {})
