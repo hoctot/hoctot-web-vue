@@ -1,7 +1,7 @@
 <template>
   <button
-    :class="[isDisable ? 'bg-green-200 pointer-events-none': 'bg-green-500']"
-    class="select-none text-white hover:shadow-sm hover:bg-green-400 font-bold mx-4 px-4 py-4 rounded appearance-none shadow"
+    :class="[isDisable ? 'bg-green-200 pointer-events-none' : 'bg-green-500']"
+    class="select-none text-white hover:shadow-sm hover:bg-green-400 font-bold px-4 py-4 rounded appearance-none shadow"
   >
     <slot></slot>
   </button>
@@ -13,5 +13,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

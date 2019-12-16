@@ -75,7 +75,7 @@ export default {
         text: isRight ? 'Đúng' : 'Sai',
         timeout: 1000,
       }).show()
-
+      window.scrollTo(0, 0)
       this.answer = ''
       this.$COMMIT('room/SET_STATE', {
         key: 'listQuestion',
