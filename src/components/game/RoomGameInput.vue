@@ -40,7 +40,7 @@
 
 <script>
 import Noty from 'noty'
-import { shuffle } from 'lodash'
+import { shuffle, cloneDeep } from 'lodash'
 import { m } from '../../constant'
 export default {
   data() {
@@ -69,18 +69,30 @@ export default {
       }
     },
     shufferQuestion(isRight) {
-      new Noty({
-        type: isRight ? 'success' : 'error',
-        layout: 'topCenter',
-        text: isRight ? 'Đúng' : 'Sai',
-        timeout: 1000,
-      }).show()
-      window.scrollTo(0, 0)
-      this.answer = ''
+      if (!this.$STATE('room.current.isGameOver')) {
+        new Noty({
+          type: isRight ? 'success' : 'error',
+          layout: 'topCenter',
+          text: isRight ? 'Đúng' : 'Sai',
+          timeout: 1000,
+        }).show()
+        window.scrollTo(0, 0)
+        this.answer = ''
+        this.fixDuplicate()
+      }
+    },
+    fixDuplicate() {
+      const currentQuestion = cloneDeep(this.$STATE('room.listQuestion')[0])
       this.$COMMIT('room/SET_STATE', {
         key: 'listQuestion',
         value: shuffle(this.$STATE('room.listQuestion')),
       })
+      if (
+        currentQuestion.question ===
+        this.$STATE('room.listQuestion')[0].question
+      ) {
+        return this.fixDuplicate()
+      }
     },
   },
 }
