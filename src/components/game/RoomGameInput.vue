@@ -1,6 +1,6 @@
 <template>
   <div
-    class="mt-2"
+    class="mt-2 mb-8"
     v-if="$STATE('room.listQuestion') && $STATE('room.listQuestion').length"
   >
     <h4 class="text-left mb-2"><u>Câu hỏi:</u></h4>
@@ -12,7 +12,7 @@
       <div v-html="$STATE('room.listQuestion')[0].hint"></div>
     </div>
 
-    <div class="text-center mt-2">
+    <div class="text-center mt-4">
       <form v-on:submit.prevent="checkAnswer">
         <textarea
           appearance-none
@@ -30,7 +30,7 @@
             class="bg-green-500 hover:bg-green-400 hover:shadow px-8 py-4 rounded text-white "
             type="submit"
           >
-            Gửi {{ $STATE('room.listQuestion')[0].answer }}
+            Gửi
           </button>
         </div>
       </form>

@@ -8,8 +8,8 @@
     <RoomListUserStatus></RoomListUserStatus>
     <hr />
     <RoomGameInput></RoomGameInput>
-    <pre>
+    <!-- <pre>
       {{ $STATE('room.listQuestion') }}
-    </pre>
+    </pre> -->
   </div>
 </template>
