@@ -118,7 +118,7 @@
                 :src="item.imgUrl"
               />
               <div class="absolute top-0 right-0 flex">
-                <ul>
+                <ul class="hover-list">
                   <li>
                     <a @click.stop="openMenu" href="javascript:void(0)">
                       <img
