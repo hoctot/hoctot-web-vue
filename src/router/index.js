@@ -71,32 +71,9 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  // TODO: Optimize router check
-  // const { isPlaying, room } = store.state
-
-  // const isInRoom = Boolean(store.state.room && room.collectionId)
-  // if (isInRoom) {
-  //   next(false)
-  // } else {
-  //   next()
-  // }
   store.commit(m.SET_SEARCH, '')
 
   next()
-
-  // ...
-  // console.debug(to, from)
-  // let isAuthenticated = store.state.isLogin
-  // isAuthenticated = !true
-  // if (isAuthenticated) {
-  //   // Login
-  //   if (['/'].includes(to.path)) next('/collections')
-  //   else next()
-  // } else {
-  //   // No login
-  //   if (['/login', '/about'].includes(to.path)) next()
-  //   else next('/login')
-  // }
 })
 
 export default router
