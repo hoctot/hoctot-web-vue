@@ -1,12 +1,12 @@
 {
-  "name": "hoctotonline-admin",
+  "name": "hoctotonline-vue",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "surge": "npm run build && cd ./dist && cp index.html 200.html && surge -p ./ -d https://hoctot-admin.surge.sh && cd .."
+    "surge": "npm run build && cd ./dist && cp index.html 200.html && surge -p ./ -d https://hoctot-vue.surge.sh && cd .."
   },
   "dependencies": {
     "buefy": "^0.8.6",
