@@ -1,4 +1,4 @@
- <template>
+<template>
   <div class="mt-2 mb-20">
     <SearchBarData searchType="question" />
 
@@ -7,12 +7,14 @@
         <BaseButton
           @click.native="createQuestion"
           class="w-full sm:w-3/12 mb-2 mx-0 text-lg"
-        >Tạo câu hỏi</BaseButton>
+          >Tạo câu hỏi</BaseButton
+        >
       </div>
 
       <div v-if="listQuestion.length" class="px-2">
         <div class="text-center">
-          {{getListSearch('listQuestion').length}} câu hỏi {{ search ? 'được tìm thấy' : ''}}
+          {{ getListSearch('listQuestion').length }} câu hỏi
+          {{ search ? 'được tìm thấy' : '' }}
           <img
             class="inline-block"
             width="24"
@@ -29,16 +31,27 @@
               <div class="mb-2" v-html="item.question"></div>
               <hr />
               <br />
-              <div class="text-gray-700 text-sm block-with-text mb-5" v-text="item.answer"></div>
+              <div
+                class="text-gray-700 text-sm block-with-text mb-5"
+                v-text="item.answer"
+              ></div>
+              <div v-if="item.solve">
+                <hr />
+                <br />
+                <div class="mb-5" v-html="item.solve"></div>
+              </div>
               <div class="text-right px-2">
-                <p
-                  class="text-gray-700 text-xs"
-                >{{item.createdAt && item.createdAt.toDate().toLocaleString('vi-VN')}}</p>
+                <p class="text-gray-700 text-xs">
+                  {{
+                    item.createdAt &&
+                      item.createdAt.toDate().toLocaleString('vi-VN')
+                  }}
+                </p>
               </div>
             </div>
 
             <div class="absolute top-0 right-0 flex">
-              <ul>
+              <ul class="hover-list">
                 <li>
                   <a @click.stop="openMenu" href="javascript:void(0)">
                     <img
@@ -48,7 +61,10 @@
                   </a>
                 </li>
                 <li>
-                  <a @click.stop="editCollections(item)" href="javascript:void(0)">
+                  <a
+                    @click.stop="editCollections(item)"
+                    href="javascript:void(0)"
+                  >
                     <img
                       title="Chỉnh sửa"
                       class="bg-white hover:bg-blue-200 p-1 ml-auto w-8"
@@ -57,7 +73,10 @@
                   </a>
                 </li>
                 <li>
-                  <a @click.stop="deleteCollection(item.id, item.title)" href="javascript:void(0)">
+                  <a
+                    @click.stop="deleteCollection(item.id, item.title)"
+                    href="javascript:void(0)"
+                  >
                     <img
                       title="Xoá"
                       class="bg-white hover:bg-red-200 p-1 ml-auto w-8"
@@ -72,7 +91,10 @@
       </div>
 
       <div>
-        <Promised :promise="listQuestionPromise" v-slot:combined="{ isPending }">
+        <Promised
+          :promise="listQuestionPromise"
+          v-slot:combined="{ isPending }"
+        >
           <div>
             <NotFoundCollections v-if="!isPending && !listQuestion.length" />
             <div v-if="isPending" class="text-center mt-5">
@@ -152,5 +174,4 @@ export default {
 }
 </script>
 
- <style>
-</style>
+<style></style>

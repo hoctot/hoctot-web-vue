@@ -47,12 +47,21 @@
             <img width="22" src="https://image.flaticon.com/icons/svg/107/107737.svg" />
           </div>-->
         </div>
+
+        <div>
+          <p class="text-left">Lời giải</p>
+        </div>
+        <div class="editor-wrap">
+          <div id="editor-solve" class="editor-solve"></div>
+        </div>
       </div>
       <div class="w-full sm:w-4/12">
         <div class="mx-auto text-center">
           <button
             @click="createQuestion"
-            :class="[isEdit? ' ' : 'opacity-50 pointer-events-none shadow-none']"
+            :class="[
+              isEdit ? ' ' : 'opacity-50 pointer-events-none shadow-none',
+            ]"
             class="bg-green-500 hover:bg-green-400 shadow appearance-none border font-bold rounded py-4 px-8 text-white leading-tight focus:outline-none focus:shadow-outline"
             v-text="isEditMode ? 'Cập nhật' : 'Tạo câu hỏi'"
           ></button>
@@ -65,7 +74,12 @@
           />
           <div v-if="!isEditMode">
             <label for="checkBack" class="select-none">
-              <input v-model="disableBack" type="checkbox" name="checkBack" id="checkBack" />
+              <input
+                v-model="disableBack"
+                type="checkbox"
+                name="checkBack"
+                id="checkBack"
+              />
               <span class="text-base">
                 Ở lại trang
                 <br />khi tạo xong câu hỏi
@@ -78,7 +92,9 @@
                 @click="back"
                 :title="item.title"
                 class="cursor-pointer tag-title hover:underline text-blue-500 px-3 py-2 text-sm font-semibold text-gray-700"
-              >Trở về: {{item.title}}</p>
+              >
+                Trở về: {{ item.title }}
+              </p>
             </div>
           </div>
         </div>
@@ -88,6 +104,7 @@
 </template>
 
 <script>
+import Noty from 'noty'
 import { db, serverTimestamp } from '@/firebaseConfig'
 import * as Quill from 'quill/dist/quill'
 import 'quill/dist/quill.snow.css'
@@ -100,6 +117,7 @@ export default {
       questionEditor: null,
       answerEditor: null,
       hintEditor: null,
+      solveEditor: null,
       // Other
       questionHTML: '',
       questionText: '',
@@ -146,13 +164,20 @@ export default {
               question: this.questionHTML,
               answer: this.answerText,
               hint: this.hintHTML,
+              solve: this.solveHTML,
               updatedAt: serverTimestamp(),
             },
             { merge: true },
           )
           .then(() => {
-            this.resetFields()
-            this.$router.back()
+            // this.resetFields()
+            // this.$router.back()
+            new Noty({
+              type: 'info',
+              layout: 'topRight',
+              text: 'Cập nhật thành công!',
+              timeout: 1000,
+            }).show()
           })
           .finally(() => {
             this.$store.commit(m.SET_LOADING, false)
@@ -164,12 +189,19 @@ export default {
             question: this.questionHTML,
             answer: this.answerText,
             hint: this.hintHTML,
+            solve: this.solveHTML,
             collectionId: this.$route.query.collectionId,
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
           })
           .then(() => {
             this.resetFields()
+            new Noty({
+              type: 'info',
+              layout: 'topRight',
+              text: 'Tạo thành công!',
+              timeout: 1000,
+            }).show()
             if (!this.disableBack) {
               this.$router.back()
             }
@@ -186,10 +218,13 @@ export default {
       this.answerText = ''
       this.hintHTML = ''
       this.hintText = ''
+      this.solveHTML = ''
+      this.solveText = ''
 
       this.questionEditor.setText('')
       this.answerEditor.setText('')
       this.hintEditor.setText('')
+      this.solveEditor.setText('')
     },
   },
   beforeMount() {
@@ -219,7 +254,12 @@ export default {
       ],
     ]
 
-    const listEditor = ['questionEditor', 'answerEditor', 'hintEditor']
+    const listEditor = [
+      'questionEditor',
+      'answerEditor',
+      'hintEditor',
+      'solveEditor',
+    ]
 
     this.questionEditor = new Quill('#editor-question', {
       placeholder: 'Nhập câu hỏi...',
@@ -245,6 +285,14 @@ export default {
       },
     })
 
+    this.solveEditor = new Quill('#editor-solve', {
+      placeholder: 'Nhập lời giải...',
+      theme: 'snow',
+      modules: {
+        toolbar: toolbarOptions,
+      },
+    })
+
     listEditor.forEach(v => {
       try {
         const typeEditor = v.split('Editor')[0]
@@ -263,6 +311,7 @@ export default {
       this.questionEditor.clipboard.dangerouslyPasteHTML(0, this.item.question)
       this.answerEditor.clipboard.dangerouslyPasteHTML(0, this.item.answer)
       this.hintEditor.clipboard.dangerouslyPasteHTML(0, this.item.hint)
+      this.solveEditor.clipboard.dangerouslyPasteHTML(0, this.item.solve)
     }
   },
 }
