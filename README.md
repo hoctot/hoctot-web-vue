@@ -1,4 +1,4 @@
-# HocTot Online Web VueJS - Comming soon Q1 2020
+# HocTot Online Web VueJS - First MVP
 
 [![Build Status](https://travis-ci.com/hoctot/hoctot-web-admin.svg?branch=master)](https://travis-ci.com/hoctot/hoctot-web-admin)
 
