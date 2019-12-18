@@ -7,7 +7,6 @@ import { vuexfireMutations, firestoreAction } from 'vuexfire'
 import router from '@/router'
 import { filter, includes, upperCase } from 'lodash'
 import { loadingPlugin } from './plugin'
-// import createLogger from 'vuex/dist/logger'
 
 Vue.use(Vuex)
 
@@ -112,20 +111,7 @@ const store = new Vuex.Store({
   modules: {
     room: roomModule,
   },
-  plugins: [
-    // createLogger({
-    //   filter(mutation, stateBefore, stateAfter) {
-    //     // returns `true` if a mutation should be logged
-    //     // `mutation` is a `{ type, payload }`
-    //     return ![
-    //       'vuexfire/ARRAY_ADD',
-    //       'vuexfire/SET_VALUE',
-    //       'vuexfire/ARRAY_REMOVE',
-    //     ].includes(mutation.type)
-    //   },
-    // }),
-    loadingPlugin,
-  ],
+  plugins: [loadingPlugin],
 })
 
 store.dispatch(a.checkLogin)
